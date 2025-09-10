@@ -32,7 +32,7 @@ function CartMismatchBanner(props: { customer: B2BCustomer; cart: B2BCart }) {
       <div className="flex flex-col small:flex-row small:gap-2 gap-1 items-center">
         <span className="flex items-center gap-1">
           <ExclamationCircleSolid className="inline" />
-          Cart is not connected to your account
+          Le panier n'est pas connecté à votre compte
         </span>
 
         <span>·</span>
