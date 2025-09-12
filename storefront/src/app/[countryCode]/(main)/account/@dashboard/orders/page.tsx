@@ -34,12 +34,12 @@ export default async function Orders() {
       data-testid="orders-page-wrapper"
     >
       <div className="mb-4">
-        <Heading>Orders</Heading>
+        <Heading>Commandes</Heading>
       </div>
       {approval_required && (
         <div>
           <Heading level="h2" className="text-neutral-700 mb-4">
-            Pending Approvals
+            Approbations en Cours
           </Heading>
 
           <PendingCustomerApprovals cartsWithApprovals={carts_with_approvals} />
@@ -47,7 +47,7 @@ export default async function Orders() {
       )}
       <div>
         <Heading level="h2" className="text-neutral-700 mb-4">
-          Completed Orders
+          Commandes Terminées
         </Heading>
 
         <OrderOverview orders={orders} />

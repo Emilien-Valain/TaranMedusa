@@ -41,15 +41,15 @@ export type AddToCartEventPayload = {
 
 const CartContext = createContext<
   | {
-      cart: B2BCart | null
-      handleDeleteItem: (lineItem: string) => Promise<void>
-      handleUpdateCartQuantity: (
-        lineItem: string,
-        newQuantity: number
-      ) => Promise<void>
-      handleEmptyCart: () => Promise<void>
-      isUpdatingCart: boolean
-    }
+    cart: B2BCart | null
+    handleDeleteItem: (lineItem: string) => Promise<void>
+    handleUpdateCartQuantity: (
+      lineItem: string,
+      newQuantity: number
+    ) => Promise<void>
+    handleEmptyCart: () => Promise<void>
+    isUpdatingCart: boolean
+  }
   | undefined
 >(undefined)
 
@@ -82,7 +82,7 @@ export function CartProvider({
           (approval) => approval.status === ApprovalStatusType.PENDING
         )
       ) {
-        toast.error("Cart is locked for approval.")
+        toast.error("Le panier est en attente de validation.")
         return
       }
 
@@ -169,9 +169,9 @@ export function CartProvider({
           countryCode: countryCode as string,
         }).catch((e) => {
           if (e.message === "Cart is pending approval") {
-            toast.error("Cart is locked for approval.")
+            toast.error("Le panier est en attente de validation.")
           } else {
-            toast.error("Failed to add to cart")
+            toast.error("Echec de l'ajout au panier")
           }
           setOptimisticCart(prevCart)
         })
@@ -215,7 +215,7 @@ export function CartProvider({
     setIsUpdatingCart(true)
 
     await deleteLineItem(lineItem).catch((e) => {
-      toast.error("Failed to delete item")
+      toast.error("Suppression Impossible")
       setOptimisticCart(prevCart)
     })
   }
@@ -276,7 +276,7 @@ export function CartProvider({
         lineId: lineItem,
         data: { quantity },
       }).catch((e) => {
-        toast.error("Failed to update cart quantity")
+        toast.error("Mise à jour de la quantité impossible")
         setOptimisticCart(prevCart)
       })
     }
@@ -295,7 +295,7 @@ export function CartProvider({
     setIsUpdatingCart(true)
 
     await emptyCart().catch((e) => {
-      toast.error("Failed to empty cart")
+      toast.error("Echec de la suppression du panier")
       setOptimisticCart(prevCart)
     })
   }

@@ -19,26 +19,26 @@ export default async function Approvals({
 
   return (
     <div className="w-full flex flex-col gap-y-4">
-      <Heading>Approvals</Heading>
+      <Heading>Approbations</Heading>
 
       <Heading level="h2" className="text-neutral-700">
-        Pending
+        En Cours
       </Heading>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Chargement...</div>}>
         <PendingApprovalRequestsAdminList searchParams={urlSearchParams} />
       </Suspense>
 
       <Heading level="h2" className="text-neutral-700">
-        Approved
+        Approuvé
       </Heading>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Chargement...</div>}>
         <ApprovedApprovalRequestsAdminList searchParams={urlSearchParams} />
       </Suspense>
 
       <Heading level="h2" className="text-neutral-700">
-        Rejected
+        Rejeté
       </Heading>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Chargement...</div>}>
         <RejectedApprovalRequestsAdminList searchParams={urlSearchParams} />
       </Suspense>
     </div>

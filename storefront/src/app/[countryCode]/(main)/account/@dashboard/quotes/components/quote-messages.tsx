@@ -109,14 +109,14 @@ const QuoteMessages = ({
             <div className="flex-1">
               <div className="flex items-center gap-x-1">
                 <label className="font-sans txt-compact-small font-medium">
-                  Pick Quote Item
+                  Choisisser un article du devis
                 </label>
               </div>
               <span
                 className="txt-small text-ui-fg-subtle"
                 id=":r10:-form-item-description"
               >
-                Select a quote item to write a message around
+                Sélectionner un article du devis pour écrire un message
               </span>
             </div>
             <div className="flex-1">
@@ -153,7 +153,7 @@ const QuoteMessages = ({
             className="self-end"
             disabled={isCreatingMessage}
           >
-            Send
+            Envoyer
           </Button>
         </form>
       </div>

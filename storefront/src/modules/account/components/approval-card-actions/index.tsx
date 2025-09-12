@@ -32,18 +32,18 @@ const ApprovalCardActions = ({
   const pendingAdminApproval =
     cartWithApprovals.approval_status?.status === ApprovalStatusType.PENDING
       ? cartWithApprovals.approvals?.find(
-          (a) =>
-            a?.type === ApprovalType.ADMIN &&
-            a?.status === ApprovalStatusType.PENDING
-        )
+        (a) =>
+          a?.type === ApprovalType.ADMIN &&
+          a?.status === ApprovalStatusType.PENDING
+      )
       : null
 
   const handleApprove = async () => {
     if (!pendingAdminApproval) return
 
     const confirmed = await dialog({
-      title: "Are you sure you want to approve this cart?",
-      description: "This action cannot be undone.",
+      title: "Etes-vous sûr de vouloir approuver ce panier ?",
+      description: "Cette action ne peut être annulée",
     })
 
     if (!confirmed) return
@@ -57,8 +57,8 @@ const ApprovalCardActions = ({
     if (!pendingAdminApproval) return
 
     const confirmed = await dialog({
-      title: "Are you sure you want to reject this cart?",
-      description: "This action cannot be undone.",
+      title: "Etes-vous sûr de vouloir abandonner ce panier ?",
+      description: "Cette action ne peut être annulée",
     })
 
     if (!confirmed) return
@@ -89,7 +89,7 @@ const ApprovalCardActions = ({
             isLoading={rejecting}
           >
             <XMarkMini className="inline-block" />
-            Reject
+            Abandonner
           </Button>
           <Button
             size="small"
@@ -100,7 +100,7 @@ const ApprovalCardActions = ({
             isLoading={approving}
           >
             <CheckMini className="inline-block" />
-            Approve
+            Valider
           </Button>
         </>
       ) : cartWithApprovals.approval_status?.status ===
@@ -109,7 +109,7 @@ const ApprovalCardActions = ({
           {"·"}
           <Button variant="primary" disabled>
             <LockClosedSolidMini className="inline-block" />
-            Awaiting External Approval
+            En Attente d'une Validation Externe
           </Button>
         </>
       ) : cartWithApprovals.approval_status?.status ===
@@ -127,7 +127,7 @@ const ApprovalCardActions = ({
               <LocalizedClientLink
                 href={`/checkout?cart_id=${cartWithApprovals.id}&step=payment`}
               >
-                Place Order
+                Passer Commande
                 <ArrowRightMini className="inline-block" />
               </LocalizedClientLink>
             </Button>
