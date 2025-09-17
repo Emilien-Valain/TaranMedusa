@@ -35,13 +35,13 @@ const ApprovalSettingsCard = ({
     setIsSaving(true)
     await updateApprovalSettings(company.id, requiresAdminApproval).catch(
       () => {
-        toast.error("Error updating approval settings")
+        toast.error("Impossible de mettre à jour les paramètres d'approbation")
       }
     )
     setIsSaving(false)
     setIsEditing(false)
 
-    toast.success("Company updated")
+    toast.success("Entreprise mise à jour")
   }
 
   return (
@@ -61,8 +61,8 @@ const ApprovalSettingsCard = ({
           <TooltipProvider>
             <div className="flex flex-col gap-y-2">
               <Text className="flex items-center gap-x-2 font-medium text-neutral-950">
-                Requires Admin Approval
-                <Tooltip content="This setting determines whether orders require admin approval before being processed. If enabled, orders will be held until an admin approves them.">
+                Autorisation de l'administrateur requise
+                <Tooltip content="Si activé, les commandes nécessitent une validation admin avant traitement.">
                   <InformationCircleSolid className="w-4 h-4" />
                 </Tooltip>
               </Text>
@@ -83,16 +83,16 @@ const ApprovalSettingsCard = ({
             </div>
             <div className="flex flex-col gap-y-2">
               <Text className="flex items-center gap-x-2 font-medium text-neutral-950">
-                Requires Sales Manager Approval
-                <Tooltip content="This setting determines whether orders require sales manager approval before being processed. If enabled, orders will be held until a sales manager approves them.">
+                Validation requise par le responsable des ventes
+                <Tooltip content="Si activé, les commandes nécessitent une validation du responsable des ventes avant traitement.">
                   <InformationCircleSolid className="w-4 h-4" />
                 </Tooltip>
               </Text>
               <div className="flex items-center gap-x-2 h-3">
                 <Text className="text-neutral-500">
                   {approval_settings?.requires_sales_manager_approval
-                    ? "Yes"
-                    : "No"}
+                    ? "Oui"
+                    : "Non"}
                 </Text>
               </div>
             </div>
@@ -108,19 +108,19 @@ const ApprovalSettingsCard = ({
                   onClick={() => setIsEditing(false)}
                   disabled={isSaving}
                 >
-                  Cancel
+                  Annuler
                 </Button>
                 <Button
                   variant="primary"
                   onClick={handleSave}
                   isLoading={isSaving}
                 >
-                  Save
+                  Sauvegarder
                 </Button>
               </>
             ) : (
               <Button variant="secondary" onClick={() => setIsEditing(true)}>
-                Edit
+                Modifier
               </Button>
             )}
           </div>

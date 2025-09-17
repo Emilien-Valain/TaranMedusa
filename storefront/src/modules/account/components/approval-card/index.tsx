@@ -100,7 +100,7 @@ export default async function ApprovalCard({
             </Text>
           ) : (
             <Text className="flex items-center gap-x-1 text-xs text-grey-500">
-              Approved at{" "}
+              Validé le {" "}
               {updatedAt.toLocaleDateString("fr-FR", {
                 year: "numeric",
                 month: "numeric",
@@ -116,7 +116,7 @@ export default async function ApprovalCard({
             <div className="flex items-center text-small-regular">
               <XMarkMini className="inline-block mr-1" />
               <span data-testid="order-display-id">
-                Rejected at{" "}
+                Rejeté le {" "}
                 {updatedAt.toLocaleDateString("fr-Fr", {
                   year: "numeric",
                   month: "numeric",

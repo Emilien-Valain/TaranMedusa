@@ -126,7 +126,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
 
       <Modal isOpen={state} close={close} data-testid="edit-address-modal">
         <Modal.Title>
-          <Heading className="mb-2">Edit address</Heading>
+          <Heading className="mb-2">Modifier l'Adresse</Heading>
         </Modal.Title>
         <form action={formAction}>
           <Modal.Body>
