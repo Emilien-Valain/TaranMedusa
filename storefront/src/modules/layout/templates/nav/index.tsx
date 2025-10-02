@@ -28,7 +28,7 @@ export async function NavigationHeader() {
             >
               <h1 className="small:text-base text-sm font-medium flex items-center">
                 <LogoIcon className="inline mr-2" />
-                Medusa B2B Starter
+                Taran
               </h1>
             </LocalizedClientLink>
 
@@ -44,13 +44,13 @@ export async function NavigationHeader() {
           </div>
           <div className="flex justify-end items-center gap-2">
             <div className="relative mr-2 hidden small:inline-flex">
-              <input
-                disabled
-                type="text"
-                placeholder="Chercher un produit"
-                className="bg-gray-100 text-zinc-900 px-4 py-2 rounded-full pr-10 shadow-borders-base hidden small:inline-block hover:cursor-not-allowed"
-                title="Install a search provider to enable product search"
-              />
+              {/* <input */}
+              {/*   disabled */}
+              {/*   type="text" */}
+              {/*   placeholder="Chercher un produit" */}
+              {/*   className="bg-gray-100 text-zinc-900 px-4 py-2 rounded-full pr-10 shadow-borders-base hidden small:inline-block hover:cursor-not-allowed" */}
+              {/*   title="Install a search provider to enable product search" */}
+              {/* /> */}
             </div>
 
             <div className="h-4 w-px bg-neutral-300" />
@@ -62,14 +62,14 @@ export async function NavigationHeader() {
                 // disabled={isPendingApproval}
                 >
                   <FilePlus />
-                  <span className="hidden small:inline-block">Quote</span>
+                  <span className="hidden small:inline-block">Devis</span>
                 </button>
               </RequestQuoteConfirmation>
             ) : (
               <RequestQuotePrompt>
                 <button className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-neutral-100 px-2 py-1">
                   <FilePlus />
-                  <span className="hidden small:inline-block">Quote</span>
+                  <span className="hidden small:inline-block">Devis</span>
                 </button>
               </RequestQuotePrompt>
             )}

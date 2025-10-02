@@ -9,8 +9,8 @@ import { Heading } from "@medusajs/ui"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Orders",
-  description: "Overview of your previous orders.",
+  title: "Commandes",
+  description: "Voir vos commandes précédentes",
 }
 
 export default async function Orders() {

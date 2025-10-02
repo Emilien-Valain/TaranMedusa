@@ -63,9 +63,9 @@ const ContactDetails = ({
 
     const step =
       requiresApproval &&
-      (!customerIsAdmin || cartApprovalStatus !== ApprovalStatusType.APPROVED)
-        ? "review"
-        : "payment"
+        (!customerIsAdmin || cartApprovalStatus !== ApprovalStatusType.APPROVED)
+        ? "vérification"
+        : "paiement"
 
     router.push(pathname + "?" + createQueryString("step", step), {
       scroll: false,
@@ -86,7 +86,7 @@ const ContactDetails = ({
               }
             )}
           >
-            Contact Details
+            Coordonnées
             {!isOpen && isCompleted && <CheckCircleSolid />}
           </Heading>
 
@@ -99,7 +99,7 @@ const ContactDetails = ({
                   className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
                   data-testid="edit-contact-details-button"
                 >
-                  Edit
+                  Modifier
                 </button>
               </Text>
             )}
@@ -115,10 +115,10 @@ const ContactDetails = ({
                   data-testid="submit-address-button"
                 >
                   {requiresApproval &&
-                  cartApprovalStatus !== ApprovalStatusType.APPROVED &&
-                  !customerIsAdmin
-                    ? "Review order"
-                    : "Next step"}
+                    cartApprovalStatus !== ApprovalStatusType.APPROVED &&
+                    !customerIsAdmin
+                    ? "Vérifier la commande"
+                    : "Prochaine étape"}
                 </SubmitButton>
                 <ErrorMessage
                   error={message}

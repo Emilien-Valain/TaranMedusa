@@ -8,7 +8,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
-  title: "Checkout",
+  title: "Paiement",
 }
 
 export default async function Checkout({
@@ -16,7 +16,8 @@ export default async function Checkout({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined }
 }) {
-  const cartId = searchParams?.cartId as string
+  // const cartId = searchParams?.cartId as string
+  const cartId = (await searchParams)?.cartId as string
   const cart = (await retrieveCart(cartId)) as B2BCart
 
   if (!cart) {

@@ -109,7 +109,7 @@ const QuoteMessages = ({
             <div className="flex-1">
               <div className="flex items-center gap-x-1">
                 <label className="font-sans txt-compact-small font-medium">
-                  Choisisser un article du devis
+                  Choisissez un article du devis
                 </label>
               </div>
               <span
@@ -127,7 +127,7 @@ const QuoteMessages = ({
                   <Select {...field} onValueChange={onChange} value={value}>
                     <Select.Trigger className="bg-ui-bg-base" ref={ref}>
                       <Select.Value />
-                      {value ? <Select.Value /> : "Select Item"}
+                      {value ? <Select.Value /> : "Choisissez un article"}
                     </Select.Trigger>
 
                     <Select.Content>

@@ -142,7 +142,7 @@ export function QuoteMessages({
                             value={field.value ?? undefined}
                           >
                             <Select.Trigger className="bg-ui-bg-base" ref={ref}>
-                              <Select.Value placeholder="Select Item" />
+                              <Select.Value placeholder="Choisissez un article" />
                             </Select.Trigger>
                             <Select.Content>
                               {preview.items.map((l) => (

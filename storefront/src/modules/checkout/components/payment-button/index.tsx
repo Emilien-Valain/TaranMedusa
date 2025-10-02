@@ -89,7 +89,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return <Button disabled>Choisissez votre moyen de paiement</Button>
   }
 }
 
@@ -125,10 +125,10 @@ const RequestApprovalButton = ({
       <Container className="flex flex-col gap-y-2">
         <Text className="text-neutral-700-950 text-xs text-center">
           {requires_admin_approval && requires_sales_manager_approval
-            ? "This order requires approval by both a company admin and a sales manager."
+            ? "Cette commande doit être validée par un administrateur de l'entreprise et un responsable des ventes"
             : requires_admin_approval
-            ? "This order requires approval by a company admin."
-            : "This order requires approval by a sales manager."}
+              ? "Cette commande doit être validée par un administrateur de l'entreprise"
+              : "Cette commande doit être validée par un responsable des ventes"}
         </Text>
         <Button
           className="w-full h-10 rounded-full shadow-none"
@@ -136,7 +136,7 @@ const RequestApprovalButton = ({
           onClick={createApproval}
           isLoading={submitting}
         >
-          {isPendingAdminApproval ? "Approval Requested" : "Request Approval"}
+          {isPendingAdminApproval ? "Validation en Attente" : "Demander la Validation"}
         </Button>
       </Container>
     </>
@@ -157,7 +157,7 @@ const GiftCardPaymentButton = ({ cart }: { cart: B2BCart }) => {
       isLoading={submitting}
       data-testid="submit-order-button"
     >
-      Place order
+      Passer commande
     </Button>
   )
 }
@@ -376,7 +376,7 @@ const ManualTestPaymentButton = ({
         size="large"
         data-testid="submit-order-button"
       >
-        Place order
+        Passer commande
       </Button>
       <ErrorMessage
         error={errorMessage}

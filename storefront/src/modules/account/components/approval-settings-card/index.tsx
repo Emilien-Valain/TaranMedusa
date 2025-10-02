@@ -76,7 +76,7 @@ const ApprovalSettingsCard = ({
                   />
                 ) : (
                   <Text className="text-neutral-500">
-                    {requiresAdminApproval ? "Yes" : "No"}
+                    {requiresAdminApproval ? "Oui" : "Non"}
                   </Text>
                 )}
               </div>

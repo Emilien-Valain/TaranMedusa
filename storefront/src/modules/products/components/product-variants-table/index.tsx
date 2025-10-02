@@ -77,10 +77,14 @@ const ProductVariantsTable = ({
         <Table className="w-full rounded-xl overflow-hidden shadow-borders-base border-none ">
           <Table.Header className="border-t-0">
             <Table.Row className="bg-neutral-100 border-none hover:!bg-neutral-100">
-              <Table.HeaderCell className="px-4">SKU</Table.HeaderCell>
+              <Table.HeaderCell className="px-4">Ref</Table.HeaderCell>
               {product.options?.map((option) => {
                 if (option.title === "Default option") {
-                  return null
+                  {/* return null */ }
+                  <Table.HeaderCell className="px-4 border-x">
+                    Variante
+                  </Table.HeaderCell>
+
                 }
                 return (
                   <Table.HeaderCell key={option.id} className="px-4 border-x">
@@ -89,9 +93,11 @@ const ProductVariantsTable = ({
                 )
               })}
               <Table.HeaderCell className="px-4 border-x">
-                Price
+                Prix
               </Table.HeaderCell>
-              <Table.HeaderCell className="px-4">Quantity</Table.HeaderCell>
+              <Table.HeaderCell className="px-4">
+                Quantité
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body className="border-none">
@@ -110,7 +116,7 @@ const ProductVariantsTable = ({
                 >
                   <Table.Cell className="px-4">{variant.sku}</Table.Cell>
                   {variant.options?.map((option, index) => {
-                    if (option.value === "Default option value") {
+                    if (option.value === "Valeur par défaut") {
                       return null
                     }
                     return (
@@ -147,8 +153,8 @@ const ProductVariantsTable = ({
           fill={totalQuantity === 0 ? "none" : "#fff"}
         />
         {totalQuantity === 0
-          ? "Choose product variant(s) above"
-          : "Add to cart"}
+          ? "Choisissez la ou les variantes du produit"
+          : "Ajouter au panier"}
       </Button>
     </div>
   )

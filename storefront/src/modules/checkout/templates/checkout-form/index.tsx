@@ -43,7 +43,7 @@ export default async function CheckoutForm({
         >
           <Button variant="secondary">
             <UTurnArrowRight />
-            Back to shopping cart
+            Retour au panier
           </Button>
         </LocalizedClientLink>
 
@@ -66,7 +66,7 @@ export default async function CheckoutForm({
 
         {(customer?.employee?.is_admin &&
           cart.approval_status?.status === ApprovalStatusType.APPROVED) ||
-        !requiresApproval ? (
+          !requiresApproval ? (
           <Payment cart={cart} availablePaymentMethods={paymentMethods} />
         ) : null}
       </div>

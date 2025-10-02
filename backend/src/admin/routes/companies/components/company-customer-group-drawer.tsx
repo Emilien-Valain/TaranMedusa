@@ -27,10 +27,10 @@ export function CompanyCustomerGroupDrawer({
     await addMutate(groupId, {
       onSuccess: async () => {
         setOpen(false);
-        toast.success(`Company added to customer group successfully`);
+        toast.success(`Entreprise ajoutée au groupe de clients`);
       },
       onError: (error) => {
-        toast.error("Failed to add company to customer group");
+        toast.error("Echec de l'ajout de l'entreprise au groupe de clients");
       },
     });
   };
@@ -38,11 +38,11 @@ export function CompanyCustomerGroupDrawer({
   const handleRemove = async (groupId: string) => {
     await removeMutate(groupId, {
       onSuccess: async () => {
-        toast.success(`Company removed from customer group successfully`);
+        toast.success(`Entreprise supprimée du groupe de clients`);
       },
       onError: (error) => {
         console.log(error);
-        toast.error("Failed to remove company from customer group");
+        toast.error("Echec de la suppression de l'entreprise du groupe de clients");
       },
     });
   };
@@ -51,19 +51,19 @@ export function CompanyCustomerGroupDrawer({
     <Drawer open={open} onOpenChange={setOpen}>
       <Drawer.Content className="z-50">
         <Drawer.Header>
-          <Drawer.Title>Add {company.name} to a Customer Group</Drawer.Title>
+          <Drawer.Title>Ajouter {company.name} à un Groupe de Clients</Drawer.Title>
         </Drawer.Header>
         <Drawer.Body className="space-y-4 h-full overflow-y-hidden">
           <Hint variant="info">
-            Adding {company.name} to a customer group will automatically add{" "}
-            {company.employees?.length} linked employee
-            {company.employees?.length === 1 ? "" : "s"} to the customer group.
+            Ajouter {company.name} à un groupe de clients va ajouter automatiquement {" "}
+            {company.employees?.length} employé{company.employees?.length === 1 ? "" : "s"} lié
+            {company.employees?.length === 1 ? "" : "s"} au groupe de clients.
           </Hint>
           <div className="h-full overflow-y-auto">
             <Table>
               <Table.Header>
                 <Table.Row>
-                  <Table.HeaderCell>Customer Group</Table.HeaderCell>
+                  <Table.HeaderCell>Groupe de Clients</Table.HeaderCell>
                   <Table.HeaderCell className="text-right">
                     Actions
                   </Table.HeaderCell>
@@ -77,13 +77,13 @@ export function CompanyCustomerGroupDrawer({
                       <Table.Cell>{group.name}</Table.Cell>
                       <Table.Cell className="text-right">
                         {company.customer_group?.id &&
-                        company.customer_group.id === group.id ? (
+                          company.customer_group.id === group.id ? (
                           <Button
                             onClick={() => handleRemove(group.id)}
                             isLoading={removeLoading}
                             variant="danger"
                           >
-                            Remove
+                            Supprimer
                           </Button>
                         ) : (
                           <Button
@@ -95,7 +95,7 @@ export function CompanyCustomerGroupDrawer({
                             }
                             isLoading={addLoading}
                           >
-                            Add
+                            Ajouter
                           </Button>
                         )}
                       </Table.Cell>
@@ -103,7 +103,7 @@ export function CompanyCustomerGroupDrawer({
                   ))
                 ) : (
                   <Table.Row>
-                    <Table.Cell>No customer groups found</Table.Cell>
+                    <Table.Cell>Aucun grouep de clients</Table.Cell>
                   </Table.Row>
                 )}
               </Table.Body>

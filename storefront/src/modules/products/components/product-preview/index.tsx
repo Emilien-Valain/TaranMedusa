@@ -42,14 +42,14 @@ export default async function ProductPreview({
           />
         </div>
         <div className="flex flex-col txt-compact-medium">
-          <Text className="text-neutral-600 text-xs">BRAND</Text>
+          <Text className="text-neutral-600 text-xs">Taran</Text>
           <Text className="text-ui-fg-base" data-testid="product-title">
             {product.title}
           </Text>
         </div>
         <div className="flex flex-col gap-0">
           {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
-          <Text className="text-neutral-600 text-[0.6rem]">Excl. VAT</Text>
+          <Text className="text-neutral-600 text-[0.6rem]">HT</Text>
         </div>
         <div className="flex justify-between">
           <div className="flex flex-row gap-1 items-center">
@@ -66,7 +66,7 @@ export default async function ProductPreview({
               •
             </span>
             <Text className="text-neutral-600 text-xs">
-              {inventoryQuantity} left
+              {inventoryQuantity} restants
             </Text>
           </div>
           <PreviewAddToCart product={product} region={region} />

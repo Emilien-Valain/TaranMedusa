@@ -152,7 +152,7 @@ export function EmployeesCreateForm({
           <Button variant="secondary">Cancel</Button>
         </Drawer.Close>
         <Button type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Save"}
+          {loading ? "Enregistrement..." : "Enregistrer"}
         </Button>
         {error && <Text className="text-red-500">{error.message}</Text>}
       </Drawer.Footer>

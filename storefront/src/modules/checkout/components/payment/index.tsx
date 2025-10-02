@@ -129,7 +129,7 @@ const Payment = ({
                 !isOpen && !paymentReady,
             })}
           >
-            Payment Method
+            Moyen de paiement
             {!isOpen && paymentReady && <CheckCircleSolid />}
           </Heading>
           {!isOpen &&
@@ -141,7 +141,7 @@ const Payment = ({
                   className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
                   data-testid="edit-payment-button"
                 >
-                  Edit
+                  Modifier
                 </button>
               </Text>
             )}
@@ -174,7 +174,7 @@ const Payment = ({
               {stripeReady && selectedPaymentMethod === "pp_stripe_stripe" && (
                 <div className="mt-5 transition-all duration-150 ease-in-out">
                   <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                    Enter your card details:
+                    Entrez les informations de votre carte :
                   </Text>
 
                   <CardElement
@@ -182,7 +182,7 @@ const Payment = ({
                     onChange={(e) => {
                       setCardBrand(
                         e.brand &&
-                          e.brand.charAt(0).toUpperCase() + e.brand.slice(1)
+                        e.brand.charAt(0).toUpperCase() + e.brand.slice(1)
                       )
                       setError(e.error?.message || null)
                       setCardComplete(e.complete)
@@ -199,7 +199,7 @@ const Payment = ({
                 className="txt-medium text-ui-fg-subtle"
                 data-testid="payment-method-summary"
               >
-                Gift card
+                Carte Cadeau
               </Text>
             </div>
           )}
@@ -223,8 +223,8 @@ const Payment = ({
               data-testid="submit-payment-button"
             >
               {!activeSession && isStripeFunc(selectedPaymentMethod)
-                ? " Enter card details"
-                : "Next step"}
+                ? "Entrez les informations de votre carte"
+                : "Prochaine étape"}
             </Button>
           </div>
         </div>
@@ -262,13 +262,13 @@ const Payment = ({
           ) : paidByGiftcard ? (
             <div className="flex flex-col w-1/3">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
+                Moyen de paiement
               </Text>
               <Text
                 className="txt-medium text-ui-fg-subtle"
                 data-testid="payment-method-summary"
               >
-                Gift card
+                Carte Cadeau
               </Text>
             </div>
           ) : null}

@@ -75,10 +75,10 @@ export function CompanyApprovalSettingsDrawer({
         </Drawer.Body>
         <Drawer.Footer>
           <Button variant="secondary" onClick={() => setOpen(false)}>
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleSubmit} isLoading={isPending}>
-            Save
+            Enregistrer
           </Button>
         </Drawer.Footer>
       </Drawer.Content>

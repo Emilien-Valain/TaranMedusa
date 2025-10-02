@@ -148,7 +148,7 @@ const AddAddress = ({ region }: { region: HttpTypes.StoreRegion }) => {
               >
                 Annuler
               </Button>
-              <SubmitButton data-testid="save-button">Save</SubmitButton>
+              <SubmitButton data-testid="save-button">Sauvegarder</SubmitButton>
             </div>
           </Modal.Footer>
         </form>

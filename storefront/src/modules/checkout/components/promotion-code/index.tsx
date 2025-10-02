@@ -71,7 +71,7 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
               className="flex gap-x-1 my-2 items-center txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
               data-testid="add-discount-button"
             >
-              Enter Promotion Code{" "}
+              Entrez votre Code Promo{" "}
               {isOpen ? <ChevronUpMini /> : <ChevronDownMini />}
             </button>
 
@@ -91,7 +91,7 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
                     variant="secondary"
                     data-testid="discount-apply-button"
                   >
-                    Apply
+                    Utiliser
                   </SubmitButton>
                 </div>
 
@@ -108,7 +108,7 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
           <div className="w-full flex items-center">
             <div className="flex flex-col w-full">
               <Heading className="txt-medium mb-2">
-                Promotion{promotions.length > 1 ? "s" : ""} applied:
+                Promotion{promotions.length > 1 ? "s" : ""} appliquée{promotions.length > 1 ? "s" : ""} :
               </Heading>
 
               {promotions.map((promotion) => {
@@ -129,17 +129,17 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
                         (
                         {promotion.application_method?.value !== undefined &&
                           promotion.application_method.currency_code !==
-                            undefined && (
+                          undefined && (
                             <>
                               {promotion.application_method.type ===
-                              "percentage"
+                                "percentage"
                                 ? `${promotion.application_method.value}%`
                                 : convertToLocale({
-                                    amount: promotion.application_method.value,
-                                    currency_code:
-                                      promotion.application_method
-                                        .currency_code,
-                                  })}
+                                  amount: promotion.application_method.value,
+                                  currency_code:
+                                    promotion.application_method
+                                      .currency_code,
+                                })}
                             </>
                           )}
                         )
@@ -159,7 +159,7 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
                       >
                         <Trash size={14} />
                         <span className="sr-only">
-                          Remove discount code from order
+                          Enlever le code promo de la commande
                         </span>
                       </button>
                     )}

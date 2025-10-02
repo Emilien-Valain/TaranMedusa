@@ -128,10 +128,10 @@ const CartDrawer = ({
             <span className="text-sm font-normal hidden small:inline-block">
               {cart && items && items.length > 0
                 ? convertToLocale({
-                    amount: subtotal,
-                    currency_code: cart.currency_code,
-                  })
-                : "Cart"}
+                  amount: subtotal,
+                  currency_code: cart.currency_code,
+                })
+                : "Panier"}
             </span>
             <div className="bg-blue-500 text-white text-xs px-1.5 py-px rounded-full">
               {totalItems}
@@ -145,8 +145,8 @@ const CartDrawer = ({
           <Drawer.Header className="flex self-center">
             <Drawer.Title>
               {totalItems > 0
-                ? `You have ${totalItems} items in your cart`
-                : "Your cart is empty"}
+                ? `Vous avez ${totalItems} articles dans votre panier`
+                : "Votre panier est vide"}
             </Drawer.Title>
           </Drawer.Header>
           {cart?.approvals && cart.approvals.length > 0 && (
@@ -176,7 +176,7 @@ const CartDrawer = ({
                     />
                   )}
                   <div className="flex justify-between">
-                    <Text>Subtotal</Text>
+                    <Text>Sous-total</Text>
                     <Text>
                       {convertToLocale({
                         amount: subtotal,
@@ -191,7 +191,7 @@ const CartDrawer = ({
                         className="w-full"
                         size="large"
                       >
-                        View Cart
+                        Voir Panier
                       </Button>
                     </LocalizedClientLink>
                     <LocalizedClientLink href={checkoutPath}>
@@ -203,17 +203,17 @@ const CartDrawer = ({
                         <LockClosedSolidMini />
                         {customer
                           ? spendLimitExceeded
-                            ? "Spending Limit Exceeded"
-                            : "Secure Checkout"
-                          : "Log in to checkout"}
+                            ? "Limite de dépense dépassée"
+                            : "Paiement sécurisé"
+                          : "Connectez-vous pour finaliser votre achat"}
                       </Button>
                     </LocalizedClientLink>
                     {spendLimitExceeded && (
                       <div className="flex items-center gap-x-2 bg-neutral-100 p-3 rounded-md shadow-borders-base">
                         <ExclamationCircle className="text-orange-500 w-fit overflow-visible" />
                         <p className="text-neutral-950 text-xs">
-                          This order exceeds your spending limit. Please contact
-                          your manager for approval.
+                          Cette commande dépasse votre limite de dépense.
+                          Contactez votre responsable pour la faire valider.
                         </p>
                       </div>
                     )}

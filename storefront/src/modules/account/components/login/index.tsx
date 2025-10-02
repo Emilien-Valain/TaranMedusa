@@ -20,9 +20,9 @@ const Login = ({ setCurrentView }: Props) => {
       data-testid="login-page"
     >
       <Text className="text-4xl text-neutral-950 text-left">
-        Log in for faster
+        Connectez-vous
         <br />
-        checkout.
+        pour un achat rapide
       </Text>
       <form className="w-full" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
@@ -30,13 +30,13 @@ const Login = ({ setCurrentView }: Props) => {
             label="Email"
             name="email"
             type="email"
-            title="Enter a valid email address."
+            title="Entrez une adresse email valide"
             autoComplete="email"
             required
             data-testid="email-input"
           />
           <Input
-            label="Password"
+            label="Mot de passe"
             name="password"
             type="password"
             autoComplete="current-password"
@@ -47,14 +47,14 @@ const Login = ({ setCurrentView }: Props) => {
           <div className="flex items-center gap-2">
             <Checkbox name="remember_me" data-testid="remember-me-checkbox" />
             <Text className="text-neutral-950 text-base-regular">
-              Remember me
+              Se souvenir de moi
             </Text>
           </div>
         </div>
         <ErrorMessage error={message} data-testid="login-error-message" />
         <div className="flex flex-col gap-2">
           <SubmitButton data-testid="sign-in-button" className="w-full mt-6">
-            Log in
+            Connexion
           </SubmitButton>
           <Button
             variant="secondary"
@@ -62,7 +62,7 @@ const Login = ({ setCurrentView }: Props) => {
             className="w-full h-10"
             data-testid="register-button"
           >
-            Register
+            S'inscrire
           </Button>
         </div>
       </form>

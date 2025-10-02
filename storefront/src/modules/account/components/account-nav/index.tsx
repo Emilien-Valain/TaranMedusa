@@ -208,7 +208,7 @@ const AccountNav = ({
                   route={route!}
                   data-testid="approvals-link"
                 >
-                  Approvals{" "}
+                  Approbations{" "}
                   {numPendingApprovals > 0 && (
                     <span className="bg-blue-500 text-white text-xs px-1.5 py-px rounded-full">
                       {numPendingApprovals}

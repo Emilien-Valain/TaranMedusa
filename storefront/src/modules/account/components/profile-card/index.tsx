@@ -23,12 +23,12 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
   const handleSave = async () => {
     setIsSaving(true)
     await updateCustomer(customerData).catch(() => {
-      toast.error("Error updating customer")
+      toast.error("Impossible de mettre à jour le client")
     })
     setIsSaving(false)
     setIsEditing(false)
 
-    toast.success("Customer updated")
+    toast.success("Client mis à jour")
   }
 
   return (
@@ -50,9 +50,9 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
           }}
         >
           <div className="flex flex-col gap-y-2">
-            <Text className="font-medium text-neutral-950">First Name</Text>
+            <Text className="font-medium text-neutral-950">Prénom</Text>
             <Input
-              label="First Name"
+              label="Prénom"
               name="first_name"
               value={customerData.first_name}
               onChange={(e) =>
@@ -64,9 +64,9 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
             />
           </div>
           <div className="flex flex-col gap-y-2">
-            <Text className="font-medium text-neutral-950">Last Name</Text>
+            <Text className="font-medium text-neutral-950">Nom</Text>
             <Input
-              label="Last Name"
+              label="Nom"
               name="last_name"
               value={customerData.last_name}
               onChange={(e) =>
@@ -82,9 +82,9 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
             <Text className=" text-neutral-500">{customer.email}</Text>
           </div>
           <div className="flex flex-col gap-y-2">
-            <Text className="font-medium text-neutral-950">Phone</Text>
+            <Text className="font-medium text-neutral-950">Téléphone</Text>
             <Input
-              label="Phone"
+              label="Téléphone"
               name="phone"
               value={customerData.phone}
               onChange={(e) =>
@@ -103,11 +103,11 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
           )}
         >
           <div className="flex flex-col gap-y-2">
-            <Text className="font-medium text-neutral-950">First Name</Text>
+            <Text className="font-medium text-neutral-950">Prénom</Text>
             <Text className=" text-neutral-500">{customer.first_name}</Text>
           </div>
           <div className="flex flex-col gap-y-2">
-            <Text className="font-medium text-neutral-950">Last Name</Text>
+            <Text className="font-medium text-neutral-950">Nom</Text>
             <Text className=" text-neutral-500">{customer.last_name}</Text>
           </div>
           <div className="flex flex-col gap-y-2">
@@ -115,7 +115,7 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
             <Text className=" text-neutral-500">{customer.email}</Text>
           </div>
           <div className="flex flex-col gap-y-2">
-            <Text className="font-medium text-neutral-950">Phone</Text>
+            <Text className="font-medium text-neutral-950">Téléphone</Text>
             <Text className=" text-neutral-500">{customer.phone}</Text>
           </div>
         </div>
@@ -128,19 +128,19 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
                 onClick={() => setIsEditing(false)}
                 disabled={isSaving}
               >
-                Cancel
+                Annuler
               </Button>
               <Button
                 variant="primary"
                 onClick={handleSave}
                 isLoading={isSaving}
               >
-                Save
+                Sauvegarder
               </Button>
             </>
           ) : (
             <Button variant="secondary" onClick={() => setIsEditing(true)}>
-              Edit
+              Modifier
             </Button>
           )}
         </div>

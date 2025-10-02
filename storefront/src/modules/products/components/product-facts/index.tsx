@@ -16,20 +16,20 @@ const ProductFacts = ({ product }: { product: HttpTypes.StoreProduct }) => {
     <div className="flex flex-col gap-y-2 w-full">
       {inventoryQuantity > 10 ? (
         <span className="flex items-center gap-x-2 text-neutral-600 text-sm">
-          <CheckCircleSolid className="text-green-500" /> Can be shipped
-          immediately ({inventoryQuantity} in stock)
+          <CheckCircleSolid className="text-green-500" />
+          Expédition immédiate possible ({inventoryQuantity} en stock)
         </span>
       ) : (
         <span className="flex items-center gap-x-2 text-neutral-600 text-sm ">
           <ExclamationCircleSolid className="text-orange-500" />
-          Limited quantity available ({inventoryQuantity} in stock)
+          Quantité limitée disponible ({inventoryQuantity} en stock)
         </span>
       )}
       <span className="flex items-center gap-x-2 text-neutral-600 text-sm">
         {product.mid_code && (
           <>
             <InformationCircleSolid />
-            MID: {product.mid_code}
+            ID marchand : {product.mid_code}
           </>
         )}
       </span>

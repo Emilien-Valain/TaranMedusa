@@ -162,7 +162,7 @@ export function CompanyForm({
           isLoading={loading}
           onClick={async () => await handleSubmit(formData)}
         >
-          Save
+          Enregistrer
         </Button>
         {error && (
           <Text className="txt-compact-small text-ui-fg-warning">

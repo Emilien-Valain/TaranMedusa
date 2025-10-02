@@ -27,9 +27,9 @@ export default function ProductPrice({
           data-testid="product-price"
           data-value={cheapestPrice.calculated_price_number}
         >
-          From {cheapestPrice.calculated_price}
+          À partir de {cheapestPrice.calculated_price}
         </Text>
-        <Text className="text-neutral-600 text-[0.6rem]">Excl. VAT</Text>
+        <Text className="text-neutral-600 text-[0.6rem]">HT</Text>
       </span>
       {cheapestPrice.price_type === "sale" && (
         <p

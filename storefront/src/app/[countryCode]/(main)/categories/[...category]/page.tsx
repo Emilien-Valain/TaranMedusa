@@ -23,10 +23,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
     const title = product_category.name
 
-    const description = product_category.description ?? `${title} category.`
+    const description = product_category.description ?? `Catégore ${title}.`
 
     return {
-      title: `${title} | Medusa Store`,
+      title: `${title} | Boutique Taran`,
       description,
       alternates: {
         canonical: `${params.category.join("/")}`,

@@ -5,8 +5,8 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
-  title: "Addresses",
-  description: "View your addresses",
+  title: "Adresses",
+  description: "Voir vos adresses",
 }
 
 export default async function Addresses(props: {
@@ -24,7 +24,7 @@ export default async function Addresses(props: {
   return (
     <div className="w-full" data-testid="addresses-page-wrapper">
       <div className="mb-8 flex flex-col gap-y-4">
-        <h1 className="text-2xl-semi">Shipping Addresses</h1>
+        <h1 className="text-2xl-semi">Adresses de Livraison</h1>
         <p className="text-base-regular">
           Voir et mettre à jour vos adresses de livraisons, vous pouvez en ajouter autant que vous le souhaiter.
           Enregistrer vos adresses les rendra disponible lors de la vérification de la commande.

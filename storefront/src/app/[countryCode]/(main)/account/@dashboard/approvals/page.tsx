@@ -6,8 +6,8 @@ import { Metadata } from "next"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
-  title: "Approvals",
-  description: "Overview of your pending approvals.",
+  title: "Approbations",
+  description: "Aperçu de vos demandes d'approbation",
 }
 
 export default async function Approvals({
