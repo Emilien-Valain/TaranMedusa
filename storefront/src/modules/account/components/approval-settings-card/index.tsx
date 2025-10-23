@@ -41,7 +41,7 @@ const ApprovalSettingsCard = ({
     setIsSaving(false)
     setIsEditing(false)
 
-    toast.success("Entreprise mise à jour")
+    toast.success("Société mise à jour")
   }
 
   return (

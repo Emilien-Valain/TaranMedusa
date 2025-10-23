@@ -150,7 +150,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
                 />
               </div>
               <Input
-                label="Entreprise"
+                label="Société"
                 name="company"
                 autoComplete="organization"
                 defaultValue={address.company || undefined}

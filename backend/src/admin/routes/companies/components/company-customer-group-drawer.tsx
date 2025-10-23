@@ -27,10 +27,10 @@ export function CompanyCustomerGroupDrawer({
     await addMutate(groupId, {
       onSuccess: async () => {
         setOpen(false);
-        toast.success(`Entreprise ajoutée au groupe de clients`);
+        toast.success(`Société ajoutée au groupe de clients`);
       },
       onError: (error) => {
-        toast.error("Echec de l'ajout de l'entreprise au groupe de clients");
+        toast.error("Echec de l'ajout de la société au groupe de clients");
       },
     });
   };
@@ -38,11 +38,11 @@ export function CompanyCustomerGroupDrawer({
   const handleRemove = async (groupId: string) => {
     await removeMutate(groupId, {
       onSuccess: async () => {
-        toast.success(`Entreprise supprimée du groupe de clients`);
+        toast.success(`Société supprimée du groupe de clients`);
       },
       onError: (error) => {
         console.log(error);
-        toast.error("Echec de la suppression de l'entreprise du groupe de clients");
+        toast.error("Echec de la suppression de la société du groupe de clients");
       },
     });
   };

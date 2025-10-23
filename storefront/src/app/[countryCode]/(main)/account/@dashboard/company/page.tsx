@@ -20,7 +20,7 @@ export default async function Company() {
     <div className="w-full">
       <div className="mb-8 flex flex-col gap-y-4">
         <Heading level="h2" className="text-lg text-neutral-950">
-          Détails de l'Entreprise
+          Détails de la Société
         </Heading>
         <CompanyCard company={company} regions={regions} />
       </div>

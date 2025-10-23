@@ -22,10 +22,9 @@ export const DeletePrompt = ({
   return (
     <Prompt open={open} onOpenChange={setOpen}>
       <Prompt.Content className="p-4 pb-0 border-b shadow-ui-fg-shadow">
-        <Prompt.Title>Confirm Deletion</Prompt.Title>
+        <Prompt.Title>Confirmer la Suppression</Prompt.Title>
         <Prompt.Description>
-          Are you sure you want to delete this item? This action cannot be
-          undone.
+          Supprimer cet élément ? Action irréversible.
         </Prompt.Description>
         <Prompt.Footer>
           <Button
@@ -34,10 +33,10 @@ export const DeletePrompt = ({
             isLoading={loading}
           >
             <Trash />
-            Delete
+            Supprimer
           </Button>
           <Button variant="secondary" onClick={() => setOpen(false)}>
-            Cancel
+            Annuler
           </Button>
         </Prompt.Footer>
       </Prompt.Content>

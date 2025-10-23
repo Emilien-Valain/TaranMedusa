@@ -39,7 +39,7 @@ export function CompanyForm({
     <form>
       <Drawer.Body className="p-4">
         <div className="flex flex-col gap-2">
-          <Label size="xsmall">Company Name</Label>
+          <Label size="xsmall">Nom de la Société</Label>
           <Input
             type="text"
             name="name"
@@ -47,7 +47,7 @@ export function CompanyForm({
             onChange={handleChange}
             placeholder="Medusa"
           />
-          <Label size="xsmall">Company Phone</Label>
+          <Label size="xsmall">Téléphone de la Société</Label>
           <Input
             type="text"
             name="phone"
@@ -55,49 +55,49 @@ export function CompanyForm({
             onChange={handleChange}
             placeholder="1234567890"
           />
-          <Label size="xsmall">Company Email</Label>
+          <Label size="xsmall">Email de la Société</Label>
           <Input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="medusa@medusa.com"
+            placeholder="example@mail.com"
           />
-          <Label size="xsmall">Company Address</Label>
+          <Label size="xsmall">Adresse de la Société</Label>
           <Input
             type="text"
             name="address"
             value={formData.address || ""}
             onChange={handleChange}
-            placeholder="1234 Main St"
+            placeholder="10 rue Victor Hugo"
           />
-          <Label size="xsmall">Company City</Label>
+          <Label size="xsmall">Ville de la Société</Label>
           <Input
             type="text"
             name="city"
             value={formData.city || ""}
             onChange={handleChange}
-            placeholder="New York"
+            placeholder="Nantes"
           />
-          <Label size="xsmall">Company State</Label>
+          <Label size="xsmall">Région de la Société</Label>
           <Input
             type="text"
             name="state"
             value={formData.state || ""}
             onChange={handleChange}
-            placeholder="NY"
+            placeholder="Pays de la Loire"
           />
-          <Label size="xsmall">Company Zip</Label>
+          <Label size="xsmall">Code Postal de la Société</Label>
           <Input
             type="text"
             name="zip"
             value={formData.zip || ""}
             onChange={handleChange}
-            placeholder="10001"
+            placeholder="44000"
           />
           <div className="flex gap-4 w-full">
             <div className="flex flex-col gap-2 w-1/2">
-              <Label size="xsmall">Company Country</Label>
+              <Label size="xsmall">Pays de la Société</Label>
               <Select
                 name="country"
                 value={formData.country || ""}
@@ -105,7 +105,7 @@ export function CompanyForm({
                 disabled={regionsLoading}
               >
                 <Select.Trigger disabled={regionsLoading}>
-                  <Select.Value placeholder="Select a country" />
+                  <Select.Value placeholder="Choisissez un pays" />
                 </Select.Trigger>
                 <Select.Content className="z-50">
                   {countries?.map((country) => (
@@ -120,7 +120,7 @@ export function CompanyForm({
               </Select>
             </div>
             <div className="flex flex-col gap-2 w-1/2">
-              <Label size="xsmall">Currency</Label>
+              <Label size="xsmall">Devise</Label>
 
               <Select
                 name="currency_code"
@@ -130,7 +130,7 @@ export function CompanyForm({
                 disabled={regionsLoading}
               >
                 <Select.Trigger disabled={regionsLoading}>
-                  <Select.Value placeholder="Select a currency" />
+                  <Select.Value placeholder="Choisissez une devise" />
                 </Select.Trigger>
 
                 <Select.Content className="z-50">
@@ -144,7 +144,7 @@ export function CompanyForm({
             </div>
           </div>
           {/* TODO: Add logo upload */}
-          <Label size="xsmall">Company Logo URL</Label>
+          <Label size="xsmall">URL du Logo de la Société</Label>
           <Input
             type="text"
             name="logo_url"
@@ -156,7 +156,7 @@ export function CompanyForm({
       </Drawer.Body>
       <Drawer.Footer>
         <Drawer.Close asChild>
-          <Button variant="secondary">Cancel</Button>
+          <Button variant="secondary">Annuler</Button>
         </Drawer.Close>
         <Button
           isLoading={loading}
@@ -166,7 +166,7 @@ export function CompanyForm({
         </Button>
         {error && (
           <Text className="txt-compact-small text-ui-fg-warning">
-            Error: {error?.message}
+            Erreur : {error?.message}
           </Text>
         )}
       </Drawer.Footer>

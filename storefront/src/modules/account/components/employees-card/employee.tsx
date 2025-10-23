@@ -43,7 +43,7 @@ const RemoveEmployeePrompt = ({ employee }: { employee: QueryEmployee }) => {
           <Prompt.Description>
             Etes-vous sûr de vouloir retirer{" "}
             <strong>{employee.customer.email}</strong> de votre équipe ?
-            Elle ne pourra plus passer de commandes pour votre entreprise.
+            Elle ne pourra plus passer de commandes pour votre société.
           </Prompt.Description>
         </Prompt.Header>
         <Prompt.Footer>

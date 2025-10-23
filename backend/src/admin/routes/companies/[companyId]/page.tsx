@@ -57,7 +57,7 @@ const CompanyDetails = () => {
               <Table.Body>
                 <Table.Row>
                   <Table.Cell className="font-medium font-sans txt-compact-small max-w-fit">
-                    Phone
+                    Téléphone
                   </Table.Cell>
                   <Table.Cell>{company?.phone}</Table.Cell>
                 </Table.Row>
@@ -69,25 +69,25 @@ const CompanyDetails = () => {
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell className="font-medium font-sans txt-compact-small">
-                    Address
+                    Adresse
                   </Table.Cell>
                   <Table.Cell>{company?.address}</Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell className="font-medium font-sans txt-compact-small">
-                    City
+                    Ville
                   </Table.Cell>
                   <Table.Cell>{company?.city}</Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell className="font-medium font-sans txt-compact-small">
-                    State
+                    Région
                   </Table.Cell>
                   <Table.Cell>{company?.state}</Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell className="font-medium font-sans txt-compact-small">
-                    Currency
+                    Devise
                   </Table.Cell>
                   <Table.Cell>
                     {company?.currency_code?.toUpperCase()}
@@ -95,7 +95,7 @@ const CompanyDetails = () => {
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell className="font-medium font-sans txt-compact-small">
-                    Customer Group
+                    Groupe Client
                   </Table.Cell>
                   <Table.Cell>
                     {company?.customer_group ? (
@@ -109,26 +109,26 @@ const CompanyDetails = () => {
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell className="font-medium font-sans txt-compact-small">
-                    Approval Settings
+                    Paramètres d'Approbation
                   </Table.Cell>
                   <Table.Cell>
                     <div className="flex gap-2">
                       {company?.approval_settings?.requires_admin_approval && (
                         <Badge size="small" color="purple">
-                          Requires admin approval
+                          Nécessite l'approbation d'un admin
                         </Badge>
                       )}
                       {company?.approval_settings
                         ?.requires_sales_manager_approval && (
-                        <Badge size="small" color="purple">
-                          Requires sales manager approval
-                        </Badge>
-                      )}
+                          <Badge size="small" color="purple">
+                            Nécessite l'approbation d'un responsable des ventes
+                          </Badge>
+                        )}
                       {!company?.approval_settings?.requires_admin_approval &&
                         !company?.approval_settings
                           ?.requires_sales_manager_approval && (
                           <Badge size="small" color="grey">
-                            No approval required
+                            Aucune autorisation requise
                           </Badge>
                         )}
                     </div>
@@ -145,7 +145,7 @@ const CompanyDetails = () => {
             <div className="flex items-center gap-2 px-6 py-4 justify-between border-b border-gray-200">
               <div className="flex items-center gap-2">
                 <Heading className="font-sans font-medium h1-core">
-                  Employees
+                  Employés
                 </Heading>
               </div>
               <EmployeeCreateDrawer company={company} />
@@ -155,9 +155,9 @@ const CompanyDetails = () => {
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell></Table.HeaderCell>
-                    <Table.HeaderCell>Name</Table.HeaderCell>
+                    <Table.HeaderCell>Nom</Table.HeaderCell>
                     <Table.HeaderCell>Email</Table.HeaderCell>
-                    <Table.HeaderCell>Spending Limit</Table.HeaderCell>
+                    <Table.HeaderCell>Limite de Dépense</Table.HeaderCell>
                     <Table.HeaderCell>Actions</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
@@ -166,9 +166,8 @@ const CompanyDetails = () => {
                     <Table.Row
                       key={employee.id}
                       onClick={() => {
-                        window.location.href = `/app/customers/${
-                          employee!.customer!.id
-                        }`;
+                        window.location.href = `/app/customers/${employee!.customer!.id
+                          }`;
                       }}
                       className="cursor-pointer"
                     >
@@ -214,10 +213,10 @@ const CompanyDetails = () => {
                   <ExclamationCircle />
                   <div className="flex flex-col items-center gap-y-1">
                     <Text className="font-medium font-sans txt-compact-small">
-                      No records
+                      Aucun Dossier
                     </Text>
                     <Text className="txt-small text-ui-fg-muted">
-                      This company doesn't have any employees.
+                      Cette société n'a pas d'employés.
                     </Text>
                   </div>
                 </div>

@@ -72,9 +72,9 @@ const QuoteDetails = () => {
 
   const handleSendQuote = async () => {
     const res = await prompt({
-      title: "Send quote?",
+      title: "Envoyer le Devis ?",
       description:
-        "You are about to send this quote to the customer. Do you want to continue?",
+        "Vous êtes sur le point d'envoyer le devis au client. Voulez-vous continuer ?",
       confirmText: t("actions.continue"),
       cancelText: t("actions.cancel"),
       variant: "confirmation",
@@ -84,7 +84,7 @@ const QuoteDetails = () => {
       await sendQuote(
         {},
         {
-          onSuccess: () => toast.success("Successfully sent quote to customer"),
+          onSuccess: () => toast.success("Devis envoyé avec succès"),
           onError: (e) => toast.error(e.message),
         }
       );
@@ -93,9 +93,9 @@ const QuoteDetails = () => {
 
   const handleRejectQuote = async () => {
     const res = await prompt({
-      title: "Reject quote?",
+      title: "Rejeté le devis ?",
       description:
-        "You are about to reject this customer's quote. Do you want to continue?",
+        "Vous êtes sur le point de rejeté le devis du client. Voulez-vous continuer ?",
       confirmText: t("actions.continue"),
       cancelText: t("actions.cancel"),
       variant: "confirmation",
@@ -104,7 +104,7 @@ const QuoteDetails = () => {
     if (res) {
       await rejectQuote(void 0, {
         onSuccess: () =>
-          toast.success("Successfully rejected customer's quote"),
+          toast.success("Devis rejeté avec succès"),
         onError: (e) => toast.error(e.message),
       });
     }
@@ -131,14 +131,14 @@ const QuoteDetails = () => {
               <div className="flex items-center justify-between px-6 py-4">
                 <Text className="txt-compact-small">
                   <CheckCircleSolid className="inline-block mr-2 text-green-500 text-lg" />
-                  Quote accepted by customer. Order is ready for processing.
+                  Devis accepté par le client. La commande est prête à être préparée.
                 </Text>
 
                 <Button
                   size="small"
                   onClick={() => navigate(`/orders/${quote.draft_order_id}`)}
                 >
-                  View Order
+                  Voir la Commande
                 </Button>
               </div>
             </Container>
@@ -159,7 +159,7 @@ const QuoteDetails = () => {
                     onClick={() => handleRejectQuote()}
                     disabled={isSendingQuote}
                   >
-                    Reject Quote
+                    Rejeter le Devis
                   </Button>
                 )}
 
@@ -170,7 +170,7 @@ const QuoteDetails = () => {
                     onClick={() => handleSendQuote()}
                     disabled={isSendingQuote}
                   >
-                    Send Quote
+                    Envoyer le Devis
                   </Button>
                 )}
               </div>
@@ -185,7 +185,7 @@ const QuoteDetails = () => {
         <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[400px]">
           <Container className="divide-y p-0">
             <div className="flex items-center justify-between px-6 py-4">
-              <Heading level="h2">Customer</Heading>
+              <Heading level="h2">Client</Heading>
             </div>
 
             <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
@@ -204,7 +204,7 @@ const QuoteDetails = () => {
 
             <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
               <Text size="small" weight="plus" leading="compact">
-                Phone
+                Téléphone
               </Text>
 
               <Text size="small" leading="compact" className="text-pretty">
@@ -214,7 +214,7 @@ const QuoteDetails = () => {
 
             <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
               <Text size="small" weight="plus" leading="compact">
-                Spending Limit
+                Limite de Dépense
               </Text>
 
               <Text size="small" leading="compact" className="text-pretty">
@@ -229,12 +229,12 @@ const QuoteDetails = () => {
 
           <Container className="divide-y p-0">
             <div className="flex items-center justify-between px-6 py-4">
-              <Heading level="h2">Company</Heading>
+              <Heading level="h2">Société</Heading>
             </div>
 
             <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
               <Text size="small" weight="plus" leading="compact">
-                Name
+                Nom
               </Text>
 
               <Link

@@ -109,7 +109,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
       <Text className="text-4xl text-neutral-950 text-left mb-4">
         Créer le compte
         <br />
-        de votre entreprise.
+        de votre société.
       </Text>
       <form className="w-full flex flex-col" action={formAction}>
         <div className="flex flex-col w-full gap-y-4">
@@ -145,7 +145,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
             onChange={handleChange}
           />
           <Input
-            label="Nom de l'entreprise"
+            label="Nom de la société"
             name="company_name"
             required
             autoComplete="organization"
@@ -166,7 +166,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
             onChange={handleChange}
           />
           <Input
-            label="Adresse de l'entreprise"
+            label="Adresse de la société"
             name="company_address"
             required
             autoComplete="address"
@@ -176,7 +176,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
             onChange={handleChange}
           />
           <Input
-            label="Ville de l'entreprise"
+            label="Ville de la société"
             name="company_city"
             required
             autoComplete="city"
@@ -186,7 +186,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
             onChange={handleChange}
           />
           <Input
-            label="Région de l'entreprise"
+            label="Région de la société"
             name="company_state"
             autoComplete="state"
             data-testid="company-state-input"
@@ -195,7 +195,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
             onChange={handleChange}
           />
           <Input
-            label="Code postal de l'entreprise"
+            label="Code postal de la société"
             name="company_zip"
             required
             autoComplete="postal-code"

@@ -43,7 +43,7 @@ export const ManageQuoteForm = ({ order }: ReturnCreateFormProps) => {
     try {
       await confirmQuote({});
 
-      toast.success("Successfully updated quote");
+      toast.success("Devis mis à jour");
       handleSuccess();
     } catch (e) {
       toast.error(t("general.error"), {
@@ -63,7 +63,7 @@ export const ManageQuoteForm = ({ order }: ReturnCreateFormProps) => {
 
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
           <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
-            <Heading level="h1">Manage Quote</Heading>
+            <Heading level="h1">Gestion du Devis</Heading>
 
             <ManageItemsSection preview={preview} order={order} />
 

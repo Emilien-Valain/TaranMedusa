@@ -66,20 +66,20 @@ export const RouteModalForm = <TFieldValues extends FieldValues = any>({
         <Prompt.Content>
           <Prompt.Header>
             <Prompt.Title>
-              Are you sure you want to leave this form?
+              Quitter le formulaire ?
             </Prompt.Title>
 
             <Prompt.Description>
-              You have unsaved changes that will be lost if you exit this form.
+              Des changements non enregistrés seront perdus si vous quittez ce fomulaire.
             </Prompt.Description>
           </Prompt.Header>
 
           <Prompt.Footer>
             <Prompt.Cancel onClick={handleCancel} type="button">
-              Cancel
+              Annuler
             </Prompt.Cancel>
             <Prompt.Action onClick={handleContinue} type="button">
-              Continue
+              Continuer
             </Prompt.Action>
           </Prompt.Footer>
         </Prompt.Content>

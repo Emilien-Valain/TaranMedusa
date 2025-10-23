@@ -28,17 +28,17 @@ const Companies = () => {
           <Heading className="font-sans font-medium h1-core">Companies</Heading>
           <CompanyCreateDrawer />
         </div>
-        {isPending && <Text>Loading...</Text>}
+        {isPending && <Text>Chargement...</Text>}
         <Table>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell></Table.HeaderCell>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Phone</Table.HeaderCell>
+              <Table.HeaderCell>Nom</Table.HeaderCell>
+              <Table.HeaderCell>Téléphone</Table.HeaderCell>
               <Table.HeaderCell>Email</Table.HeaderCell>
-              <Table.HeaderCell>Address</Table.HeaderCell>
-              <Table.HeaderCell>Employees</Table.HeaderCell>
-              <Table.HeaderCell>Customer Group</Table.HeaderCell>
+              <Table.HeaderCell>Adresse</Table.HeaderCell>
+              <Table.HeaderCell>Employés</Table.HeaderCell>
+              <Table.HeaderCell>Groupe de Client</Table.HeaderCell>
               <Table.HeaderCell>Actions</Table.HeaderCell>
             </Table.Row>
           </Table.Header>

@@ -74,7 +74,7 @@ const BillingAddressForm = ({ cart }: { cart: B2BCart | null }) => {
           data-testid="billing-phone-input"
         />
         <Input
-          label="Nom de l'entreprise"
+          label="Nom de la société"
           name="billing_address.company"
           value={formData["billing_address.company"]}
           onChange={handleChange}

@@ -131,7 +131,7 @@ const ShippingAddressForm = ({
           data-testid="shipping-phone-input"
         />
         <Input
-          label="Nom de l'entreprise"
+          label="Nom de la société"
           name="shipping_address.company"
           value={formData["shipping_address.company"]}
           onChange={handleChange}

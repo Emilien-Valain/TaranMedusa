@@ -35,10 +35,10 @@ export function CompanyApprovalSettingsDrawer({
       {
         onSuccess: async () => {
           setOpen(false);
-          toast.success("Company approval settings updated successfully");
+          toast.success("Paramètres d'approbation mis à jour");
         },
         onError: (error) => {
-          toast.error("Failed to update company approval settings");
+          toast.error("Erreur lors de la mise à jour des paramètres d'approbation");
         },
       }
     );
@@ -48,7 +48,7 @@ export function CompanyApprovalSettingsDrawer({
     <Drawer open={open} onOpenChange={setOpen}>
       <Drawer.Content className="z-50">
         <Drawer.Header>
-          <Drawer.Title>Company Approval Settings</Drawer.Title>
+          <Drawer.Title>Paramètres d'Approbation de la Société</Drawer.Title>
         </Drawer.Header>
         <Drawer.Body className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
@@ -56,8 +56,8 @@ export function CompanyApprovalSettingsDrawer({
               checked={requiresAdminApproval}
               onChange={() => setRequiresAdminApproval(!requiresAdminApproval)}
               fieldName="requires_admin_approval"
-              label="Requires Admin Approval"
-              description="Require company admin approval for all orders placed by this company."
+              label="Validation admin requise"
+              description="Exiger l'approbation d'un admin de la société pour toutes les commandes passées par la société"
             />
           </div>
 
@@ -68,8 +68,8 @@ export function CompanyApprovalSettingsDrawer({
                 setRequiresSalesManagerApproval(!requiresSalesManagerApproval)
               }
               fieldName="requires_sales_manager_approval"
-              label="Requires Sales Manager Approval"
-              description="Require sales manager approval for all orders placed by this company."
+              label="Validation du responsable des ventes requise"
+              description="Exiger l'approbation d'un responsable des ventes pour toutes les commandes passées par cette société"
             />
           </div>
         </Drawer.Body>

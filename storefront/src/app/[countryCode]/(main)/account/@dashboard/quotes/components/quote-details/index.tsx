@@ -132,8 +132,8 @@ const QuoteDetails: React.FC<QuoteDetailsProps> = ({
               </PromptModal>
 
               <PromptModal
-                title="Accept Quote?"
-                description="Are you sure you want to accept quote? This action is irreversible."
+                title="Accepter le Devis ?"
+                description="Accepter le devis ? Action irréversible"
                 handleAction={() => {
                   setIsAccepting(true)
 
@@ -165,7 +165,7 @@ const QuoteDetails: React.FC<QuoteDetailsProps> = ({
 
           <Container>
             <Heading level="h3" className="mb-2">
-              Customer
+              Client
             </Heading>
 
             <div className="text-sm text-ui-fg-subtle">
@@ -195,7 +195,7 @@ const QuoteDetails: React.FC<QuoteDetailsProps> = ({
 
           <Container>
             <Heading level="h3" className="mb-2">
-              Entreprise
+              Société
             </Heading>
 
             <div className="text-sm text-ui-fg-subtle">

@@ -42,8 +42,8 @@ export const ApprovalsTable = () => {
         orderBy={["id", "created_at"]}
         queryObject={raw}
         noRecords={{
-          title: "No approvals found",
-          message: "There are currently no approvals.",
+          title: "Aucune approbation",
+          message: "Rien pour le moment",
         }}
       />
     </div>

@@ -30,12 +30,12 @@ const CompanyCard = ({
   const handleSave = async () => {
     setIsSaving(true)
     await updateCompany(companyData).catch(() => {
-      toast.error("Impossible de mettre à jour l'entreprise")
+      toast.error("Impossible de mettre à jour la société")
     })
     setIsSaving(false)
     setIsEditing(false)
 
-    toast.success("Entreprise mise à jour")
+    toast.success("Société mise à jour")
   }
 
   const currenciesInRegions = Array.from(
@@ -67,9 +67,9 @@ const CompanyCard = ({
           }}
         >
           <div className="flex flex-col gap-y-2">
-            <Text className="font-medium text-neutral-950">Nom de l'entreprise</Text>
+            <Text className="font-medium text-neutral-950">Nom de la société</Text>
             <Input
-              label="Nom de l'entreprise"
+              label="Nom de la société"
               name="name"
               value={companyData.name || ""}
               onChange={(e) =>
@@ -213,7 +213,7 @@ const CompanyCard = ({
           )}
         >
           <div className="flex flex-col gap-y-2">
-            <Text className="font-medium text-neutral-950">Nom de l'entreprise</Text>
+            <Text className="font-medium text-neutral-950">Nom de la société</Text>
             <Text className=" text-neutral-500">{company.name}</Text>
           </div>
           <div className="flex flex-col gap-y-2">

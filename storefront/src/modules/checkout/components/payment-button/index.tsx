@@ -125,9 +125,9 @@ const RequestApprovalButton = ({
       <Container className="flex flex-col gap-y-2">
         <Text className="text-neutral-700-950 text-xs text-center">
           {requires_admin_approval && requires_sales_manager_approval
-            ? "Cette commande doit être validée par un administrateur de l'entreprise et un responsable des ventes"
+            ? "Cette commande doit être validée par un administrateur de la société et un responsable des ventes"
             : requires_admin_approval
-              ? "Cette commande doit être validée par un administrateur de l'entreprise"
+              ? "Cette commande doit être validée par un administrateur de la société"
               : "Cette commande doit être validée par un responsable des ventes"}
         </Text>
         <Button

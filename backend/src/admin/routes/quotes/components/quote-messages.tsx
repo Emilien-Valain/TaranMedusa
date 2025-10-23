@@ -59,7 +59,7 @@ export function QuoteMessages({
     await createMessage(
       {},
       {
-        onSuccess: () => toast.success("Successfully sent message to customer"),
+        onSuccess: () => toast.success("Le message a bien été envoyé au client"),
         onError: (e) => toast.error(e.message),
       }
     );
@@ -74,7 +74,7 @@ export function QuoteMessages({
       {
         onSuccess: () => {
           form.reset();
-          toast.success("Successfully sent message to customer");
+          toast.success("Le message a bien été envoyé au client");
         },
         onError: (e) => toast.error(e.message),
       }
@@ -129,9 +129,9 @@ export function QuoteMessages({
                   <Form.Item>
                     <div className="flex items-center gap-3">
                       <div className="flex-1">
-                        <Form.Label>Pick Quote Item</Form.Label>
+                        <Form.Label>Choisissez un article du devis</Form.Label>
                         <Form.Hint>
-                          Select a quote item to write a message around
+                          Choisissez un article du devis pour écrire un message à son sujet
                         </Form.Hint>
                       </div>
                       <div className="flex-1">
@@ -182,7 +182,7 @@ export function QuoteMessages({
               disabled={isCreatingMessage}
               onClick={() => handleCreateMessage}
             >
-              Send
+              Envoyer
             </Button>
           </form>
         </Form>

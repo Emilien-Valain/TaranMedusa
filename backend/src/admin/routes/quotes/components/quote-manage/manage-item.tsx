@@ -235,7 +235,7 @@ function ManageItem({
               {
                 actions: [
                   {
-                    label: "Update Price",
+                    label: "Mettre à jour le prix",
                     onClick: () => setShowPriceForm(!showPriceForm),
                     icon: <PencilSquare />,
                   },
@@ -250,17 +250,17 @@ function ManageItem({
                 actions: [
                   !isItemRemoved
                     ? {
-                        label: t("actions.remove"),
-                        onClick: onRemove,
-                        icon: <XCircle />,
-                        disabled:
-                          item.detail.fulfilled_quantity === item.quantity,
-                      }
+                      label: t("actions.remove"),
+                      onClick: onRemove,
+                      icon: <XCircle />,
+                      disabled:
+                        item.detail.fulfilled_quantity === item.quantity,
+                    }
                     : {
-                        label: t("actions.undo"),
-                        onClick: onRemoveUndo,
-                        icon: <ArrowUturnLeft />,
-                      },
+                      label: t("actions.undo"),
+                      onClick: onRemoveUndo,
+                      icon: <ArrowUturnLeft />,
+                    },
                 ].filter(Boolean),
               },
             ]}
@@ -273,7 +273,7 @@ function ManageItem({
           <div>
             <Form.Label>{t("fields.price")}</Form.Label>
             <Form.Hint className="!mt-1">
-              Override the unit price of this product
+              Modifier le prix unitaire
             </Form.Hint>
           </div>
 

@@ -67,7 +67,7 @@ export function EmployeesUpdateForm({
                 href={`/app/customers/${employee?.customer!.id}/edit`}
                 className="txt-compact-small text-ui-fg-interactive hover:text-ui-fg-interactive-hover self-end"
               >
-                Edit Customer Details
+                Modifier les informations du Client
               </a>
             </div>
             <Container className="p-0 overflow-hidden">
@@ -75,7 +75,7 @@ export function EmployeesUpdateForm({
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell className="font-medium font-sans txt-compact-small">
-                      Name
+                      Nom
                     </Table.Cell>
                     <Table.Cell>
                       {employee?.customer!.first_name}{" "}
@@ -90,13 +90,13 @@ export function EmployeesUpdateForm({
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell className="font-medium font-sans txt-compact-small">
-                      Phone
+                      Téléphone
                     </Table.Cell>
                     <Table.Cell>{employee?.customer!.phone}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell className="font-medium font-sans txt-compact-small">
-                      Company
+                      Société
                     </Table.Cell>
                     <Table.Cell>{company.name}</Table.Cell>
                   </Table.Row>
@@ -108,7 +108,7 @@ export function EmployeesUpdateForm({
             <h2 className="h2-core">Permissions</h2>
             <div className="flex flex-col gap-2">
               <Label size="xsmall" className="txt-compact-small font-medium">
-                Spending Limit
+                Limite de Dépense
               </Label>
               <CurrencyInput
                 symbol={currencySymbolMap[company.currency_code || "USD"]}
@@ -126,17 +126,17 @@ export function EmployeesUpdateForm({
             </div>
             <div className="flex flex-col gap-2">
               <Label size="xsmall" className="txt-compact-small font-medium">
-                Admin Access
+                Accès Administrateur
               </Label>
               <CoolSwitch
                 fieldName="is_admin"
                 label="Is Admin"
-                description="Enable to grant admin access"
+                description="Activer pour donner accès admin"
                 checked={formData.is_admin}
                 onChange={(checked) =>
                   setFormData({ ...formData, is_admin: checked })
                 }
-                tooltip="Admins can manage the company's details and employee permissions."
+                tooltip="Les admins peuvent gérer les informations de l'entreprise et les permissions des employés."
               />
             </div>
           </div>
@@ -144,10 +144,10 @@ export function EmployeesUpdateForm({
       </Drawer.Body>
       <Drawer.Footer>
         <Drawer.Close asChild>
-          <Button variant="secondary">Cancel</Button>
+          <Button variant="secondary">Annuler</Button>
         </Drawer.Close>
         <Button type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Save"}
+          {loading ? "Sauvegarde..." : "Sauvegarder"}
         </Button>
         {error && <Text className="text-red-500">{error.message}</Text>}
       </Drawer.Footer>

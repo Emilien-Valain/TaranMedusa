@@ -72,7 +72,7 @@ const AccountNav = ({
                     <>
                       <div className="flex items-center gap-x-2">
                         <BuildingStorefront width={20} />
-                        <span>Entreprise</span>
+                        <span>Société</span>
                       </div>
                       <ChevronDown className="transform -rotate-90" />
                     </>
@@ -180,7 +180,7 @@ const AccountNav = ({
                 route={route!}
                 data-testid="company-link"
               >
-                Entreprise
+                Société
               </AccountNavLink>
             </li>
             <li>
