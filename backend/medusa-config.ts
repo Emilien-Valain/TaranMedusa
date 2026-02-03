@@ -8,6 +8,7 @@ loadEnv(process.env.NODE_ENV!, process.cwd());
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
+    redisUrl: process.env.CACHE_REDIS_URL,
     http: {
       storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,
@@ -27,7 +28,10 @@ module.exports = defineConfig({
       resolve: './modules/approval',
     },
     [Modules.CACHE]: {
-      resolve: '@medusajs/medusa/cache-inmemory',
+      resolve: '@medusajs/cache-redis', // ✅ Correct
+      options: {
+        redisUrl: process.env.CACHE_REDIS_URL,
+      },
     },
     [Modules.WORKFLOW_ENGINE]: {
       resolve: '@medusajs/medusa/workflow-engine-inmemory',

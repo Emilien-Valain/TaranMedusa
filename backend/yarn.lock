@@ -2460,6 +2460,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/event-bus-redis@npm:^2.11.3":
+  version: 2.11.3
+  resolution: "@medusajs/event-bus-redis@npm:2.11.3"
+  dependencies:
+    bullmq: "npm:5.13.0"
+    ioredis: "npm:^5.4.1"
+  peerDependencies:
+    "@medusajs/framework": 2.11.3
+  checksum: 10c0/0d3f37ca4f0511b6c29466110ef91962b608a3365942036eb3f728714ceea77333cec74d85e71bbf35b18cd97a89879861709944af3200b2a7dc0d8aec62717d
+  languageName: node
+  linkType: hard
+
 "@medusajs/file-local@npm:2.8.4":
   version: 2.8.4
   resolution: "@medusajs/file-local@npm:2.8.4"
@@ -12123,6 +12135,7 @@ __metadata:
   dependencies:
     "@medusajs/admin-sdk": "npm:2.8.4"
     "@medusajs/cli": "npm:2.8.4"
+    "@medusajs/event-bus-redis": "npm:^2.11.3"
     "@medusajs/framework": "npm:2.8.4"
     "@medusajs/js-sdk": "npm:2.8.4"
     "@medusajs/medusa": "npm:2.8.4"
