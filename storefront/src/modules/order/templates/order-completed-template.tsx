@@ -5,6 +5,7 @@ import Items from "@/modules/order/components/items"
 import OrderDetails from "@/modules/order/components/order-details"
 import PaymentDetails from "@/modules/order/components/payment-details"
 import ShippingDetails from "@/modules/order/components/shipping-details"
+import DownloadInvoiceButton from "@/modules/order/components/download-invoice-button"
 import { B2BOrder } from "types/global"
 
 type OrderCompletedTemplateProps = {
@@ -29,6 +30,9 @@ export default async function OrderCompletedTemplate({
             <span>Votre commande a été placée avec succès.</span>
           </Heading>
           <OrderDetails order={order} />
+          <div className="flex justify-end">
+            <DownloadInvoiceButton orderId={order.id} />
+          </div>
           <Heading level="h2" className="flex flex-row text-3xl-regular">
             Résumé
           </Heading>

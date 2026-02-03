@@ -60,3 +60,29 @@ export const listOrders = async (
     .then(({ orders }) => orders)
     .catch((err) => medusaError(err))
 }
+
+export const getOrderInvoice = async (orderId: string): Promise<{ data: string; filename: string }> => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+
+  const response = await fetch(`${MEDUSA_BACKEND_URL}/store/orders/${orderId}/invoice`, {
+    method: "GET",
+    headers: headers as HeadersInit,
+  })
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch invoice")
+  }
+
+  const contentDisposition = response.headers.get("content-disposition")
+  const filenameMatch = contentDisposition?.match(/filename="(.+)"/)
+  const filename = filenameMatch ? filenameMatch[1] : `invoice-${orderId}.pdf`
+
+  const buffer = await response.arrayBuffer()
+  const base64 = Buffer.from(buffer).toString("base64")
+
+  return { data: base64, filename }
+}

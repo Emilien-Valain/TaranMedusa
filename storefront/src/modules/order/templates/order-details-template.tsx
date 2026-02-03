@@ -10,6 +10,7 @@ import OrderDetails from "@/modules/order/components/order-details"
 import OrderSummary from "@/modules/order/components/order-summary"
 import ShippingDetails from "@/modules/order/components/shipping-details"
 import BillingDetails from "@/modules/order/components/billing-details"
+import DownloadInvoiceButton from "@/modules/order/components/download-invoice-button"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
@@ -30,6 +31,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
             <ArrowUturnLeft /> Retour
           </Button>
         </LocalizedClientLink>
+        <DownloadInvoiceButton orderId={order.id} />
       </div>
 
       <div className="small:grid small:grid-cols-6 gap-4 flex flex-col-reverse">
