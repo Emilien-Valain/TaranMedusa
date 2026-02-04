@@ -40,5 +40,19 @@ module.exports = defineConfig({
     [Modules.WORKFLOW_ENGINE]: {
       resolve: '@medusajs/medusa/workflow-engine-inmemory',
     },
+    [Modules.PAYMENT]: {
+      resolve: '@medusajs/medusa/payment',
+      options: {
+        providers: [
+          {
+            resolve: '@medusajs/medusa/payment-stripe',
+            id: 'stripe',
+            options: {
+              apiKey: process.env.STRIPE_API_KEY,
+            },
+          },
+        ],
+      },
+    },
   },
 });

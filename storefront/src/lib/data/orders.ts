@@ -62,19 +62,23 @@ export const listOrders = async (
 }
 
 export const getOrderInvoice = async (orderId: string): Promise<{ data: string; filename: string }> => {
-  const headers = {
-    ...(await getAuthHeaders()),
-  }
+  const authHeaders = await getAuthHeaders()
 
   const MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+  const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 
   const response = await fetch(`${MEDUSA_BACKEND_URL}/store/orders/${orderId}/invoice`, {
     method: "GET",
-    headers: headers as HeadersInit,
+    headers: {
+      ...authHeaders,
+      "x-publishable-api-key": PUBLISHABLE_KEY || "",
+    },
   })
 
   if (!response.ok) {
-    throw new Error("Failed to fetch invoice")
+    const errorText = await response.text()
+    console.error("Invoice fetch failed:", response.status, errorText)
+    throw new Error(`Failed to fetch invoice: ${response.status} - ${errorText}`)
   }
 
   const contentDisposition = response.headers.get("content-disposition")
