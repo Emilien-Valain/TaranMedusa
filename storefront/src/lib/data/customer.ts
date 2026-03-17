@@ -91,7 +91,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
       password,
     })
 
-    setAuthToken(loginToken as string)
+    await setAuthToken(loginToken as string)
 
     const companyForm = {
       name: formData.get("company_name") as string,
@@ -141,7 +141,7 @@ export async function login(_currentState: unknown, formData: FormData) {
       .login("customer", "emailpass", { email, password })
       .then(async (token) => {
         track("customer_logged_in")
-        setAuthToken(token as string)
+        await setAuthToken(token as string)
 
         const [customerCacheTag, productsCacheTag, cartsCacheTag] =
           await Promise.all([

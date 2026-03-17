@@ -1,5 +1,7 @@
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 import PDFDocument from "pdfkit";
+import path from "path";
+import fs from "fs";
 
 type InvoiceConfig = {
   company_name?: string | null;
@@ -54,7 +56,7 @@ const formatCurrency = (amount: number, currencyCode: string): string => {
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
     currency: currencyCode.toUpperCase(),
-  }).format(amount / 100);
+  }).format(amount);
 };
 
 const formatDate = (date: string | Date): string => {
@@ -95,16 +97,40 @@ export const generateInvoicePdfStep = createStep(
       doc.on("error", reject);
 
     // Header - Company info on left, Invoice title on right
-    const startY = 50;
+    let startY = 50;
+    let companyY = startY;
+
+    // Company logo (if exists)
+    if (config.company_logo) {
+      try {
+        let logoPath = config.company_logo;
+
+        // If it's a relative path, resolve it from the static folder
+        if (!logoPath.startsWith("/") && !logoPath.startsWith("http")) {
+          logoPath = path.join(process.cwd(), "static", logoPath);
+        }
+
+        // Check if file exists for local paths
+        if (!logoPath.startsWith("http") && fs.existsSync(logoPath)) {
+          doc.image(logoPath, 50, startY, { width: 80 });
+          companyY = startY + 90; // Move text below logo
+        }
+      } catch (error) {
+        console.error("Error loading logo:", error);
+        // Continue without logo
+      }
+    }
 
     // Company info (left side)
     doc.fontSize(18).font("Helvetica-Bold");
     if (config.company_name) {
-      doc.text(config.company_name, 50, startY);
+      doc.text(config.company_name, 50, companyY);
+      companyY += 25;
+    } else {
+      companyY += 25;
     }
 
     doc.fontSize(10).font("Helvetica").fillColor("#666666");
-    let companyY = startY + 25;
 
     if (config.company_address) {
       doc.text(config.company_address, 50, companyY);
@@ -125,11 +151,14 @@ export const generateInvoicePdfStep = createStep(
     doc.fontSize(12).font("Helvetica").fillColor("#666666");
     doc.text(invoiceNumber, 400, startY + 30, { width: 150, align: "right" });
 
+    // Calculate line position based on content
+    const lineY = Math.max(companyY + 20, 130);
+
     // Horizontal line
-    doc.moveTo(50, 130).lineTo(560, 130).strokeColor("#cccccc").stroke();
+    doc.moveTo(50, lineY).lineTo(560, lineY).strokeColor("#cccccc").stroke();
 
     // Order info and addresses
-    const infoY = 150;
+    const infoY = lineY + 20;
 
     // Left column - Order info
     doc.fontSize(10).font("Helvetica-Bold").fillColor("#666666");
@@ -165,8 +194,8 @@ export const generateInvoicePdfStep = createStep(
       doc.text(line, 400, infoY + 12 + i * 12);
     });
 
-    // Items table
-    const tableTop = 280;
+    // Items table - position based on address section
+    const tableTop = infoY + 130;
     const tableLeft = 50;
 
     // Table header

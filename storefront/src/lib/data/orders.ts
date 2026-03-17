@@ -64,6 +64,10 @@ export const listOrders = async (
 export const getOrderInvoice = async (orderId: string): Promise<{ data: string; filename: string }> => {
   const authHeaders = await getAuthHeaders()
 
+  if (!("authorization" in authHeaders)) {
+    throw new Error("You must be logged in to download invoices")
+  }
+
   const MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
   const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 
@@ -78,6 +82,9 @@ export const getOrderInvoice = async (orderId: string): Promise<{ data: string; 
   if (!response.ok) {
     const errorText = await response.text()
     console.error("Invoice fetch failed:", response.status, errorText)
+    if (response.status === 401) {
+      throw new Error("You must be logged in to download invoices")
+    }
     throw new Error(`Failed to fetch invoice: ${response.status} - ${errorText}`)
   }
 
