@@ -52,6 +52,18 @@ type GenerateInvoicePdfInput = {
   config: InvoiceConfig;
 };
 
+// Taran Industrie brand colors
+const COLORS = {
+  navyBlue: "#0d2b5e",
+  mediumBlue: "#1565c0",
+  lightBlue: "#0099d6",
+  white: "#ffffff",
+  lightGray: "#f5f8fc",
+  borderGray: "#dde4ee",
+  textDark: "#1a1a2e",
+  textMuted: "#4a5568",
+};
+
 const formatCurrency = (amount: number, currencyCode: string): string => {
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
@@ -86,181 +98,218 @@ export const generateInvoicePdfStep = createStep(
   async (input: GenerateInvoicePdfInput) => {
     const { invoice, order, config } = input;
 
-    const invoiceNumber = `INV-${String(invoice.display_id).padStart(6, "0")}`;
+    const invoiceNumber = `FAC-${String(invoice.display_id).padStart(6, "0")}`;
 
     const buffer = await new Promise<Buffer>((resolve, reject) => {
-      const doc = new PDFDocument({ margin: 50 });
+      const doc = new PDFDocument({ margin: 0, size: "A4" });
       const chunks: Buffer[] = [];
 
       doc.on("data", (chunk: Buffer) => chunks.push(chunk));
       doc.on("end", () => resolve(Buffer.concat(chunks)));
       doc.on("error", reject);
 
-    // Header - Company info on left, Invoice title on right
-    let startY = 50;
-    let companyY = startY;
+      const pageWidth = 595;
+      const pageHeight = 841;
+      const margin = 40;
+      const contentWidth = pageWidth - margin * 2;
 
-    // Company logo (if exists)
-    if (config.company_logo) {
-      try {
-        let logoPath = config.company_logo;
+      // ── HEADER BAND ──────────────────────────────────────────────
+      // Navy blue top band
+      doc.rect(0, 0, pageWidth, 90).fill(COLORS.navyBlue);
 
-        // If it's a relative path, resolve it from the static folder
-        if (!logoPath.startsWith("/") && !logoPath.startsWith("http")) {
-          logoPath = path.join(process.cwd(), "static", logoPath);
+      // Light blue accent stripe at bottom of header
+      doc.rect(0, 88, pageWidth, 4).fill(COLORS.lightBlue);
+
+      // Company logo (left side of header)
+      let logoLoaded = false;
+      const logoPath = path.join(process.cwd(), "static", "logo-transparent.png");
+      if (fs.existsSync(logoPath)) {
+        try {
+          doc.image(logoPath, margin, 10, { height: 65, fit: [180, 65] });
+          logoLoaded = true;
+        } catch (e) {
+          // fall through to text fallback
         }
-
-        // Check if file exists for local paths
-        if (!logoPath.startsWith("http") && fs.existsSync(logoPath)) {
-          doc.image(logoPath, 50, startY, { width: 80 });
-          companyY = startY + 90; // Move text below logo
-        }
-      } catch (error) {
-        console.error("Error loading logo:", error);
-        // Continue without logo
       }
-    }
 
-    // Company info (left side)
-    doc.fontSize(18).font("Helvetica-Bold");
-    if (config.company_name) {
-      doc.text(config.company_name, 50, companyY);
-      companyY += 25;
-    } else {
-      companyY += 25;
-    }
+      if (!logoLoaded) {
+        // Text fallback if logo unavailable
+        doc.fontSize(22).font("Helvetica-Bold").fillColor(COLORS.white);
+        doc.text("TARAN", margin, 20);
+        doc.fontSize(10).font("Helvetica").fillColor(COLORS.lightBlue);
+        doc.text("INDUSTRIE", margin, 46, { characterSpacing: 4 });
+      }
 
-    doc.fontSize(10).font("Helvetica").fillColor("#666666");
+      // "FACTURE" title (right side of header)
+      doc.fontSize(26).font("Helvetica-Bold").fillColor(COLORS.white);
+      doc.text("FACTURE", 0, 22, { align: "right", width: pageWidth - margin });
 
-    if (config.company_address) {
-      doc.text(config.company_address, 50, companyY);
-      companyY += 15;
-    }
-    if (config.company_phone) {
-      doc.text(`Tél: ${config.company_phone}`, 50, companyY);
-      companyY += 15;
-    }
-    if (config.company_email) {
-      doc.text(config.company_email, 50, companyY);
-    }
+      doc.fontSize(11).font("Helvetica").fillColor(COLORS.lightBlue);
+      doc.text(invoiceNumber, 0, 54, { align: "right", width: pageWidth - margin });
 
-    // Invoice title (right side)
-    doc.fontSize(24).font("Helvetica-Bold").fillColor("#333333");
-    doc.text("FACTURE", 400, startY, { width: 150, align: "right" });
+      // ── COMPANY INFO + ORDER META ──────────────────────────────────
+      const infoY = 105;
 
-    doc.fontSize(12).font("Helvetica").fillColor("#666666");
-    doc.text(invoiceNumber, 400, startY + 30, { width: 150, align: "right" });
+      // Left: company info block
+      const companyName = config.company_name || "Taran Industrie";
+      const companyAddress = config.company_address || "35, rue des Pierres Fortes\n85500 LES HERBIERS";
+      const companyPhone = config.company_phone || "02 51 92 49 41";
+      const companyEmail = config.company_email || "contact@taran-industrie.com";
 
-    // Calculate line position based on content
-    const lineY = Math.max(companyY + 20, 130);
+      doc.fontSize(11).font("Helvetica-Bold").fillColor(COLORS.navyBlue);
+      doc.text(companyName, margin, infoY);
 
-    // Horizontal line
-    doc.moveTo(50, lineY).lineTo(560, lineY).strokeColor("#cccccc").stroke();
+      doc.fontSize(9).font("Helvetica").fillColor(COLORS.textMuted);
+      doc.text(companyAddress, margin, infoY + 16, { lineGap: 2 });
+      const addrLineCount = companyAddress.split("\n").length;
+      doc.text(`Tél : ${companyPhone}`, margin, infoY + 16 + addrLineCount * 13);
+      doc.text(companyEmail, margin, infoY + 16 + addrLineCount * 13 + 13);
 
-    // Order info and addresses
-    const infoY = lineY + 20;
+      // Right: order meta box
+      const metaBoxX = pageWidth - margin - 190;
+      const metaBoxY = infoY - 5;
+      doc.rect(metaBoxX, metaBoxY, 190, 80).fill(COLORS.lightGray).stroke(COLORS.borderGray);
 
-    // Left column - Order info
-    doc.fontSize(10).font("Helvetica-Bold").fillColor("#666666");
-    doc.text("Date de facture:", 50, infoY);
-    doc.font("Helvetica").fillColor("#333333");
-    doc.text(formatDate(new Date()), 50, infoY + 12);
+      const metaTextX = metaBoxX + 12;
+      let metaY = metaBoxY + 10;
 
-    doc.font("Helvetica-Bold").fillColor("#666666");
-    doc.text("Date de commande:", 50, infoY + 35);
-    doc.font("Helvetica").fillColor("#333333");
-    doc.text(formatDate(order.created_at), 50, infoY + 47);
+      const metaLine = (label: string, value: string) => {
+        doc.fontSize(8).font("Helvetica-Bold").fillColor(COLORS.textMuted);
+        doc.text(label, metaTextX, metaY, { continued: false });
+        doc.fontSize(9).font("Helvetica").fillColor(COLORS.textDark);
+        doc.text(value, metaTextX, metaY + 10);
+        metaY += 26;
+      };
 
-    doc.font("Helvetica-Bold").fillColor("#666666");
-    doc.text("N° commande:", 50, infoY + 70);
-    doc.font("Helvetica").fillColor("#333333");
-    doc.text(`#${order.display_id}`, 50, infoY + 82);
+      metaLine("Date de facture :", formatDate(new Date()));
+      metaLine("Date de commande :", formatDate(order.created_at));
+      metaLine("N° commande :", `#${order.display_id}`);
 
-    // Middle column - Billing address
-    doc.font("Helvetica-Bold").fillColor("#666666");
-    doc.text("Adresse de facturation:", 220, infoY);
-    doc.font("Helvetica").fillColor("#333333");
-    const billingLines = formatAddress(order.billing_address);
-    billingLines.forEach((line, i) => {
-      doc.text(line, 220, infoY + 12 + i * 12);
-    });
+      // ── DIVIDER ───────────────────────────────────────────────────
+      const dividerY = infoY + 95;
+      doc.moveTo(margin, dividerY).lineTo(pageWidth - margin, dividerY)
+        .strokeColor(COLORS.borderGray).lineWidth(1).stroke();
 
-    // Right column - Shipping address
-    doc.font("Helvetica-Bold").fillColor("#666666");
-    doc.text("Adresse de livraison:", 400, infoY);
-    doc.font("Helvetica").fillColor("#333333");
-    const shippingLines = formatAddress(order.shipping_address);
-    shippingLines.forEach((line, i) => {
-      doc.text(line, 400, infoY + 12 + i * 12);
-    });
+      // ── ADDRESSES ─────────────────────────────────────────────────
+      const addrY = dividerY + 14;
+      const col1X = margin;
+      const col2X = pageWidth / 2 + 10;
 
-    // Items table - position based on address section
-    const tableTop = infoY + 130;
-    const tableLeft = 50;
+      const addressBlock = (title: string, lines: string[], x: number, y: number) => {
+        // Small blue header accent
+        doc.rect(x, y, 3, 12).fill(COLORS.lightBlue);
+        doc.fontSize(8).font("Helvetica-Bold").fillColor(COLORS.navyBlue);
+        doc.text(title.toUpperCase(), x + 8, y + 1, { characterSpacing: 0.5 });
+        doc.fontSize(9).font("Helvetica").fillColor(COLORS.textDark);
+        lines.forEach((line, i) => {
+          doc.text(line, x + 8, y + 16 + i * 13);
+        });
+      };
 
-    // Table header
-    doc.rect(tableLeft, tableTop, 510, 25).fill("#f5f5f5");
-    doc.font("Helvetica-Bold").fontSize(10).fillColor("#333333");
-    doc.text("Produit", tableLeft + 10, tableTop + 8);
-    doc.text("Qté", tableLeft + 300, tableTop + 8, { width: 50, align: "center" });
-    doc.text("Prix unit.", tableLeft + 360, tableTop + 8, { width: 70, align: "right" });
-    doc.text("Total", tableLeft + 440, tableTop + 8, { width: 60, align: "right" });
+      addressBlock("Adresse de facturation", formatAddress(order.billing_address), col1X, addrY);
+      addressBlock("Adresse de livraison", formatAddress(order.shipping_address), col2X, addrY);
 
-    // Table rows
-    let rowY = tableTop + 30;
-    doc.font("Helvetica").fillColor("#333333");
+      // ── ITEMS TABLE ────────────────────────────────────────────────
+      const tableTop = addrY + 80;
+      const colProduct = margin;
+      const colQty = margin + 310;
+      const colUnit = margin + 370;
+      const colTotal = margin + 440;
+      const tableWidth = contentWidth;
 
-    for (const item of order.items) {
-      doc.text(item.title, tableLeft + 10, rowY, { width: 280 });
-      doc.text(item.quantity.toString(), tableLeft + 300, rowY, { width: 50, align: "center" });
-      doc.text(formatCurrency(item.unit_price, order.currency_code), tableLeft + 360, rowY, { width: 70, align: "right" });
-      doc.text(formatCurrency(item.total, order.currency_code), tableLeft + 440, rowY, { width: 60, align: "right" });
-      rowY += 25;
-    }
+      // Table header band
+      doc.rect(margin, tableTop, tableWidth, 22).fill(COLORS.navyBlue);
 
-    // Line under items
-    doc.moveTo(tableLeft, rowY).lineTo(tableLeft + 510, rowY).strokeColor("#cccccc").stroke();
+      doc.fontSize(9).font("Helvetica-Bold").fillColor(COLORS.white);
+      doc.text("PRODUIT", colProduct + 8, tableTop + 7);
+      doc.text("QTÉ", colQty, tableTop + 7, { width: 50, align: "center" });
+      doc.text("PRIX UNIT. HT", colUnit - 10, tableTop + 7, { width: 80, align: "right" });
+      doc.text("TOTAL HT", colTotal, tableTop + 7, { width: 70, align: "right" });
 
-    // Summary (right aligned)
-    const summaryX = 380;
-    let summaryY = rowY + 20;
+      // Table rows
+      let rowY = tableTop + 22;
+      doc.font("Helvetica").fontSize(9).fillColor(COLORS.textDark);
 
-    doc.font("Helvetica").fontSize(10);
+      for (let i = 0; i < order.items.length; i++) {
+        const item = order.items[i];
+        // Alternate row background
+        if (i % 2 === 0) {
+          doc.rect(margin, rowY, tableWidth, 22).fill(COLORS.lightGray);
+        }
 
-    doc.text("Sous-total:", summaryX, summaryY);
-    doc.text(formatCurrency(order.subtotal, order.currency_code), summaryX + 80, summaryY, { width: 70, align: "right" });
-    summaryY += 18;
+        doc.fillColor(COLORS.textDark);
+        doc.text(item.title, colProduct + 8, rowY + 7, { width: 290, ellipsis: true });
+        doc.text(item.quantity.toString(), colQty, rowY + 7, { width: 50, align: "center" });
+        doc.text(formatCurrency(item.unit_price, order.currency_code), colUnit - 10, rowY + 7, { width: 80, align: "right" });
+        doc.text(formatCurrency(item.total, order.currency_code), colTotal, rowY + 7, { width: 70, align: "right" });
+        rowY += 22;
+      }
 
-    doc.text("Taxes:", summaryX, summaryY);
-    doc.text(formatCurrency(order.tax_total, order.currency_code), summaryX + 80, summaryY, { width: 70, align: "right" });
-    summaryY += 18;
+      // Bottom border of table
+      doc.rect(margin, rowY, tableWidth, 1).fill(COLORS.mediumBlue);
 
-    doc.text("Livraison:", summaryX, summaryY);
-    doc.text(formatCurrency(order.shipping_total, order.currency_code), summaryX + 80, summaryY, { width: 70, align: "right" });
-    summaryY += 18;
+      // ── SUMMARY ────────────────────────────────────────────────────
+      const summaryX = margin + 310;
+      const summaryWidth = tableWidth - 310;
+      let summaryY = rowY + 14;
 
-    if (order.discount_total > 0) {
-      doc.text("Remise:", summaryX, summaryY);
-      doc.text(`-${formatCurrency(order.discount_total, order.currency_code)}`, summaryX + 80, summaryY, { width: 70, align: "right" });
-      summaryY += 18;
-    }
+      const summaryLine = (label: string, value: string, bold = false) => {
+        doc.fontSize(9)
+          .font(bold ? "Helvetica-Bold" : "Helvetica")
+          .fillColor(bold ? COLORS.navyBlue : COLORS.textMuted);
+        doc.text(label, summaryX, summaryY, { width: summaryWidth / 2 });
+        doc.fillColor(bold ? COLORS.navyBlue : COLORS.textDark);
+        doc.text(value, summaryX + summaryWidth / 2, summaryY, { width: summaryWidth / 2, align: "right" });
+        summaryY += 16;
+      };
 
-    // Total line
-    doc.moveTo(summaryX, summaryY).lineTo(summaryX + 150, summaryY).strokeColor("#000000").stroke();
-    summaryY += 10;
+      summaryLine("Sous-total HT :", formatCurrency(order.subtotal, order.currency_code));
+      summaryLine("Taxes :", formatCurrency(order.tax_total, order.currency_code));
+      summaryLine("Livraison :", formatCurrency(order.shipping_total, order.currency_code));
 
-    doc.font("Helvetica-Bold").fontSize(12);
-    doc.text("Total:", summaryX, summaryY);
-    doc.text(formatCurrency(order.total, order.currency_code), summaryX + 80, summaryY, { width: 70, align: "right" });
+      if (order.discount_total > 0) {
+        summaryLine("Remise :", `-${formatCurrency(order.discount_total, order.currency_code)}`);
+      }
 
-    // Notes
-    if (config.notes) {
-      summaryY += 50;
-      doc.font("Helvetica-Bold").fontSize(10).fillColor("#666666");
-      doc.text("Notes:", 50, summaryY);
-      doc.font("Helvetica-Oblique").fillColor("#666666");
-      doc.text(config.notes, 50, summaryY + 15, { width: 400 });
-    }
+      // Total highlight box
+      summaryY += 4;
+      doc.rect(summaryX, summaryY, summaryWidth, 26).fill(COLORS.navyBlue);
+      doc.fontSize(11).font("Helvetica-Bold").fillColor(COLORS.white);
+      doc.text("TOTAL TTC", summaryX + 10, summaryY + 8, { width: summaryWidth / 2 });
+      doc.text(
+        formatCurrency(order.total, order.currency_code),
+        summaryX + summaryWidth / 2,
+        summaryY + 8,
+        { width: summaryWidth / 2 - 10, align: "right" }
+      );
+
+      // ── NOTES ──────────────────────────────────────────────────────
+      if (config.notes) {
+        const notesY = summaryY + 50;
+        doc.rect(margin, notesY, 3, 12).fill(COLORS.lightBlue);
+        doc.fontSize(8).font("Helvetica-Bold").fillColor(COLORS.navyBlue);
+        doc.text("NOTES", margin + 8, notesY + 1);
+        doc.fontSize(9).font("Helvetica-Oblique").fillColor(COLORS.textMuted);
+        doc.text(config.notes, margin + 8, notesY + 18, { width: contentWidth - 20 });
+      }
+
+      // ── FOOTER BAND ────────────────────────────────────────────────
+      const footerY = pageHeight - 40;
+      doc.rect(0, footerY, pageWidth, 40).fill(COLORS.navyBlue);
+      doc.rect(0, footerY, pageWidth, 3).fill(COLORS.lightBlue);
+
+      doc.fontSize(8).font("Helvetica").fillColor(COLORS.white);
+      doc.text(
+        "Taran Industrie — 35, rue des Pierres Fortes, 85500 LES HERBIERS — Tél : 02 51 92 49 41 — contact@taran-industrie.com",
+        0,
+        footerY + 12,
+        { align: "center", width: pageWidth }
+      );
+      doc.fillColor(COLORS.lightBlue);
+      doc.text("Définir les besoins, livrer les solutions !", 0, footerY + 24, {
+        align: "center",
+        width: pageWidth,
+      });
 
       doc.end();
     });

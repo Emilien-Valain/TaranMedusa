@@ -7983,6 +7983,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/nodemailer@npm:^7.0.11":
+  version: 7.0.11
+  resolution: "@types/nodemailer@npm:7.0.11"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/dc6472c26600e763c38721b0691fc3014eb868d20b97eb48cfbc4fe9a7a09f66c0ccd8d647033a4be91051cc3c7bdca73c006db2f7a9e8bdd1ce65bb5ec2599c
+  languageName: node
+  linkType: hard
+
 "@types/pdfkit@npm:*, @types/pdfkit@npm:^0.17.4":
   version: 0.17.4
   resolution: "@types/pdfkit@npm:0.17.4"
@@ -12396,12 +12405,14 @@ __metadata:
     "@swc/jest": "npm:^0.2.36"
     "@types/jest": "npm:^29.5.14"
     "@types/node": "npm:^20.0.0"
+    "@types/nodemailer": "npm:^7.0.11"
     "@types/pdfkit": "npm:^0.17.4"
     "@types/pdfmake": "npm:^0.3.0"
     "@types/react": "npm:^18.3.2"
     "@types/react-dom": "npm:^18.2.25"
     awilix: "npm:^8.0.1"
     jest: "npm:^29.7.0"
+    nodemailer: "npm:^8.0.2"
     pdfkit: "npm:^0.17.2"
     pdfmake: "npm:^0.3.3"
     pg: "npm:^8.13.0"
@@ -12915,6 +12926,13 @@ __metadata:
     long-timeout: "npm:0.1.1"
     sorted-array-functions: "npm:^1.3.0"
   checksum: 10c0/6ec51b34b9e676740ac25298e4ced5ee46053379f0d3aad533e51d7e083bc24ced045df1772a95bf9d9cfdb81299340bbf551549a7c5eb6e4d2dc6468c85c70e
+  languageName: node
+  linkType: hard
+
+"nodemailer@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "nodemailer@npm:8.0.2"
+  checksum: 10c0/e11a3c6cfd314cee61a9fbefa7f3d5c7caec783072e6aea277b718cf1d4f54a90b85eb32445e15cf63f92d70d7ac1c4b8e1de991ecce1907d8436193e0873189
   languageName: node
   linkType: hard
 

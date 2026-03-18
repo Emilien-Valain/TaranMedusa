@@ -1,8 +1,9 @@
 import {
   beginOrderEditOrderWorkflow,
   createOrdersWorkflow,
+  emitEventStep,
   useRemoteQueryStep,
-} from "@medusajs/core-flows";
+} from "@medusajs/medusa/core-flows";
 import { OrderStatus } from "@medusajs/framework/utils";
 import {
   createWorkflow,
@@ -95,6 +96,11 @@ export const createRequestForQuoteWorkflow = createWorkflow(
           order_change_id: changeOrder.id,
         },
       ],
+    });
+
+    emitEventStep({
+      eventName: "quote.requested",
+      data: { id: quotes[0].id, customer_id: input.customer_id },
     });
 
     return new WorkflowResponse({ quote: quotes[0] });

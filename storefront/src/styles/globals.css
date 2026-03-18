@@ -2,6 +2,40 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+html, body {
+  background-color: #f5f5f5; /* same as neutral-100 — no white flash between nav and content */
+}
+
+:root {
+  --color-primary-dark: #0a1f3c;
+  --color-navy: #0d2b5e;
+  --color-blue: #1565c0;
+  --color-cyan: #0099d6;
+  --color-bg-light: #f0f2f5;
+  --color-bg-white: #f8f9fb;
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-enter {
+  animation: dropdown-in 0.2s ease-out forwards;
+}
+
+@keyframes card-hover-up {
+  to {
+    transform: translateY(-2px);
+  }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -56,6 +90,102 @@
 
   .contrast-btn {
     @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+  }
+
+  /* Navbar ghost buttons */
+  .nav-ghost-btn {
+    @apply flex gap-1.5 items-center px-3 py-1.5 rounded-full text-white text-sm font-normal border border-transparent hover:border-white/30 transition-all duration-200;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-ghost-btn:hover {
+    @apply text-white;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Devis CTA button in nav */
+  .nav-ghost-btn--accent {
+    border-color: rgba(0, 153, 214, 0.7) !important;
+    color: white !important;
+    background: transparent;
+  }
+
+  .nav-ghost-btn--accent:hover {
+    background: var(--color-cyan) !important;
+    border-color: var(--color-cyan) !important;
+  }
+
+  /* Account page sidebar links */
+  .account-nav-link {
+    @apply flex items-center gap-x-2 text-sm font-normal transition-all duration-200 px-3 py-2.5 rounded-md;
+    color: #374151;
+    border-left: 3px solid transparent;
+  }
+
+  .account-nav-link:hover {
+    color: var(--color-cyan);
+    background: rgba(0, 153, 214, 0.06);
+  }
+
+  .account-nav-link--active {
+    color: var(--color-cyan) !important;
+    font-weight: 600;
+    border-left-color: var(--color-cyan) !important;
+    background: rgba(0, 153, 214, 0.08);
+  }
+
+  /* Stat card */
+  .stat-card {
+    @apply bg-white rounded-xl p-5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Order / previously purchased card */
+  .taran-card {
+    @apply bg-white rounded-xl p-4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .taran-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+
+  /* Cyan CTA button (reorder, hero) */
+  .btn-cyan {
+    background: var(--color-cyan);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-cyan:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 18px rgba(0, 153, 214, 0.4);
+  }
+
+  /* Outline navy button */
+  .btn-outline-navy {
+    background: transparent;
+    color: var(--color-navy);
+    border: 1.5px solid var(--color-navy);
+    border-radius: 50px;
+    padding: 7px 18px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .btn-outline-navy:hover {
+    background: var(--color-navy);
+    color: white;
   }
 
   .text-xsmall-regular {

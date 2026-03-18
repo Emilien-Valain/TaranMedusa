@@ -11,6 +11,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        taran: {
+          navy: "#0d2b5e",
+          blue: "#1565c0",
+          light: "#0099d6",
+        },
+      },
       maxWidth: {
         "8xl": "100rem",
       },

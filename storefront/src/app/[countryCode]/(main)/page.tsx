@@ -8,9 +8,9 @@ import { Suspense } from "react"
 export const dynamicParams = true
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "Taran Industrie - Solutions professionnelles de nettoyage",
   description:
-    "A performant frontend ecommerce starter template with Next.js 14 and Medusa.",
+    "Taran Industrie - Définir les besoins, livrer les solutions ! Lingettes professionnelles et produits de nettoyage industriels.",
 }
 
 export async function generateStaticParams() {
@@ -32,11 +32,16 @@ export default async function Home(props: {
   const { countryCode } = params
 
   return (
-    <div className="flex flex-col gap-y-2 m-2">
-      <Hero />
-      <Suspense fallback={<SkeletonFeaturedProducts />}>
-        <FeaturedProducts countryCode={countryCode} />
-      </Suspense>
+    <div className="flex flex-col">
+      {/* -mt-[92px] pulls the hero under the fixed transparent nav */}
+      <div className="-mt-[92px]">
+        <Hero />
+      </div>
+      <div className="py-8">
+        <Suspense fallback={<SkeletonFeaturedProducts />}>
+          <FeaturedProducts countryCode={countryCode} />
+        </Suspense>
+      </div>
     </div>
   )
 }

@@ -9,7 +9,8 @@ const Layout: React.FC<{
   return (
     <div>
       <NavigationHeader />
-      <main className="relative">{children}</main>
+      {/* pt compensates for the fixed navbar on non-hero pages (nav ≈ 60px + 32px breathing) */}
+      <main className="relative pt-[92px]">{children}</main>
       <Footer />
     </div>
   )

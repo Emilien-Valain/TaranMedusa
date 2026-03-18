@@ -1,4 +1,4 @@
-import { useRemoteQueryStep } from "@medusajs/core-flows";
+import { emitEventStep, useRemoteQueryStep } from "@medusajs/medusa/core-flows";
 import { createWorkflow } from "@medusajs/workflows-sdk";
 import { QueryQuote } from "../../../types";
 import { validateQuoteRejectionStep } from "../steps/validate-quote-rejection";
@@ -29,6 +29,11 @@ export const merchantRejectQuoteWorkflow = createWorkflow(
           status: "merchant_rejected",
         },
       ],
+    });
+
+    emitEventStep({
+      eventName: "quote.rejected_by_merchant",
+      data: { id: input.quote_id },
     });
   }
 );

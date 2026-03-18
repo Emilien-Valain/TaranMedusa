@@ -40,6 +40,25 @@ module.exports = defineConfig({
     [Modules.WORKFLOW_ENGINE]: {
       resolve: '@medusajs/medusa/workflow-engine-inmemory',
     },
+    [Modules.NOTIFICATION]: {
+      resolve: '@medusajs/medusa/notification',
+      options: {
+        providers: [
+          {
+            resolve: './src/modules/smtp-notification',
+            id: 'smtp',
+            options: {
+              host: process.env.SMTP_HOST,
+              port: process.env.SMTP_PORT || 465,
+              secure: process.env.SMTP_SECURE !== 'false',
+              user: process.env.SMTP_USER,
+              password: process.env.SMTP_PASSWORD,
+              from: process.env.SMTP_FROM,
+            },
+          },
+        ],
+      },
+    },
     [Modules.PAYMENT]: {
       resolve: '@medusajs/medusa/payment',
       options: {

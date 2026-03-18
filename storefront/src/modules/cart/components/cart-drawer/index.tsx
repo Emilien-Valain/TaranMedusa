@@ -123,7 +123,7 @@ const CartDrawer = ({
         {...(props as any)}
       >
         <Drawer.Trigger asChild>
-          <button className="transition-fg relative inline-flex w-fit items-center justify-center overflow-hidden outline-none txt-compact-small-plus gap-x-1.5 px-3 py-1.5 rounded-full hover:bg-neutral-100">
+          <button className="nav-ghost-btn relative">
             <ShoppingBag />
             <span className="text-sm font-normal hidden small:inline-block">
               {cart && items && items.length > 0
@@ -133,7 +133,16 @@ const CartDrawer = ({
                 })
                 : "Panier"}
             </span>
-            <div className="bg-blue-500 text-white text-xs px-1.5 py-px rounded-full">
+            <div
+              className="text-white font-semibold rounded-full flex items-center justify-center"
+              style={{
+                background: "var(--color-cyan)",
+                fontSize: "11px",
+                minWidth: "18px",
+                height: "18px",
+                padding: "0 5px",
+              }}
+            >
               {totalItems}
             </div>
           </button>

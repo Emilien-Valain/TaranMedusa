@@ -1,7 +1,8 @@
 import {
   confirmOrderEditRequestWorkflow,
+  emitEventStep,
   useRemoteQueryStep,
-} from "@medusajs/core-flows";
+} from "@medusajs/medusa/core-flows";
 import { OrderStatus } from "@medusajs/framework/utils";
 import { createWorkflow } from "@medusajs/workflows-sdk";
 import { updateOrderWorkflow } from "../../order/workflows/update-order";
@@ -44,6 +45,11 @@ export const customerAcceptQuoteWorkflow = createWorkflow(
         is_draft_order: false,
         status: OrderStatus.PENDING,
       },
+    });
+
+    emitEventStep({
+      eventName: "quote.accepted_by_customer",
+      data: { id: input.quote_id },
     });
   }
 );

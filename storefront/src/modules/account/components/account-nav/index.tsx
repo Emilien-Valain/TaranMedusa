@@ -9,7 +9,6 @@ import Package from "@/modules/common/icons/package"
 import User from "@/modules/common/icons/user"
 import { B2BCustomer } from "@/types/global"
 import { ArrowRightOnRectangle, BuildingStorefront } from "@medusajs/icons"
-import { clx } from "@medusajs/ui"
 import { useParams, usePathname } from "next/navigation"
 
 const AccountNav = ({
@@ -20,7 +19,6 @@ const AccountNav = ({
   numPendingApprovals: number
 }) => {
   const route = usePathname()
-
   const { countryCode } = useParams() as { countryCode: string }
 
   const handleLogout = async () => {
@@ -29,115 +27,55 @@ const AccountNav = ({
 
   return (
     <div>
+      {/* Mobile: back link or menu */}
       <div className="small:hidden" data-testid="mobile-account-nav">
         {route !== `/${countryCode}/account` ? (
           <LocalizedClientLink
             href="/account"
-            className="flex items-center gap-x-2 text-small-regular py-2"
+            className="flex items-center gap-x-2 text-sm py-2"
+            style={{ color: "var(--color-cyan)" }}
             data-testid="account-main-link"
           >
-            <>
-              <ChevronDown className="transform rotate-90" />
-              <span>Compte</span>
-            </>
+            <ChevronDown className="transform rotate-90" />
+            <span>Compte</span>
           </LocalizedClientLink>
         ) : (
           <>
-            <div className="text-xl-semi mb-4 px-8">
+            <div className="text-xl font-bold mb-4 px-4" style={{ color: "var(--color-navy)" }}>
               Bonjour {customer?.first_name}
             </div>
-            <div className="text-base-regular">
+            <div className="text-sm">
               <ul>
-                <li>
-                  <LocalizedClientLink
-                    href="/account/profile"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                    data-testid="profile-link"
-                  >
-                    <>
-                      <div className="flex items-center gap-x-2">
-                        <User size={20} />
-                        <span>Profil</span>
-                      </div>
-                      <ChevronDown className="transform -rotate-90" />
-                    </>
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink
-                    href="/account/company"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                    data-testid="company-link"
-                  >
-                    <>
-                      <div className="flex items-center gap-x-2">
-                        <BuildingStorefront width={20} />
-                        <span>Société</span>
-                      </div>
-                      <ChevronDown className="transform -rotate-90" />
-                    </>
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink
-                    href="/account/addresses"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                    data-testid="addresses-link"
-                  >
-                    <>
-                      <div className="flex items-center gap-x-2">
-                        <MapPin size={20} />
-                        <span>Adresses</span>
-                      </div>
-                      <ChevronDown className="transform -rotate-90" />
-                    </>
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink
-                    href="/account/orders"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                    data-testid="orders-link"
-                  >
-                    <div className="flex items-center gap-x-2">
-                      <Package size={20} />
-                      <span>Commandes</span>
-                    </div>
-                    <ChevronDown className="transform -rotate-90" />
-                  </LocalizedClientLink>
-                </li>
-                {customer?.employee?.is_admin && (
-                  <li>
+                {[
+                  { href: "/account/profile", label: "Profil", icon: <User size={18} /> },
+                  { href: "/account/company", label: "Société", icon: <BuildingStorefront width={18} /> },
+                  { href: "/account/addresses", label: "Adresses", icon: <MapPin size={18} /> },
+                  { href: "/account/orders", label: "Commandes", icon: <Package size={18} /> },
+                  ...(customer?.employee?.is_admin
+                    ? [{ href: "/account/approvals", label: "Validations", icon: <FilePlus size={16} /> }]
+                    : []),
+                  { href: "/account/quotes", label: "Devis", icon: <FilePlus size={16} /> },
+                ].map(({ href, label, icon }) => (
+                  <li key={href}>
                     <LocalizedClientLink
-                      href="/account/approvals"
-                      className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                      data-testid="approvals-link"
+                      href={href}
+                      className="flex items-center justify-between py-3 px-4 border-b transition-colors"
+                      style={{ borderColor: "#e8edf4", color: "#374151" }}
+                      data-testid={`${label.toLowerCase()}-link`}
                     >
                       <div className="flex items-center gap-x-2">
-                        <FilePlus size={16} />
-                        <span>Validations</span>
+                        {icon}
+                        <span>{label}</span>
                       </div>
-                      <ChevronDown className="transform -rotate-90" />
+                      <ChevronDown className="transform -rotate-90 opacity-40" />
                     </LocalizedClientLink>
                   </li>
-                )}
-                <li>
-                  <LocalizedClientLink
-                    href="/account/quotes"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                    data-testid="quotes-link"
-                  >
-                    <div className="flex items-center gap-x-2">
-                      <FilePlus size={16} />
-                      <span>Devis</span>
-                    </div>
-                    <ChevronDown className="transform -rotate-90" />
-                  </LocalizedClientLink>
-                </li>
+                ))}
                 <li>
                   <button
                     type="button"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8 w-full"
+                    className="flex items-center justify-between py-3 px-4 w-full transition-colors"
+                    style={{ color: "#9ca3af" }}
                     onClick={handleLogout}
                     data-testid="logout-button"
                   >
@@ -145,7 +83,7 @@ const AccountNav = ({
                       <ArrowRightOnRectangle />
                       <span>Déconnexion</span>
                     </div>
-                    <ChevronDown className="transform -rotate-90" />
+                    <ChevronDown className="transform -rotate-90 opacity-40" />
                   </button>
                 </li>
               </ul>
@@ -153,90 +91,48 @@ const AccountNav = ({
           </>
         )}
       </div>
+
+      {/* Desktop sidebar */}
       <div className="hidden small:block" data-testid="account-nav">
-        <div className="text-lg">
-          <ul className="flex mb-0 justify-start items-start flex-col gap-y-4">
-            <li>
-              <AccountNavLink
-                href="/account"
-                route={route!}
-                data-testid="overview-link"
-              >
-                Aperçu
+        <ul className="flex flex-col gap-y-1">
+          {[
+            { href: "/account", label: "Aperçu", testId: "overview-link" },
+            { href: "/account/profile", label: "Profil", testId: "profile-link" },
+            { href: "/account/company", label: "Société", testId: "company-link" },
+            { href: "/account/addresses", label: "Adresses", testId: "addresses-link" },
+            { href: "/account/orders", label: "Commandes", testId: "orders-link" },
+            ...(customer?.employee?.is_admin
+              ? [{ href: "/account/approvals", label: "Approbations", testId: "approvals-link", badge: numPendingApprovals }]
+              : []),
+            { href: "/account/quotes", label: "Devis", testId: "quotes-link" },
+          ].map(({ href, label, testId, badge }: any) => (
+            <li key={href}>
+              <AccountNavLink href={href} route={route} data-testid={testId}>
+                <span>{label}</span>
+                {badge > 0 && (
+                  <span
+                    className="text-white text-xs font-semibold rounded-full px-1.5 py-0.5"
+                    style={{ background: "var(--color-cyan)", fontSize: "11px" }}
+                  >
+                    {badge}
+                  </span>
+                )}
               </AccountNavLink>
             </li>
-            <li>
-              <AccountNavLink
-                href="/account/profile"
-                route={route!}
-                data-testid="profile-link"
-              >
-                Profil
-              </AccountNavLink>
-            </li>
-            <li>
-              <AccountNavLink
-                href="/account/company"
-                route={route!}
-                data-testid="company-link"
-              >
-                Société
-              </AccountNavLink>
-            </li>
-            <li>
-              <AccountNavLink
-                href="/account/addresses"
-                route={route!}
-                data-testid="addresses-link"
-              >
-                Adresses
-              </AccountNavLink>
-            </li>
-            <li>
-              <AccountNavLink
-                href="/account/orders"
-                route={route!}
-                data-testid="orders-link"
-              >
-                Commandes
-              </AccountNavLink>
-            </li>
-            {customer?.employee?.is_admin && (
-              <li>
-                <AccountNavLink
-                  href="/account/approvals"
-                  route={route!}
-                  data-testid="approvals-link"
-                >
-                  Approbations{" "}
-                  {numPendingApprovals > 0 && (
-                    <span className="bg-blue-500 text-white text-xs px-1.5 py-px rounded-full">
-                      {numPendingApprovals}
-                    </span>
-                  )}
-                </AccountNavLink>
-              </li>
-            )}
-            <li>
-              <AccountNavLink
-                href="/account/quotes"
-                route={route!}
-                data-testid="quotes-link"
-              >
-                Devis
-              </AccountNavLink>
-            </li>
-            <li className="text-neutral-400 hover:text-neutral-950">
-              <button
-                type="button"
-                onClick={handleLogout}
-                data-testid="logout-button"
-              >
-                Déconnexion
-              </button>
-            </li>
-          </ul>
-        </div>
+          ))}
+
+          <li className="mt-4 pt-4" style={{ borderTop: "1px solid #e8edf4" }}>
+            <button
+              type="button"
+              className="account-nav-link w-full text-left text-gray-400 hover:text-red-500"
+              onClick={handleLogout}
+              data-testid="logout-button"
+            >
+              <ArrowRightOnRectangle />
+              <span>Déconnexion</span>
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   )
@@ -256,17 +152,12 @@ const AccountNavLink = ({
   "data-testid": dataTestId,
 }: AccountNavLinkProps) => {
   const { countryCode }: { countryCode: string } = useParams()
-
   const active = route.split(countryCode)[1] === href
+
   return (
     <LocalizedClientLink
       href={href}
-      className={clx(
-        "text-neutral-400 hover:text-neutral-950 flex items-center gap-x-2",
-        {
-          "text-neutral-950": active,
-        }
-      )}
+      className={`account-nav-link flex items-center gap-x-2 ${active ? "account-nav-link--active" : ""}`}
       data-testid={dataTestId}
     >
       {children}
