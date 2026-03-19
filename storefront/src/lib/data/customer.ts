@@ -94,6 +94,8 @@ export async function signup(_currentState: unknown, formData: FormData) {
 
     await setAuthToken(loginToken as string)
 
+    const sessionHeaders = { authorization: `Bearer ${loginToken}` }
+
     if (isCompany) {
       const companyForm = {
         name: formData.get("company_name") as string,
@@ -117,6 +119,30 @@ export async function signup(_currentState: unknown, formData: FormData) {
       }).catch((err) => {
         console.log("error creating employee", err)
       })
+
+      // Auto-save company address as customer default address
+      if (companyForm.address && companyForm.city && companyForm.zip && companyForm.country) {
+        await sdk.store.customer
+          .createAddress(
+            {
+              first_name: customerForm.first_name,
+              last_name: customerForm.last_name,
+              company: companyForm.name,
+              address_1: companyForm.address,
+              city: companyForm.city,
+              postal_code: companyForm.zip,
+              province: companyForm.state || undefined,
+              country_code: companyForm.country,
+              phone: companyForm.phone || undefined,
+            },
+            {},
+            sessionHeaders
+          )
+          .then(() => console.log("company address saved successfully"))
+          .catch((err) => {
+            console.error("error saving company address:", err)
+          })
+      }
     }
 
     const cacheTag = await getCacheTag("customers")
@@ -217,6 +243,35 @@ export async function transferCart() {
   const cartCacheTag = await getCacheTag("carts")
 
   revalidateTag(cartCacheTag)
+}
+
+export const saveShippingAddressAsCustomerAddress = async (
+  formData: FormData
+): Promise<void> => {
+  const headers = await getAuthHeaders()
+  if (!headers || !("authorization" in headers)) return
+
+  const address = {
+    first_name: formData.get("shipping_address.first_name") as string,
+    last_name: formData.get("shipping_address.last_name") as string,
+    company: (formData.get("shipping_address.company") as string) || undefined,
+    address_1: formData.get("shipping_address.address_1") as string,
+    city: formData.get("shipping_address.city") as string,
+    postal_code: formData.get("shipping_address.postal_code") as string,
+    province: (formData.get("shipping_address.province") as string) || undefined,
+    country_code: formData.get("shipping_address.country_code") as string,
+    phone: (formData.get("shipping_address.phone") as string) || undefined,
+  }
+
+  await sdk.store.customer
+    .createAddress(address, {}, headers)
+    .then(async () => {
+      const cacheTag = await getCacheTag("customers")
+      revalidateTag(cacheTag)
+    })
+    .catch((err) => {
+      console.log("error saving shipping address to book", err)
+    })
 }
 
 export const addCustomerAddress = async (

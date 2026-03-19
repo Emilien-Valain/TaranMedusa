@@ -114,11 +114,14 @@ const Register = ({ setCurrentView, regions }: Props) => {
 
   const isValid = baseValid && (isCompany ? companyValid : true)
 
-  const countryNames = regions
+  const countries = regions
     .flatMap((region) =>
-      region.countries?.map((country) => country?.display_name || country?.name)
+      region.countries?.map((country) => ({
+        iso_2: country.iso_2,
+        name: country?.display_name || country?.name || country?.iso_2,
+      }))
     )
-    .filter((country) => country !== undefined)
+    .filter((c): c is { iso_2: string; name: string } => !!c && !!c.iso_2)
 
   const currencies = regions.map((region) => region.currency_code)
 
@@ -278,9 +281,9 @@ const Register = ({ setCurrentView, regions }: Props) => {
                   />
                 </Select.Trigger>
                 <Select.Content>
-                  {countryNames?.map((country) => (
-                    <Select.Item key={country} value={country}>
-                      {country}
+                  {countries?.map((country) => (
+                    <Select.Item key={country.iso_2} value={country.iso_2}>
+                      {country.name}
                     </Select.Item>
                   ))}
                 </Select.Content>

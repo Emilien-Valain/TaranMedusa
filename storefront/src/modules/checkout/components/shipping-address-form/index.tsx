@@ -3,7 +3,7 @@ import CountrySelect from "@/modules/checkout/components/country-select"
 import Input from "@/modules/common/components/input"
 import { B2BCart, B2BCustomer } from "@/types"
 import { HttpTypes } from "@medusajs/types"
-import { Container } from "@medusajs/ui"
+import { Checkbox, Label, Container } from "@medusajs/ui"
 import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useState } from "react"
 
@@ -14,6 +14,8 @@ const ShippingAddressForm = ({
   customer: B2BCustomer | null
   cart: B2BCart | null
 }) => {
+  const [selectedFromBook, setSelectedFromBook] = useState(false)
+  const [saveAddress, setSaveAddress] = useState(false)
   const [formData, setFormData] = useState<Record<string, any>>({
     "shipping_address.first_name": "",
     "shipping_address.last_name": "",
@@ -43,8 +45,10 @@ const ShippingAddressForm = ({
 
   const setFormAddress = (
     address?: HttpTypes.StoreCartAddress,
-    email?: string
+    email?: string,
+    fromBook?: boolean
   ) => {
+    if (fromBook !== undefined) setSelectedFromBook(fromBook)
     address &&
       setFormData((prevState: Record<string, any>) => ({
         ...prevState,
@@ -78,6 +82,7 @@ const ShippingAddressForm = ({
       HTMLInputElement | HTMLInputElement | HTMLSelectElement
     >
   ) => {
+    setSelectedFromBook(false)
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -98,7 +103,7 @@ const ShippingAddressForm = ({
                 key.replace("shipping_address.", "")
               ) as HttpTypes.StoreCartAddress
             }
-            onSelect={setFormAddress}
+            onSelect={(address, email) => setFormAddress(address, email, true)}
           />
         </Container>
       )}
@@ -189,6 +194,22 @@ const ShippingAddressForm = ({
           />
         </div>
       </div>
+      {customer && !selectedFromBook && (
+        <div className="flex items-center gap-2 mt-4">
+          <input type="hidden" name="save_address" value={saveAddress ? "true" : "false"} />
+          <Checkbox
+            id="save_address_checkbox"
+            checked={saveAddress}
+            onCheckedChange={(checked) => setSaveAddress(!!checked)}
+          />
+          <Label
+            htmlFor="save_address_checkbox"
+            className="text-sm text-ui-fg-subtle !transform-none hover:cursor-pointer"
+          >
+            Enregistrer cette adresse pour mes prochaines commandes
+          </Label>
+        </div>
+      )}
     </>
   )
 }

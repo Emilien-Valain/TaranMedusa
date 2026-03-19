@@ -1,6 +1,7 @@
 "use client"
 
 import { setShippingAddress } from "@/lib/data/cart"
+import { saveShippingAddressAsCustomerAddress } from "@/lib/data/customer"
 import ErrorMessage from "@/modules/checkout/components/error-message"
 import ShippingAddressForm from "@/modules/checkout/components/shipping-address-form"
 import { SubmitButton } from "@/modules/checkout/components/submit-button"
@@ -50,6 +51,10 @@ const ShippingAddress = ({
       setError(e.message)
       return
     })
+
+    if (customer && formData.get("save_address") === "true") {
+      await saveShippingAddressAsCustomerAddress(formData).catch(console.error)
+    }
 
     router.push(pathname + "?" + createQueryString("step", "billing-address"), {
       scroll: false,
