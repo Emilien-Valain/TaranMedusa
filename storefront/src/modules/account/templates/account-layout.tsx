@@ -13,12 +13,13 @@ const AccountLayout: React.FC<AccountLayoutProps> = async ({
   customer,
   children,
 }) => {
-  const { carts_with_approvals } = await listApprovals({
-    type: ApprovalType.ADMIN,
-    status: ApprovalStatusType.PENDING,
-  })
+  const isB2B = !!customer?.employee
 
-  const numPendingApprovals = carts_with_approvals?.length || 0
+  const numPendingApprovals = isB2B
+    ? await listApprovals({ type: ApprovalType.ADMIN, status: ApprovalStatusType.PENDING })
+        .then((r) => r.carts_with_approvals?.length || 0)
+        .catch(() => 0)
+    : 0
 
   return (
     <div

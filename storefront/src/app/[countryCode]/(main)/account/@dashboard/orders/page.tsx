@@ -17,16 +17,19 @@ export default async function Orders() {
   const customer = await retrieveCustomer()
   const orders = await listOrders()
 
-  const { approval_settings } =
-    (await retrieveCompany(customer?.employee?.company_id!)) || {}
+  const { approval_settings } = customer?.employee?.company_id
+    ? (await retrieveCompany(customer.employee.company_id)) || {}
+    : {}
 
   const approval_required =
     approval_settings?.requires_admin_approval ||
     approval_settings?.requires_sales_manager_approval
 
-  const { carts_with_approvals } = await listApprovals({
-    status: ApprovalStatusType.PENDING,
-  })
+  const carts_with_approvals = customer?.employee
+    ? await listApprovals({ status: ApprovalStatusType.PENDING })
+        .then((r) => r.carts_with_approvals)
+        .catch(() => [])
+    : []
 
   return (
     <div

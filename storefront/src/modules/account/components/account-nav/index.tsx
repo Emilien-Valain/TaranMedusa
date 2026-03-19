@@ -48,13 +48,17 @@ const AccountNav = ({
               <ul>
                 {[
                   { href: "/account/profile", label: "Profil", icon: <User size={18} /> },
-                  { href: "/account/company", label: "Société", icon: <BuildingStorefront width={18} /> },
+                  ...(customer?.employee
+                    ? [{ href: "/account/company", label: "Société", icon: <BuildingStorefront width={18} /> }]
+                    : []),
                   { href: "/account/addresses", label: "Adresses", icon: <MapPin size={18} /> },
                   { href: "/account/orders", label: "Commandes", icon: <Package size={18} /> },
                   ...(customer?.employee?.is_admin
                     ? [{ href: "/account/approvals", label: "Validations", icon: <FilePlus size={16} /> }]
                     : []),
-                  { href: "/account/quotes", label: "Devis", icon: <FilePlus size={16} /> },
+                  ...(customer?.employee
+                    ? [{ href: "/account/quotes", label: "Devis", icon: <FilePlus size={16} /> }]
+                    : []),
                 ].map(({ href, label, icon }) => (
                   <li key={href}>
                     <LocalizedClientLink
@@ -98,13 +102,17 @@ const AccountNav = ({
           {[
             { href: "/account", label: "Aperçu", testId: "overview-link" },
             { href: "/account/profile", label: "Profil", testId: "profile-link" },
-            { href: "/account/company", label: "Société", testId: "company-link" },
+            ...(customer?.employee
+              ? [{ href: "/account/company", label: "Société", testId: "company-link" }]
+              : []),
             { href: "/account/addresses", label: "Adresses", testId: "addresses-link" },
             { href: "/account/orders", label: "Commandes", testId: "orders-link" },
             ...(customer?.employee?.is_admin
               ? [{ href: "/account/approvals", label: "Approbations", testId: "approvals-link", badge: numPendingApprovals }]
               : []),
-            { href: "/account/quotes", label: "Devis", testId: "quotes-link" },
+            ...(customer?.employee
+              ? [{ href: "/account/quotes", label: "Devis", testId: "quotes-link" }]
+              : []),
           ].map(({ href, label, testId, badge }: any) => (
             <li key={href}>
               <AccountNavLink href={href} route={route} data-testid={testId}>

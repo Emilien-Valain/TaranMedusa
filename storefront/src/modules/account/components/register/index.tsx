@@ -61,6 +61,7 @@ const placeholder = ({
 const Register = ({ setCurrentView, regions }: Props) => {
   const [message, formAction] = useActionState(signup, null)
   const [termsAccepted, setTermsAccepted] = useState(false)
+  const [isCompany, setIsCompany] = useState(false)
   const [formData, setFormData] = useState<FormData>(initialFormData)
 
   const handleChange = (
@@ -80,18 +81,38 @@ const Register = ({ setCurrentView, regions }: Props) => {
     }))
   }
 
-  const isValid =
+  const handleIsCompanyChange = (checked: boolean) => {
+    setIsCompany(checked)
+    if (!checked) {
+      setFormData((prev) => ({
+        ...prev,
+        company_name: "",
+        company_address: "",
+        company_city: "",
+        company_state: "",
+        company_zip: "",
+        company_country: "",
+        currency_code: "",
+      }))
+    }
+  }
+
+  const baseValid =
     termsAccepted &&
     !!formData.email &&
     !!formData.first_name &&
     !!formData.last_name &&
+    !!formData.password
+
+  const companyValid =
     !!formData.company_name &&
-    !!formData.password &&
     !!formData.company_address &&
     !!formData.company_city &&
     !!formData.company_zip &&
     !!formData.company_country &&
     !!formData.currency_code
+
+  const isValid = baseValid && (isCompany ? companyValid : true)
 
   const countryNames = regions
     .flatMap((region) =>
@@ -107,12 +128,39 @@ const Register = ({ setCurrentView, regions }: Props) => {
       data-testid="register-page"
     >
       <Text className="text-4xl text-neutral-950 text-left mb-4">
-        Créer le compte
-        <br />
-        de votre société.
+        {isCompany ? (
+          <>
+            Créer le compte
+            <br />
+            de votre société.
+          </>
+        ) : (
+          <>
+            Créer votre
+            <br />
+            compte.
+          </>
+        )}
       </Text>
       <form className="w-full flex flex-col" action={formAction}>
+        <input type="hidden" name="is_company" value={isCompany ? "true" : "false"} />
         <div className="flex flex-col w-full gap-y-4">
+          {/* Toggle entreprise */}
+          <div className="flex items-center gap-3 p-3 bg-neutral-50 rounded-lg border border-neutral-200">
+            <Checkbox
+              id="is-company-checkbox"
+              checked={isCompany}
+              onCheckedChange={(checked) => handleIsCompanyChange(!!checked)}
+            />
+            <Label
+              htmlFor="is-company-checkbox"
+              className="flex flex-col !transform-none hover:cursor-pointer"
+            >
+              <span className="text-sm font-medium text-ui-fg-base">Vous représentez une entreprise</span>
+              <span className="text-xs text-ui-fg-muted">Cochez cette case pour créer un compte professionnel</span>
+            </Label>
+          </div>
+
           <Input
             label="Email"
             name="email"
@@ -145,16 +193,6 @@ const Register = ({ setCurrentView, regions }: Props) => {
             onChange={handleChange}
           />
           <Input
-            label="Nom de la société"
-            name="company_name"
-            required
-            autoComplete="organization"
-            data-testid="company-name-input"
-            className="bg-white"
-            value={formData.company_name}
-            onChange={handleChange}
-          />
-          <Input
             label="Mot de passe"
             name="password"
             required
@@ -165,93 +203,114 @@ const Register = ({ setCurrentView, regions }: Props) => {
             value={formData.password}
             onChange={handleChange}
           />
-          <Input
-            label="Adresse de la société"
-            name="company_address"
-            required
-            autoComplete="address"
-            data-testid="company-address-input"
-            className="bg-white"
-            value={formData.company_address}
-            onChange={handleChange}
-          />
-          <Input
-            label="Ville de la société"
-            name="company_city"
-            required
-            autoComplete="city"
-            data-testid="company-city-input"
-            className="bg-white"
-            value={formData.company_city}
-            onChange={handleChange}
-          />
-          <Input
-            label="Région de la société"
-            name="company_state"
-            autoComplete="state"
-            data-testid="company-state-input"
-            className="bg-white"
-            value={formData.company_state}
-            onChange={handleChange}
-          />
-          <Input
-            label="Code postal de la société"
-            name="company_zip"
-            required
-            autoComplete="postal-code"
-            data-testid="company-zip-input"
-            className="bg-white"
-            value={formData.company_zip}
-            onChange={handleChange}
-          />
-          <Select
-            name="company_country"
-            required
-            autoComplete="country"
-            data-testid="company-country-input"
-            value={formData.company_country}
-            onValueChange={handleSelectChange("company_country")}
-          >
-            <Select.Trigger className="rounded-full h-10 px-4">
-              <Select.Value
-                placeholder={placeholder({
-                  placeholder: "Select a country",
-                  required: true,
-                })}
+
+          {/* Champs entreprise */}
+          {isCompany && (
+            <>
+              <div className="border-t border-neutral-200 pt-2">
+                <Text className="text-sm font-medium text-ui-fg-subtle mb-3">
+                  Informations de la société
+                </Text>
+              </div>
+              <Input
+                label="Nom de la société"
+                name="company_name"
+                required
+                autoComplete="organization"
+                data-testid="company-name-input"
+                className="bg-white"
+                value={formData.company_name}
+                onChange={handleChange}
               />
-            </Select.Trigger>
-            <Select.Content>
-              {countryNames?.map((country) => (
-                <Select.Item key={country} value={country}>
-                  {country}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select>
-          <Select
-            name="currency_code"
-            required
-            autoComplete="currency"
-            data-testid="company-currency-input"
-            value={formData.currency_code}
-            onValueChange={handleSelectChange("currency_code")}
-          >
-            <Select.Trigger className="rounded-full h-10 px-4">
-              <Select.Value
-                placeholder={placeholder({
-                  placeholder: "Choisissez une devise",
-                  required: true,
-                })}
+              <Input
+                label="Adresse de la société"
+                name="company_address"
+                required
+                autoComplete="address"
+                data-testid="company-address-input"
+                className="bg-white"
+                value={formData.company_address}
+                onChange={handleChange}
               />
-            </Select.Trigger>
-            <Select.Content>
-              {[...new Set(currencies)].map((currency) => (
-                <Select.Item key={currency} value={currency}>
-                  {currency.toUpperCase()} ({currencySymbolMap[currency]})
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select>
+              <Input
+                label="Ville de la société"
+                name="company_city"
+                required
+                autoComplete="city"
+                data-testid="company-city-input"
+                className="bg-white"
+                value={formData.company_city}
+                onChange={handleChange}
+              />
+              <Input
+                label="Région de la société"
+                name="company_state"
+                autoComplete="state"
+                data-testid="company-state-input"
+                className="bg-white"
+                value={formData.company_state}
+                onChange={handleChange}
+              />
+              <Input
+                label="Code postal de la société"
+                name="company_zip"
+                required
+                autoComplete="postal-code"
+                data-testid="company-zip-input"
+                className="bg-white"
+                value={formData.company_zip}
+                onChange={handleChange}
+              />
+              <Select
+                name="company_country"
+                required
+                autoComplete="country"
+                data-testid="company-country-input"
+                value={formData.company_country}
+                onValueChange={handleSelectChange("company_country")}
+              >
+                <Select.Trigger className="rounded-full h-10 px-4">
+                  <Select.Value
+                    placeholder={placeholder({
+                      placeholder: "Pays de la société",
+                      required: true,
+                    })}
+                  />
+                </Select.Trigger>
+                <Select.Content>
+                  {countryNames?.map((country) => (
+                    <Select.Item key={country} value={country}>
+                      {country}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
+              <Select
+                name="currency_code"
+                required
+                autoComplete="currency"
+                data-testid="company-currency-input"
+                value={formData.currency_code}
+                onValueChange={handleSelectChange("currency_code")}
+              >
+                <Select.Trigger className="rounded-full h-10 px-4">
+                  <Select.Value
+                    placeholder={placeholder({
+                      placeholder: "Choisissez une devise",
+                      required: true,
+                    })}
+                  />
+                </Select.Trigger>
+                <Select.Content>
+                  {[...new Set(currencies)].map((currency) => (
+                    <Select.Item key={currency} value={currency}>
+                      {currency.toUpperCase()} ({currencySymbolMap[currency]})
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select>
+            </>
+          )}
         </div>
         <div className="border-b border-neutral-200 my-6" />
         <ErrorMessage error={message} data-testid="register-error" />
