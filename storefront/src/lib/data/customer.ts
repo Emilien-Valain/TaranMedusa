@@ -245,6 +245,43 @@ export async function transferCart() {
   revalidateTag(cartCacheTag)
 }
 
+export const updatePassword = async (
+  currentPassword: string,
+  newPassword: string
+): Promise<{ success: boolean; error?: string }> => {
+  const customer = await retrieveCustomer()
+
+  if (!customer?.email) {
+    return { success: false, error: "Client introuvable" }
+  }
+
+  // Login with current password to get a fresh token for the update endpoint
+  let loginToken: string
+  try {
+    loginToken = (await sdk.auth.login("customer", "emailpass", {
+      email: customer.email,
+      password: currentPassword,
+    })) as string
+  } catch {
+    return { success: false, error: "Mot de passe actuel incorrect" }
+  }
+
+  // Use the login token (not the session cookie) for the update call
+  try {
+    await sdk.client.fetch(`/auth/customer/emailpass/update`, {
+      method: "POST",
+      body: { password: newPassword },
+      headers: { authorization: `Bearer ${loginToken}` },
+    })
+    return { success: true }
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error?.message || "Impossible de modifier le mot de passe",
+    }
+  }
+}
+
 export const saveShippingAddressAsCustomerAddress = async (
   formData: FormData
 ): Promise<void> => {
