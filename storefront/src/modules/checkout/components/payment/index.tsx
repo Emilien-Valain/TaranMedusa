@@ -217,6 +217,8 @@ const Payment = ({
               isLoading={isLoading}
               disabled={
                 (selectedPaymentMethod === "pp_stripe_stripe" &&
+                  !!activeSession &&
+                  activeSession.provider_id === selectedPaymentMethod &&
                   !cardComplete) ||
                 (!selectedPaymentMethod && !paidByGiftcard)
               }
