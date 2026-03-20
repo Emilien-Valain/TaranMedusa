@@ -43,6 +43,15 @@ const Login = ({ setCurrentView }: Props) => {
             required
             data-testid="password-input"
           />
+          <div className="flex items-center justify-end">
+            <button
+              type="button"
+              onClick={() => setCurrentView(LOGIN_VIEW.FORGOT_PASSWORD)}
+              className="text-sm text-neutral-500 hover:text-neutral-800 transition-colors"
+            >
+              Mot de passe oublié ?
+            </button>
+          </div>
           <div className="flex flex-col gap-2 w-full border-b border-neutral-200 my-6" />
           <div className="flex items-center gap-2">
             <Checkbox name="remember_me" data-testid="remember-me-checkbox" />
