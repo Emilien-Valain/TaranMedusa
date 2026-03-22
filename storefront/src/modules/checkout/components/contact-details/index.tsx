@@ -65,7 +65,7 @@ const ContactDetails = ({
       requiresApproval &&
         (!customerIsAdmin || cartApprovalStatus !== ApprovalStatusType.APPROVED)
         ? "vérification"
-        : "paiement"
+        : "payment"
 
     router.push(pathname + "?" + createQueryString("step", step), {
       scroll: false,

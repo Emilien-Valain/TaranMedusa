@@ -26,6 +26,7 @@ type ProviderSendNotificationResultsDTO = {
 
 class SmtpNotificationService extends AbstractNotificationProviderService {
   static identifier = "smtp"
+  static channels = ["email"]
 
   private transporter: nodemailer.Transporter
   private from: string

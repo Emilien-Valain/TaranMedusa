@@ -11,8 +11,12 @@ import { ApprovalStatusType } from "@/types"
 import { RadioGroup } from "@headlessui/react"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import { Container, Heading, Text, clx } from "@medusajs/ui"
-import { CardElement } from "@stripe/react-stripe-js"
-import { StripeCardElementOptions } from "@stripe/stripe-js"
+import {
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
+} from "@stripe/react-stripe-js"
+import { StripeCardNumberElementOptions } from "@stripe/stripe-js"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 
@@ -30,7 +34,10 @@ const Payment = ({
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [cardBrand, setCardBrand] = useState<string | null>(null)
-  const [cardComplete, setCardComplete] = useState(false)
+  const [numberComplete, setNumberComplete] = useState(false)
+  const [expiryComplete, setExpiryComplete] = useState(false)
+  const [cvcComplete, setCvcComplete] = useState(false)
+  const cardComplete = numberComplete && expiryComplete && cvcComplete
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     activeSession?.provider_id ?? ""
   )
@@ -51,7 +58,7 @@ const Payment = ({
   const paymentReady =
     (activeSession && cart?.shipping_methods.length !== 0) || paidByGiftcard
 
-  const useOptions: StripeCardElementOptions = useMemo(() => {
+  const useOptions: StripeCardNumberElementOptions = useMemo(() => {
     return {
       style: {
         base: {
@@ -177,17 +184,39 @@ const Payment = ({
                     Entrez les informations de votre carte :
                   </Text>
 
-                  <CardElement
-                    options={useOptions as StripeCardElementOptions}
+                  <CardNumberElement
+                    options={useOptions}
                     onChange={(e) => {
                       setCardBrand(
                         e.brand &&
                         e.brand.charAt(0).toUpperCase() + e.brand.slice(1)
                       )
                       setError(e.error?.message || null)
-                      setCardComplete(e.complete)
+                      setNumberComplete(e.complete)
                     }}
                   />
+                  <div className="flex gap-x-2 mt-2">
+                    <CardExpiryElement
+                      options={{
+                        style: useOptions.style,
+                        classes: useOptions.classes,
+                      }}
+                      onChange={(e) => {
+                        setError(e.error?.message || null)
+                        setExpiryComplete(e.complete)
+                      }}
+                    />
+                    <CardCvcElement
+                      options={{
+                        style: useOptions.style,
+                        classes: useOptions.classes,
+                      }}
+                      onChange={(e) => {
+                        setError(e.error?.message || null)
+                        setCvcComplete(e.complete)
+                      }}
+                    />
+                  </div>
                 </div>
               )}
             </>

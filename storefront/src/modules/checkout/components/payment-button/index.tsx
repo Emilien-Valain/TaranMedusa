@@ -186,7 +186,7 @@ const StripePaymentButton = ({
 
   const stripe = useStripe()
   const elements = useElements()
-  const card = elements?.getElement("card")
+  const card = elements?.getElement("cardNumber")
 
   const session = cart.payment_collection?.payment_sessions?.find(
     (s) => s.status === "pending"
@@ -205,7 +205,7 @@ const StripePaymentButton = ({
     await stripe
       .confirmCardPayment(session?.data.client_secret as string, {
         payment_method: {
-          card: card,
+          card: card!,
           billing_details: {
             name:
               cart.billing_address?.first_name +

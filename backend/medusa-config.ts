@@ -32,7 +32,13 @@ module.exports = defineConfig({
       resolve: './modules/invoice',
     },
     [Modules.CACHE]: {
-      resolve: '@medusajs/cache-redis', // ✅ Correct
+      resolve: '@medusajs/cache-redis',
+      options: {
+        redisUrl: process.env.CACHE_REDIS_URL,
+      },
+    },
+    [Modules.EVENT_BUS]: {
+      resolve: '@medusajs/medusa/event-bus-redis',
       options: {
         redisUrl: process.env.CACHE_REDIS_URL,
       },
