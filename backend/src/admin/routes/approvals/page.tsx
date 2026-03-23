@@ -18,7 +18,7 @@ const Approvals = () => {
 };
 
 export const config = defineRouteConfig({
-  label: "Approvals",
+  label: "Approbations",
   icon: CheckCircle,
 });
 

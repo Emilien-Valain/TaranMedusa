@@ -19,7 +19,7 @@ const Quotes = () => {
 };
 
 export const config = defineRouteConfig({
-  label: "Quotes",
+  label: "Devis",
   icon: DocumentText,
 });
 
