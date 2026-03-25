@@ -260,7 +260,7 @@ const StripePaymentButton = ({
         isLoading={submitting}
         data-testid={dataTestId}
       >
-        Place order
+        Passer commande
       </Button>
       <ErrorMessage
         error={errorMessage}
