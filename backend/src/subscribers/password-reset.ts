@@ -30,7 +30,6 @@ export default async function passwordResetHandler({
     logger.info(
       `[password-reset] Lien de réinitialisation envoyé à ${data.email}`,
     );
-    logger.info(`[PASSWORD RESET] URL: ${resetUrl}`);
   } catch (error) {
     logger.error(`[password-reset] Erreur: ${error.message}`);
   }
