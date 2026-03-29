@@ -57,16 +57,17 @@ export const GET = async (
     const invoiceNumber = `INV-${String(result.invoice.display_id).padStart(6, "0")}`;
 
     // Convert the pdf data back to Buffer if it was serialized
+    const pdfData = result.pdf as any;
     let pdfBuffer: Buffer;
-    if (Buffer.isBuffer(result.pdf)) {
-      pdfBuffer = result.pdf;
-    } else if (result.pdf?.type === "Buffer" && Array.isArray(result.pdf.data)) {
+    if (Buffer.isBuffer(pdfData)) {
+      pdfBuffer = pdfData;
+    } else if (pdfData?.type === "Buffer" && Array.isArray(pdfData.data)) {
       // Handle serialized Buffer format { type: "Buffer", data: [...] }
-      pdfBuffer = Buffer.from(result.pdf.data);
-    } else if (typeof result.pdf === "object" && result.pdf.data) {
-      pdfBuffer = Buffer.from(result.pdf.data);
+      pdfBuffer = Buffer.from(pdfData.data);
+    } else if (typeof pdfData === "object" && pdfData.data) {
+      pdfBuffer = Buffer.from(pdfData.data);
     } else {
-      pdfBuffer = Buffer.from(result.pdf as any);
+      pdfBuffer = Buffer.from(pdfData);
     }
 
     res.setHeader("Content-Type", "application/pdf");
