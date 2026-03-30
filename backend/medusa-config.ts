@@ -49,6 +49,20 @@ module.exports = defineConfig({
     [Modules.WORKFLOW_ENGINE]: {
       resolve: '@medusajs/medusa/workflow-engine-inmemory',
     },
+    [Modules.FILE]: {
+      resolve: '@medusajs/medusa/file',
+      options: {
+        providers: [
+          {
+            resolve: '@medusajs/medusa/file-local',
+            id: 'local',
+            options: {
+              backend_url: process.env.MEDUSA_BACKEND_URL,
+            },
+          },
+        ],
+      },
+    },
     [Modules.NOTIFICATION]: {
       resolve: '@medusajs/medusa/notification',
       options: {
