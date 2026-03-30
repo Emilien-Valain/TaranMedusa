@@ -6,7 +6,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 RUN corepack enable && yarn install --frozen-lockfile
 
 COPY . .
-RUN yarn build
+RUN NODE_OPTIONS=--max-old-space-size=2048 yarn build
 
 EXPOSE 9000
 
