@@ -14,14 +14,18 @@ export const metadata: Metadata = {
 }
 
 export async function generateStaticParams() {
-  const countryCodes = await listRegions().then(
-    (regions) =>
-      regions
-        ?.map((r) => r.countries?.map((c) => c.iso_2))
-        .flat()
-        .filter(Boolean) as string[]
-  )
-  return countryCodes.map((countryCode) => ({ countryCode }))
+  try {
+    const countryCodes = await listRegions().then(
+      (regions) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
+    )
+    return countryCodes.map((countryCode) => ({ countryCode }))
+  } catch {
+    return []
+  }
 }
 
 export default async function Home(props: {
