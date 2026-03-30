@@ -205,7 +205,7 @@ export async function login(_currentState: unknown, formData: FormData) {
 
 export async function signout(countryCode: string, customerId: string) {
   await sdk.auth.logout()
-  removeAuthToken()
+  await removeAuthToken()
   track("customer_logged_out")
 
   // remove next line if want the cart to persist after logout

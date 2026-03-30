@@ -77,7 +77,7 @@ export async function getOrSetCart(countryCode: string) {
 
     const cartResp = await sdk.store.cart.create(body, {}, headers)
 
-    setCartId(cartResp.cart.id)
+    await setCartId(cartResp.cart.id)
 
     const cartCacheTag = await getCacheTag("carts")
     revalidateTag(cartCacheTag)
