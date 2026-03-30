@@ -9,6 +9,9 @@ loadEnv(process.env.NODE_ENV!, process.cwd());
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
+    databaseDriverOptions: {
+      ssl: false,
+    },
     redisUrl: process.env.CACHE_REDIS_URL,
     http: {
       storeCors: process.env.STORE_CORS!,
