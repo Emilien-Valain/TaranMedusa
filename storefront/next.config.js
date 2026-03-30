@@ -2,6 +2,10 @@ const checkEnvVariables = require("./check-env-variables")
 
 checkEnvVariables()
 
+// Parse the backend URL to allow Next.js Image to serve images from it
+const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+const backendUrlParsed = new URL(backendUrl)
+
 /**
  * @type {import('next').NextConfig}
  */
@@ -20,6 +24,11 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
+      },
+      {
+        protocol: backendUrlParsed.protocol.replace(":", ""),
+        hostname: backendUrlParsed.hostname,
+        port: backendUrlParsed.port || undefined,
       },
       {
         protocol: "https",
