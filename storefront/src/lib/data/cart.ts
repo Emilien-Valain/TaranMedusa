@@ -82,7 +82,7 @@ export async function getOrSetCart(countryCode: string) {
     const cartCacheTag = await getCacheTag("carts")
     revalidateTag(cartCacheTag)
 
-    cart = await retrieveCart()
+    cart = await retrieveCart(cartResp.cart.id)
   }
 
   if (cart && cart?.region_id !== region.id) {
