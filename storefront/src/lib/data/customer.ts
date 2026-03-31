@@ -57,7 +57,7 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
     .catch(medusaError)
 
   const cacheTag = await getCacheTag("customers")
-  revalidateTag(cacheTag)
+  if (cacheTag) revalidateTag(cacheTag)
 
   return updateRes
 }
@@ -146,7 +146,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
     }
 
     const cacheTag = await getCacheTag("customers")
-    revalidateTag(cacheTag)
+    if (cacheTag) revalidateTag(cacheTag)
 
     await transferCart()
 
@@ -175,7 +175,7 @@ export async function login(_currentState: unknown, formData: FormData) {
             getCacheTag("carts"),
           ])
 
-        revalidateTag(customerCacheTag)
+        if (customerCacheTag) revalidateTag(customerCacheTag)
 
         const customer = await retrieveCustomer()
         const cart = await retrieveCart()
@@ -189,8 +189,8 @@ export async function login(_currentState: unknown, formData: FormData) {
           })
         }
 
-        revalidateTag(productsCacheTag)
-        revalidateTag(cartsCacheTag)
+        if (productsCacheTag) revalidateTag(productsCacheTag)
+        if (cartsCacheTag) revalidateTag(cartsCacheTag)
       })
   } catch (error: any) {
     return error.toString()
@@ -219,10 +219,10 @@ export async function signout(countryCode: string, customerId: string) {
       getCacheTag("carts"),
     ])
 
-  revalidateTag(authCacheTag)
-  revalidateTag(customerCacheTag)
-  revalidateTag(productsCacheTag)
-  revalidateTag(cartsCacheTag)
+  if (authCacheTag) revalidateTag(authCacheTag)
+  if (customerCacheTag) revalidateTag(customerCacheTag)
+  if (productsCacheTag) revalidateTag(productsCacheTag)
+  if (cartsCacheTag) revalidateTag(cartsCacheTag)
 
   redirect(`/${countryCode}/account`)
 }
@@ -241,8 +241,7 @@ export async function transferCart() {
   await sdk.store.cart.transferCart(cartId, {}, headers)
 
   const cartCacheTag = await getCacheTag("carts")
-
-  revalidateTag(cartCacheTag)
+  if (cartCacheTag) revalidateTag(cartCacheTag)
 }
 
 export const updatePassword = async (
@@ -304,7 +303,7 @@ export const saveShippingAddressAsCustomerAddress = async (
     .createAddress(address, {}, headers)
     .then(async () => {
       const cacheTag = await getCacheTag("customers")
-      revalidateTag(cacheTag)
+      if (cacheTag) revalidateTag(cacheTag)
     })
     .catch((err) => {
       console.log("error saving shipping address to book", err)
@@ -336,7 +335,7 @@ export const addCustomerAddress = async (
     .createAddress(address, {}, headers)
     .then(async () => {
       const cacheTag = await getCacheTag("customers")
-      revalidateTag(cacheTag)
+      if (cacheTag) revalidateTag(cacheTag)
       return { success: true, error: null }
     })
     .catch((err) => {
@@ -355,7 +354,7 @@ export const deleteCustomerAddress = async (
     .deleteAddress(addressId, headers)
     .then(async () => {
       const cacheTag = await getCacheTag("customers")
-      revalidateTag(cacheTag)
+      if (cacheTag) revalidateTag(cacheTag)
       return { success: true, error: null }
     })
     .catch((err) => {
@@ -390,7 +389,7 @@ export const updateCustomerAddress = async (
     .updateAddress(addressId, address, {}, headers)
     .then(async () => {
       const cacheTag = await getCacheTag("customers")
-      revalidateTag(cacheTag)
+      if (cacheTag) revalidateTag(cacheTag)
       return { success: true, error: null }
     })
     .catch((err) => {
