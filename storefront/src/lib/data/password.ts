@@ -6,10 +6,16 @@ export const requestPasswordReset = async (
   email: string
 ): Promise<{ success: boolean; error?: string }> => {
   try {
-    await sdk.client.fetch(`/auth/customer/emailpass/reset-password`, {
+    const backendUrl =
+      process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const res = await fetch(`${backendUrl}/auth/customer/emailpass/reset-password`, {
       method: "POST",
-      body: { identifier: email },
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ identifier: email }),
     })
+    if (!res.ok) {
+      throw new Error("Impossible d'envoyer l'email de réinitialisation")
+    }
     return { success: true }
   } catch (error: any) {
     return {

@@ -18,17 +18,17 @@ export default async function passwordResetHandler({
 
     const notificationService = container.resolve('notification');
     await notificationService.createNotifications({
-      to: data.email,
+      to: data.entity_id,
       channel: 'email',
       template: 'password-reset',
       data: {
-        email: data.email,
+        email: data.entity_id,
         url: resetUrl,
       },
     });
 
     logger.info(
-      `[password-reset] Lien de réinitialisation envoyé à ${data.email}`,
+      `[password-reset] Lien de réinitialisation envoyé à ${data.entity_id}`,
     );
   } catch (error) {
     logger.error(`[password-reset] Erreur: ${error.message}`);
