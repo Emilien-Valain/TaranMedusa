@@ -78,6 +78,7 @@ export type StoreCreateCompany = {
   country?: string | null;
   logo_url?: string | null;
   currency_code: string;
+  siret?: string | null;
 };
 
 export type StoreUpdateCompany = {

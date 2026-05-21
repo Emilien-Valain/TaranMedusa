@@ -20,5 +20,12 @@ export const Company = model.define("company", {
   spending_limit_reset_frequency: model
     .enum(["never", "daily", "weekly", "monthly", "yearly"])
     .default("monthly"),
+  siret: model.text().nullable(),
+  siret_validation_status: model
+    .enum(["none", "pending", "validated", "rejected"])
+    .default("none"),
+  siret_validated_at: model.dateTime().nullable(),
+  siret_insee_data: model.json().nullable(),
+  siret_rejection_reason: model.text().nullable(),
   employees: model.hasMany(() => Employee),
 });

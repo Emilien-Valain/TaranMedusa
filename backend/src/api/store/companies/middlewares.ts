@@ -14,6 +14,7 @@ import {
   StoreCreateEmployee,
   StoreGetCompanyParams,
   StoreGetEmployeeParams,
+  StoreSubmitSiret,
   StoreUpdateApprovalSettings,
   StoreUpdateEmployee,
 } from "./validators";
@@ -118,6 +119,20 @@ export const storeCompaniesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       ensureRole("company_admin"),
       validateAndTransformBody(StoreUpdateApprovalSettings),
+    ],
+  },
+
+  /* SIRET submission */
+  {
+    method: ["POST"],
+    matcher: "/store/companies/:id/siret",
+    middlewares: [
+      ensureRole("company_admin"),
+      validateAndTransformBody(StoreSubmitSiret),
+      validateAndTransformQuery(
+        StoreGetCompanyParams,
+        storeCompanyQueryConfig.retrieve
+      ),
     ],
   },
 ];

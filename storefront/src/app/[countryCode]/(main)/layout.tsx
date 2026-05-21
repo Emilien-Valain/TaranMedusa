@@ -1,8 +1,12 @@
+import { PricingProvider } from "@/lib/context/pricing-context"
 import { retrieveCart } from "@/lib/data/cart"
 import { retrieveCustomer } from "@/lib/data/customer"
 import { listCartFreeShippingPrices } from "@/lib/data/fulfillment"
+import { getStandardTaxRate } from "@/lib/data/tax-rate"
 import { getBaseURL } from "@/lib/util/env"
+import { getPricingMode } from "@/lib/util/pricing-display"
 import CartMismatchBanner from "@/modules/layout/components/cart-mismatch-banner"
+import PricingModeBanner from "@/modules/layout/components/pricing-mode-banner"
 import Footer from "@/modules/layout/templates/footer"
 import { NavigationHeader } from "@/modules/layout/templates/nav"
 import FreeShippingPriceNudge from "@/modules/shipping/components/free-shipping-price-nudge"
@@ -23,9 +27,13 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
     freeShippingPrices = await listCartFreeShippingPrices(cart.id)
   }
 
+  const pricingMode = getPricingMode(customer)
+  const taxRate = pricingMode === "TTC" ? await getStandardTaxRate("fr") : 0
+
   return (
-    <>
+    <PricingProvider mode={pricingMode} taxRate={taxRate}>
       <NavigationHeader />
+      <PricingModeBanner mode={pricingMode} />
       {/* <div className="flex items-center text-neutral-50 justify-center small:p-4 p-2 text-center bg-neutral-900 small:gap-2 gap-1 text-sm"> */}
       {/*   <div className="flex flex-col small:flex-row small:gap-2 gap-1 items-center"> */}
       {/*     <span className="flex items-center gap-1"> */}
@@ -59,6 +67,6 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
           freeShippingPrices={freeShippingPrices}
         />
       )}
-    </>
+    </PricingProvider>
   )
 }

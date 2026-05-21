@@ -182,6 +182,60 @@ export const useAddCompanyToCustomerGroup = (
   });
 };
 
+export const useApproveCompanySiret = (
+  companyId: string,
+  options?: UseMutationOptions<AdminCompanyResponse, FetchError, void>
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () =>
+      sdk.client.fetch<AdminCompanyResponse>(
+        `/admin/companies/${companyId}/siret/approve`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: {},
+        }
+      ),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: companyQueryKey.lists() });
+      queryClient.invalidateQueries({
+        queryKey: companyQueryKey.detail(companyId),
+      });
+      options?.onSuccess?.(data, variables, context);
+    },
+    ...options,
+  });
+};
+
+export const useRejectCompanySiret = (
+  companyId: string,
+  options?: UseMutationOptions<AdminCompanyResponse, FetchError, string>
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (reason: string) =>
+      sdk.client.fetch<AdminCompanyResponse>(
+        `/admin/companies/${companyId}/siret/reject`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: { reason },
+        }
+      ),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: companyQueryKey.lists() });
+      queryClient.invalidateQueries({
+        queryKey: companyQueryKey.detail(companyId),
+      });
+      options?.onSuccess?.(data, variables, context);
+    },
+    ...options,
+  });
+};
+
 export const useRemoveCompanyFromCustomerGroup = (
   companyId: string,
   options?: UseMutationOptions<void, FetchError, string>

@@ -12,7 +12,7 @@ import { QueryEmployee } from "../../../../types";
 import { useParams } from "react-router-dom";
 import { useAdminCustomerGroups, useCompany } from "../../../hooks/api";
 import { formatAmount } from "../../../utils";
-import { CompanyActionsMenu } from "../components";
+import { CompanyActionsMenu, CompanySiretCard } from "../components";
 import {
   EmployeeCreateDrawer,
   EmployeesActionsMenu,
@@ -139,6 +139,7 @@ const CompanyDetails = () => {
           </>
         )}
       </Container>
+      {!isPending && <CompanySiretCard company={company} />}
       <Container className="flex flex-col p-0 overflow-hidden">
         {!isPending && (
           <>

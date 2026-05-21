@@ -1,3 +1,4 @@
+import { usePricing } from "@/lib/context/pricing-context"
 import { addToCartEventBus } from "@/lib/data/cart-event-bus"
 import { getProductPrice } from "@/lib/util/get-product-price"
 import { HttpTypes, StoreProduct, StoreProductVariant } from "@medusajs/types"
@@ -14,6 +15,7 @@ const ProductVariantsTable = ({
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
 }) => {
+  const { formatPrice, mode } = usePricing()
   const [isAdding, setIsAdding] = useState(false)
   const [lineItemsMap, setLineItemsMap] = useState<
     Map<
@@ -93,7 +95,7 @@ const ProductVariantsTable = ({
                 )
               })}
               <Table.HeaderCell className="px-4 border-x">
-                Prix
+                Prix {mode}
               </Table.HeaderCell>
               <Table.HeaderCell className="px-4">
                 Quantité
@@ -126,7 +128,12 @@ const ProductVariantsTable = ({
                     )
                   })}
                   <Table.Cell className="px-4 border-x">
-                    {variantPrice?.calculated_price}
+                    {variantPrice
+                      ? formatPrice({
+                          amount: variantPrice.calculated_price_number,
+                          currency_code: variantPrice.currency_code,
+                        }).replace(` ${mode}`, "")
+                      : null}
                   </Table.Cell>
                   <Table.Cell className="pl-1 !pr-1">
                     <BulkTableQuantity

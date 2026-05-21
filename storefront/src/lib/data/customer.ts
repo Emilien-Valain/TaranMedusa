@@ -36,7 +36,7 @@ export const retrieveCustomer = async (): Promise<B2BCustomer | null> => {
     .fetch<{ customer: B2BCustomer }>(`/store/customers/me`, {
       method: "GET",
       query: {
-        fields: "*employee, *orders",
+        fields: "*employee, *employee.company, *orders",
       },
       headers,
       next,
@@ -97,6 +97,8 @@ export async function signup(_currentState: unknown, formData: FormData) {
     const sessionHeaders = { authorization: `Bearer ${loginToken}` }
 
     if (isCompany) {
+      const siretRaw = (formData.get("company_siret") as string) || ""
+      const siretCleaned = siretRaw.replace(/\s/g, "")
       const companyForm = {
         name: formData.get("company_name") as string,
         email: formData.get("email") as string,
@@ -107,6 +109,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
         zip: formData.get("company_zip") as string,
         country: formData.get("company_country") as string,
         currency_code: formData.get("currency_code") as string,
+        siret: siretCleaned || undefined,
       }
 
       const createdCompany = await createCompany(companyForm)
@@ -150,7 +153,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
 
     await transferCart()
 
-    return { customer: createdCustomer }
+    return null
   } catch (error: any) {
     console.log("error", error)
     return error.toString()

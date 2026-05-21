@@ -9,11 +9,13 @@ import {
   adminEmployeeQueryConfig,
 } from "./query-config";
 import {
+  AdminApproveSiret,
   AdminCreateCompany,
   AdminCreateEmployee,
   AdminGetApprovalSettingsParams,
   AdminGetCompanyParams,
   AdminGetEmployeeParams,
+  AdminRejectSiret,
   AdminUpdateApprovalSettings,
   AdminUpdateCompany,
   AdminUpdateEmployee,
@@ -116,6 +118,30 @@ export const adminCompaniesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminGetApprovalSettingsParams,
         adminApprovalSettingsQueryConfig.retrieve
+      ),
+    ],
+  },
+
+  /* SIRET validation */
+  {
+    method: ["POST"],
+    matcher: "/admin/companies/:id/siret/approve",
+    middlewares: [
+      validateAndTransformBody(AdminApproveSiret),
+      validateAndTransformQuery(
+        AdminGetCompanyParams,
+        adminCompanyQueryConfig.retrieve
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/companies/:id/siret/reject",
+    middlewares: [
+      validateAndTransformBody(AdminRejectSiret),
+      validateAndTransformQuery(
+        AdminGetCompanyParams,
+        adminCompanyQueryConfig.retrieve
       ),
     ],
   },

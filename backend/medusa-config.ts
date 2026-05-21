@@ -2,6 +2,7 @@ import { QUOTE_MODULE } from './src/modules/quote';
 import { APPROVAL_MODULE } from './src/modules/approval';
 import { COMPANY_MODULE } from './src/modules/company';
 import { INVOICE_MODULE } from './src/modules/invoice';
+import { SHIPPING_WEIGHT_MODULE } from './src/modules/shipping-weight';
 import { loadEnv, defineConfig, Modules } from '@medusajs/framework/utils';
 
 loadEnv(process.env.NODE_ENV!, process.cwd());
@@ -33,6 +34,25 @@ module.exports = defineConfig({
     },
     [INVOICE_MODULE]: {
       resolve: './modules/invoice',
+    },
+    [SHIPPING_WEIGHT_MODULE]: {
+      resolve: './modules/shipping-weight',
+    },
+    [Modules.FULFILLMENT]: {
+      resolve: '@medusajs/medusa/fulfillment',
+      dependencies: [SHIPPING_WEIGHT_MODULE],
+      options: {
+        providers: [
+          {
+            resolve: '@medusajs/medusa/fulfillment-manual',
+            id: 'manual',
+          },
+          {
+            resolve: './src/modules/shipping-weight-fulfillment',
+            id: 'shipping-weight',
+          },
+        ],
+      },
     },
     [Modules.CACHE]: {
       resolve: '@medusajs/cache-redis',

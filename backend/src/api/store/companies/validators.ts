@@ -23,6 +23,7 @@ export const StoreCreateCompany = z
       .enum(["never", "daily", "weekly", "monthly", "yearly"])
       .optional()
       .nullable(),
+    siret: z.string().optional().nullable(),
   })
   .strict();
 
@@ -43,6 +44,13 @@ export const StoreUpdateCompany = z
       .enum(["never", "daily", "weekly", "monthly", "yearly"])
       .optional()
       .nullable(),
+  })
+  .strict();
+
+export type StoreSubmitSiretType = z.infer<typeof StoreSubmitSiret>;
+export const StoreSubmitSiret = z
+  .object({
+    siret: z.string().min(14).max(20),
   })
   .strict();
 

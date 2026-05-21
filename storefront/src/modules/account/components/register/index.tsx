@@ -8,7 +8,8 @@ import { SubmitButton } from "@/modules/checkout/components/submit-button"
 import Input from "@/modules/common/components/input"
 import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Label, Select, Text } from "@medusajs/ui"
-import { ChangeEvent, useActionState, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
+import { ChangeEvent, useActionState, useEffect, useRef, useState } from "react"
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
@@ -27,6 +28,7 @@ interface FormData {
   company_zip: string
   company_country: string
   currency_code: string
+  company_siret: string
 }
 
 const initialFormData: FormData = {
@@ -41,6 +43,7 @@ const initialFormData: FormData = {
   company_zip: "",
   company_country: "",
   currency_code: "",
+  company_siret: "",
 }
 
 const placeholder = ({
@@ -59,10 +62,25 @@ const placeholder = ({
 }
 
 const Register = ({ setCurrentView, regions }: Props) => {
-  const [message, formAction] = useActionState(signup, null)
+  const [message, formAction, isPending] = useActionState(signup, null)
   const [termsAccepted, setTermsAccepted] = useState(false)
   const [isCompany, setIsCompany] = useState(false)
   const [formData, setFormData] = useState<FormData>(initialFormData)
+  const router = useRouter()
+  const params = useParams() as { countryCode?: string }
+  const hasSubmittedRef = useRef(false)
+
+  useEffect(() => {
+    if (isPending) {
+      hasSubmittedRef.current = true
+      return
+    }
+    if (hasSubmittedRef.current && !message) {
+      const cc = params?.countryCode || "fr"
+      router.push(`/${cc}/account`)
+      router.refresh()
+    }
+  }, [isPending, message, params, router])
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -93,6 +111,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
         company_zip: "",
         company_country: "",
         currency_code: "",
+        company_siret: "",
       }))
     }
   }
@@ -110,7 +129,8 @@ const Register = ({ setCurrentView, regions }: Props) => {
     !!formData.company_city &&
     !!formData.company_zip &&
     !!formData.company_country &&
-    !!formData.currency_code
+    !!formData.currency_code &&
+    formData.company_siret.replace(/\s/g, "").length === 14
 
   const isValid = baseValid && (isCompany ? companyValid : true)
 
@@ -225,6 +245,21 @@ const Register = ({ setCurrentView, regions }: Props) => {
                 value={formData.company_name}
                 onChange={handleChange}
               />
+              <Input
+                label="SIRET (14 chiffres)"
+                name="company_siret"
+                required
+                inputMode="numeric"
+                pattern="[0-9 ]{14,20}"
+                data-testid="company-siret-input"
+                className="bg-white"
+                value={formData.company_siret}
+                onChange={handleChange}
+              />
+              <Text className="text-xs text-ui-fg-muted -mt-2">
+                Une fois votre SIRET validé par notre équipe, vous verrez les
+                prix HT sur le site.
+              </Text>
               <Input
                 label="Adresse de la société"
                 name="company_address"

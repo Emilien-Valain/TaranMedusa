@@ -12,6 +12,13 @@ export enum ModuleCompanySpendingLimitResetFrequency {
   YEARLY = "yearly",
 }
 
+export enum ModuleSiretValidationStatus {
+  NONE = "none",
+  PENDING = "pending",
+  VALIDATED = "validated",
+  REJECTED = "rejected",
+}
+
 export type ModuleCompany = {
   id: string;
   name: string;
@@ -25,6 +32,11 @@ export type ModuleCompany = {
   logo_url: string | null;
   currency_code: string | null;
   spending_limit_reset_frequency: ModuleCompanySpendingLimitResetFrequency;
+  siret: string | null;
+  siret_validation_status: ModuleSiretValidationStatus;
+  siret_validated_at: Date | null;
+  siret_insee_data: Record<string, any> | null;
+  siret_rejection_reason: string | null;
   created_at: Date;
   updated_at: Date;
   customer_group: CustomerGroupDTO;
@@ -43,6 +55,7 @@ export type ModuleCreateCompany = {
   logo_url: string | null;
   currency_code: string;
   spending_limit_reset_frequency: ModuleCompanySpendingLimitResetFrequency | null;
+  siret?: string | null;
 };
 
 export interface ModuleUpdateCompany extends Partial<ModuleCompany> {

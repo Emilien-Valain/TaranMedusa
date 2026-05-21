@@ -24,7 +24,7 @@ const getInvoiceConfigStep = createStep(
 export const generateInvoicePdfWorkflow = createWorkflow(
   "generate-invoice-pdf",
   function (input: GenerateInvoicePdfWorkflowInput) {
-    const { data: orders } = useQueryGraphStep({
+    const orderQuery = (useQueryGraphStep as any)({
       entity: "order",
       fields: [
         "id",
@@ -45,7 +45,7 @@ export const generateInvoicePdfWorkflow = createWorkflow(
       },
     });
 
-    const order = transform(orders, (orders) => orders[0]);
+    const order = transform(orderQuery, (q: any) => q.data[0]);
 
     const invoice = getOrderInvoiceStep({ order_id: input.order_id });
 
@@ -63,7 +63,7 @@ export const generateInvoicePdfWorkflow = createWorkflow(
           display_id: order.display_id,
           created_at: order.created_at,
           currency_code: order.currency_code,
-          items: order.items.map((item: any) => ({
+          items: (order.items ?? []).map((item: any) => ({
             title: item.title,
             quantity: item.quantity,
             unit_price: item.unit_price,

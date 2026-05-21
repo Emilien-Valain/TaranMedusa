@@ -56,6 +56,16 @@ export const AdminRemoveCompanyFromCustomerGroup = z.object({
   group_id: z.string(),
 });
 
+export type AdminApproveSiretType = z.infer<typeof AdminApproveSiret>;
+export const AdminApproveSiret = z.object({}).strict();
+
+export type AdminRejectSiretType = z.infer<typeof AdminRejectSiret>;
+export const AdminRejectSiret = z
+  .object({
+    reason: z.string().min(1),
+  })
+  .strict();
+
 /* Employee Validators */
 
 export type AdminGetEmployeeParamsType = z.infer<typeof AdminGetEmployeeParams>;

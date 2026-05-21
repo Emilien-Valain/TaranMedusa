@@ -11,6 +11,11 @@ export const storeCompanyFields = [
   "zip",
   "country",
   "currency_code",
+  "siret",
+  "siret_validation_status",
+  "siret_validated_at",
+  "siret_insee_data",
+  "siret_rejection_reason",
   "*employees",
   "*approval_settings",
 ];

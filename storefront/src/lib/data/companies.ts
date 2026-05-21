@@ -154,6 +154,32 @@ export const deleteEmployee = async (companyId: string, employeeId: string) => {
   revalidateTag(cacheTag)
 }
 
+export const submitCompanySiret = async (
+  companyId: string,
+  siret: string
+) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const { company } = await sdk.client.fetch<StoreCompanyResponse>(
+    `/store/companies/${companyId}/siret`,
+    {
+      method: "POST",
+      body: { siret },
+      headers,
+    }
+  )
+
+  const cacheTag = await getCacheTag("companies")
+  revalidateTag(cacheTag)
+
+  const customersTag = await getCacheTag("customers")
+  if (customersTag) revalidateTag(customersTag)
+
+  return company
+}
+
 export const updateApprovalSettings = async (
   companyId: string,
   requiresAdminApproval: boolean

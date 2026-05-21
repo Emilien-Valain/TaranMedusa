@@ -26,7 +26,7 @@ const CartTotals: React.FC = () => {
       <div className="flex flex-col gap-y-2 txt-medium text-ui-fg-subtle ">
         <div className="flex items-center justify-between">
           <Text className="flex gap-x-1 items-center">
-            Sous-total (hors frais de port et taxes)
+            Sous-total HT (hors frais de port)
           </Text>
           <Text
             data-testid="cart-item-subtotal"
@@ -76,7 +76,7 @@ const CartTotals: React.FC = () => {
       </div>
       <Divider className="my-2" />
       <div className="flex items-center justify-between text-ui-fg-base mb-2 txt-medium ">
-        <Text className="font-medium">Total</Text>
+        <Text className="font-medium">Total TTC</Text>
         {isUpdatingCart ? (
           <div className="w-28 h-6 mt-[3px] bg-neutral-200 rounded-full animate-pulse" />
         ) : (
