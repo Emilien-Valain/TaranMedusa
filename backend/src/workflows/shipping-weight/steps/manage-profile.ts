@@ -8,6 +8,7 @@ export type CreateProfileInput = {
   free_shipping_threshold?: number | null;
   currency_code?: string;
   is_active?: boolean;
+  colissimo_product_code?: string | null;
 };
 
 export const createProfileStep = createStep(
@@ -22,6 +23,7 @@ export const createProfileStep = createStep(
       free_shipping_threshold: input.free_shipping_threshold ?? null,
       currency_code: input.currency_code ?? "eur",
       is_active: input.is_active ?? true,
+      colissimo_product_code: input.colissimo_product_code ?? null,
     });
 
     return new StepResponse(profile, profile.id);
@@ -41,6 +43,7 @@ export type UpdateProfileInput = {
   free_shipping_threshold?: number | null;
   currency_code?: string;
   is_active?: boolean;
+  colissimo_product_code?: string | null;
 };
 
 export const updateProfileStep = createStep(
@@ -64,6 +67,9 @@ export const updateProfileStep = createStep(
         currency_code: input.currency_code,
       }),
       ...(input.is_active !== undefined && { is_active: input.is_active }),
+      ...(input.colissimo_product_code !== undefined && {
+        colissimo_product_code: input.colissimo_product_code,
+      }),
     });
 
     return new StepResponse(updated, previous);
@@ -79,6 +85,7 @@ export const updateProfileStep = createStep(
       free_shipping_threshold: previous.free_shipping_threshold,
       currency_code: previous.currency_code,
       is_active: previous.is_active,
+      colissimo_product_code: previous.colissimo_product_code,
     });
   }
 );

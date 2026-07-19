@@ -29,6 +29,64 @@ export type InseeEtablissement = {
   };
 };
 
+/**
+ * Nom « officiel » de l'établissement côté INSEE.
+ * - Personne morale : denominationUniteLegale.
+ * - Entreprise individuelle / auto-entrepreneur : pas de dénomination,
+ *   on reconstruit à partir du prénom + nom.
+ */
+export function getInseeName(
+  etab: InseeEtablissement | undefined | null
+): string {
+  const ul = etab?.uniteLegale;
+  if (!ul) return "";
+  if (ul.denominationUniteLegale) return ul.denominationUniteLegale;
+  return [ul.prenom1UniteLegale, ul.nomUniteLegale]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+}
+
+const LEGAL_FORMS =
+  /\b(SARLU?|SASU?|EURL|SA|SCI|SCM|SCP|EIRL|EI|SNC|SCOP|SELARL|SELAS|SEL|GIE|SAS|SARL)\b/g;
+
+/** Normalise un nom pour comparaison : MAJ, sans accents, sans forme juridique. */
+export function normalizeCompanyName(value: string | null | undefined): string {
+  if (!value) return "";
+  return value
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "") // accents
+    .toUpperCase()
+    .replace(LEGAL_FORMS, " ")
+    .replace(/[^A-Z0-9]+/g, " ") // ponctuation
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+/**
+ * Correspondance « floue » entre le nom saisi et le nom INSEE.
+ * Vrai si égalité, inclusion, ou recouvrement de tokens >= 60 %.
+ */
+export function isNameMatch(
+  entered: string | null | undefined,
+  inseeName: string | null | undefined
+): boolean {
+  const a = normalizeCompanyName(entered);
+  const b = normalizeCompanyName(inseeName);
+  if (!a || !b) return false;
+  if (a === b) return true;
+  if (a.includes(b) || b.includes(a)) return true;
+
+  const ta = new Set(a.split(" ").filter(Boolean));
+  const tb = new Set(b.split(" ").filter(Boolean));
+  if (ta.size === 0 || tb.size === 0) return false;
+
+  let shared = 0;
+  for (const t of ta) if (tb.has(t)) shared++;
+  const overlap = shared / Math.min(ta.size, tb.size);
+  return overlap >= 0.6;
+}
+
 export function getEtablissementState(
   etab: InseeEtablissement | undefined | null
 ): string | undefined {

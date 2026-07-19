@@ -17,6 +17,8 @@ export type ShippingWeightTier = {
   price: number | string;
 };
 
+export type ColissimoProductCode = "DOM" | "DOS";
+
 export type ShippingWeightProfile = {
   id: string;
   name: string;
@@ -24,6 +26,7 @@ export type ShippingWeightProfile = {
   free_shipping_threshold?: number | string | null;
   currency_code: string;
   is_active: boolean;
+  colissimo_product_code?: ColissimoProductCode | null;
   tiers?: ShippingWeightTier[];
 };
 
@@ -45,6 +48,7 @@ export type CreateProfilePayload = {
   free_shipping_threshold?: number | null;
   currency_code?: string;
   is_active?: boolean;
+  colissimo_product_code?: ColissimoProductCode | null;
 };
 
 export type UpdateProfilePayload = Partial<CreateProfilePayload>;
@@ -57,7 +61,90 @@ export type CreateTierPayload = {
 
 export type UpdateTierPayload = Partial<CreateTierPayload>;
 
+export type ColissimoConfig = {
+  id: string;
+  enabled: boolean;
+  api_key_set?: boolean;
+  password_set?: boolean;
+  contract_number?: string | null;
+  label_format?: string | null;
+  sender_name?: string | null;
+  sender_street?: string | null;
+  sender_street2?: string | null;
+  sender_zip?: string | null;
+  sender_city?: string | null;
+  sender_country?: string | null;
+  sender_phone?: string | null;
+  sender_email?: string | null;
+};
+
+export type ColissimoConfigResponse = { colissimo_config: ColissimoConfig };
+
+export type UpdateColissimoConfigPayload = Partial<{
+  enabled: boolean;
+  api_key: string | null;
+  contract_number: string | null;
+  password: string | null;
+  // Effacement explicite d'un secret (un champ vide, lui, conserve l'existant).
+  clear_api_key: boolean;
+  clear_password: boolean;
+  label_format: string | null;
+  sender_name: string | null;
+  sender_street: string | null;
+  sender_street2: string | null;
+  sender_zip: string | null;
+  sender_city: string | null;
+  sender_country: string | null;
+  sender_phone: string | null;
+  sender_email: string | null;
+}>;
+
 export const shippingWeightQueryKey = queryKeysFactory("shipping-weight");
+export const colissimoConfigQueryKey = queryKeysFactory("colissimo-config");
+
+export const useColissimoConfig = (
+  options?: UseQueryOptions<
+    ColissimoConfigResponse,
+    FetchError,
+    ColissimoConfigResponse,
+    QueryKey
+  >
+) => {
+  return useQuery({
+    queryKey: colissimoConfigQueryKey.details(),
+    queryFn: () =>
+      sdk.client.fetch<ColissimoConfigResponse>("/admin/colissimo-config", {
+        method: "GET",
+      }),
+    staleTime: 0,
+    ...options,
+  });
+};
+
+export const useUpdateColissimoConfig = (
+  options?: UseMutationOptions<
+    ColissimoConfigResponse,
+    FetchError,
+    UpdateColissimoConfigPayload
+  >
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.client.fetch<ColissimoConfigResponse>("/admin/colissimo-config", {
+        method: "POST",
+        body: payload,
+      }),
+    ...options,
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: colissimoConfigQueryKey.all,
+        refetchType: "all",
+      });
+      options?.onSuccess?.(data, variables, context);
+    },
+  });
+};
 
 const invalidateAll = (queryClient: ReturnType<typeof useQueryClient>) => {
   queryClient.invalidateQueries({

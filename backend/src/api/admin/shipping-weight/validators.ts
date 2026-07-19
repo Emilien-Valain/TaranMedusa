@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const ColissimoProductCode = z.enum(["DOM", "DOS"]);
+
 export const AdminCreateShippingProfile = z
   .object({
     name: z.string().min(1),
@@ -7,6 +9,7 @@ export const AdminCreateShippingProfile = z
     free_shipping_threshold: z.number().nullable().optional(),
     currency_code: z.string().optional(),
     is_active: z.boolean().optional(),
+    colissimo_product_code: ColissimoProductCode.nullable().optional(),
   })
   .strict();
 export type AdminCreateShippingProfileType = z.infer<
@@ -20,6 +23,7 @@ export const AdminUpdateShippingProfile = z
     free_shipping_threshold: z.number().nullable().optional(),
     currency_code: z.string().optional(),
     is_active: z.boolean().optional(),
+    colissimo_product_code: ColissimoProductCode.nullable().optional(),
   })
   .strict();
 export type AdminUpdateShippingProfileType = z.infer<

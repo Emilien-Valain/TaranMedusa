@@ -126,10 +126,31 @@ export default async function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-[#1565c0]">
-        <div className="content-container flex w-full py-4 justify-between items-center">
+        <div className="content-container flex flex-col gap-3 w-full py-4 md:flex-row md:justify-between md:items-center">
           <Text className="text-blue-300 text-xs">
             © {new Date().getFullYear()} Taran Industrie. Tous droits réservés.
           </Text>
+
+          {/* Liens légaux */}
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-blue-200">
+            {[
+              { href: "/mentions-legales", label: "Mentions légales" },
+              { href: "/cgv", label: "CGV" },
+              { href: "/cgu", label: "CGU" },
+              { href: "/confidentialite", label: "Confidentialité" },
+              { href: "/cookies", label: "Cookies" },
+            ].map((link) => (
+              <li key={link.href}>
+                <LocalizedClientLink
+                  href={link.href}
+                  className="hover:text-[#0099d6] transition-colors"
+                >
+                  {link.label}
+                </LocalizedClientLink>
+              </li>
+            ))}
+          </ul>
+
           <div className="flex items-center gap-1">
             <Image
               src="/images/france.png"

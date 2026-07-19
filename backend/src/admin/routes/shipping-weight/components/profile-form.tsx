@@ -1,4 +1,13 @@
-import { Button, Drawer, Input, Label, Switch, Text, toast } from "@medusajs/ui";
+import {
+  Button,
+  Drawer,
+  Input,
+  Label,
+  Select,
+  Switch,
+  Text,
+  toast,
+} from "@medusajs/ui";
 import { useState } from "react";
 import {
   CreateProfilePayload,
@@ -23,6 +32,7 @@ export function ProfileForm({ profile, handleSubmit, loading, error }: Props) {
         : null,
     currency_code: profile?.currency_code ?? "eur",
     is_active: profile?.is_active ?? true,
+    colissimo_product_code: profile?.colissimo_product_code ?? null,
   });
 
   const update = <K extends keyof CreateProfilePayload>(
@@ -111,6 +121,38 @@ export function ProfileForm({ profile, handleSubmit, loading, error }: Props) {
               }
               placeholder="EUR"
             />
+          </div>
+
+          <div>
+            <Label size="xsmall">Service Colissimo</Label>
+            <Select
+              value={formData.colissimo_product_code ?? "none"}
+              onValueChange={(value) =>
+                update(
+                  "colissimo_product_code",
+                  value === "none" ? null : (value as "DOM" | "DOS")
+                )
+              }
+            >
+              <Select.Trigger>
+                <Select.Value placeholder="Aucun (pas d'étiquette automatique)" />
+              </Select.Trigger>
+              <Select.Content>
+                <Select.Item value="none">
+                  Aucun (pas d'étiquette automatique)
+                </Select.Item>
+                <Select.Item value="DOM">
+                  Colissimo Domicile — sans signature (DOM)
+                </Select.Item>
+                <Select.Item value="DOS">
+                  Colissimo Domicile — avec signature (DOS)
+                </Select.Item>
+              </Select.Content>
+            </Select>
+            <Text className="txt-compact-xsmall text-ui-fg-muted mt-1">
+              Détermine l'étiquette générée automatiquement à l'expédition.
+              Laissez « Aucun » pour gérer l'expédition manuellement.
+            </Text>
           </div>
 
           <div className="flex items-center justify-between">

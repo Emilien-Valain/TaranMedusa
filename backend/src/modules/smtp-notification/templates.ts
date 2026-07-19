@@ -213,6 +213,37 @@ export const templates: Record<string, (data: Record<string, any>) => TemplateRe
       <p style="margin: 0;">N'hésitez pas à nous contacter pour toute question.</p>
     `),
   }),
+
+  "shipment-confirmation": (data) => ({
+    subject: `Votre commande #${data.display_id || data.order_id} a été expédiée`,
+    html: baseLayout(`
+      <h2 style="color: ${COLORS.navy}; font-size: 20px; margin: 0 0 16px; font-weight: 700;">Votre commande est en route 🚚</h2>
+      <p style="margin: 0 0 8px;">Bonjour ${data.customer_name || ""},</p>
+      <p style="margin: 0 0 20px;">Bonne nouvelle : votre commande <strong style="color: ${COLORS.navy};">#${data.display_id || data.order_id}</strong> vient d'être expédiée via Colissimo.</p>
+
+      ${data.tracking_number ? `
+      <p style="margin: 0 0 4px; font-weight: 600; color: ${COLORS.navy}; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em;">Numéro de suivi</p>
+      <p style="margin: 0 0 16px; color: ${COLORS.textDark}; font-size: 16px; font-weight: 700; letter-spacing: 0.02em;">${data.tracking_number}</p>
+      ${data.tracking_url ? btn(data.tracking_url, "Suivre mon colis") : ""}
+      ` : `
+      <p style="margin: 0 0 16px; color: ${COLORS.textMuted};">Vous recevrez prochainement votre numéro de suivi.</p>
+      `}
+
+      ${data.shipping_address ? `
+      ${divider}
+      <p style="margin: 0 0 4px; font-weight: 600; color: ${COLORS.navy}; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em;">Adresse de livraison</p>
+      <p style="margin: 0; color: ${COLORS.textMuted}; font-size: 14px; line-height: 1.6;">
+        ${data.shipping_address.first_name || ""} ${data.shipping_address.last_name || ""}<br />
+        ${data.shipping_address.address_1 || ""}${data.shipping_address.address_2 ? ", " + data.shipping_address.address_2 : ""}<br />
+        ${data.shipping_address.postal_code || ""} ${data.shipping_address.city || ""}<br />
+        ${data.shipping_address.country_code?.toUpperCase() || ""}
+      </p>
+      ` : ""}
+
+      ${divider}
+      <p style="margin: 0; color: ${COLORS.textMuted}; font-size: 14px;">Merci pour votre confiance.</p>
+    `),
+  }),
 }
 
 export function renderTemplate(templateId: string, data: Record<string, any>): TemplateResult {

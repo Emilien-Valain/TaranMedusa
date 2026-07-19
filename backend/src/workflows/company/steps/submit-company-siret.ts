@@ -9,6 +9,8 @@ import {
   isValidSiretFormat,
   isInseeConfigured,
   lookupSiret,
+  getInseeName,
+  isNameMatch,
 } from "../../../lib/insee-sirene";
 
 type Input = {
@@ -46,11 +48,21 @@ export const submitCompanySiretStep = createStep(
     let nextStatus: ModuleSiretValidationStatus =
       ModuleSiretValidationStatus.PENDING;
     let rejectionReason: string | null = null;
+    let validatedAt: Date | null = null;
 
     if (isInseeConfigured()) {
       const result = await lookupSiret(cleaned);
       if (result.found) {
         inseeData = result.etablissement as unknown as Record<string, any>;
+
+        // Auto-validation : établissement actif (état "A") + le nom saisi
+        // correspond au nom INSEE (dénomination, ou prénom+nom pour les EI).
+        // Sinon on laisse en "pending" pour une revue manuelle de l'admin.
+        const inseeName = getInseeName(result.etablissement);
+        if (isNameMatch(previousData.name, inseeName)) {
+          nextStatus = ModuleSiretValidationStatus.VALIDATED;
+          validatedAt = new Date();
+        }
       } else {
         if ("etablissement" in result && result.etablissement) {
           inseeData = result.etablissement as unknown as Record<string, any>;
@@ -72,7 +84,7 @@ export const submitCompanySiretStep = createStep(
       siret_validation_status: nextStatus,
       siret_insee_data: inseeData,
       siret_rejection_reason: rejectionReason,
-      siret_validated_at: null,
+      siret_validated_at: validatedAt,
     });
 
     return new StepResponse(

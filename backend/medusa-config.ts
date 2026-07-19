@@ -40,7 +40,11 @@ module.exports = defineConfig({
     },
     [Modules.FULFILLMENT]: {
       resolve: '@medusajs/medusa/fulfillment',
-      dependencies: [SHIPPING_WEIGHT_MODULE],
+      dependencies: [
+        SHIPPING_WEIGHT_MODULE,
+        Modules.STOCK_LOCATION,
+        Modules.FILE,
+      ],
       options: {
         providers: [
           {

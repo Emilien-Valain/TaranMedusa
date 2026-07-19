@@ -6,6 +6,7 @@ import { getStandardTaxRate } from "@/lib/data/tax-rate"
 import { getBaseURL } from "@/lib/util/env"
 import { getPricingMode } from "@/lib/util/pricing-display"
 import CartMismatchBanner from "@/modules/layout/components/cart-mismatch-banner"
+import CookieConsent from "@/modules/legal/components/cookie-consent"
 import PricingModeBanner from "@/modules/layout/components/pricing-mode-banner"
 import Footer from "@/modules/layout/templates/footer"
 import { NavigationHeader } from "@/modules/layout/templates/nav"
@@ -59,6 +60,8 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
       {props.children}
 
       <Footer />
+
+      <CookieConsent />
 
       {cart && freeShippingPrices && (
         <FreeShippingPriceNudge

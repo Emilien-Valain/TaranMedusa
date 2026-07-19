@@ -18,6 +18,7 @@ import {
   useShippingWeightProfiles,
 } from "../../hooks/api/shipping-weight";
 import {
+  ColissimoConfigCard,
   ProfileCreateDrawer,
   ProfileEditDrawer,
   TierCreateDrawer,
@@ -212,6 +213,9 @@ const ShippingWeightPage = () => {
         {data?.profiles?.map((profile) => (
           <ProfileCard key={profile.id} profile={profile} />
         ))}
+      </div>
+      <div className="mt-4">
+        <ColissimoConfigCard />
       </div>
       <Toaster />
     </>

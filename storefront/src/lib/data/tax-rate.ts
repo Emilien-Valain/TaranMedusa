@@ -10,6 +10,15 @@ type TaxRateResponse = {
   found: boolean
 }
 
+/**
+ * Taux de TVA de repli (en %) utilisé quand le taux réel ne peut pas être
+ * récupéré ou est invalide. On ne doit JAMAIS retomber sur 0 : un particulier
+ * (mode TTC) verrait alors des prix HT étiquetés « TTC » puis +TVA au paiement,
+ * ce qui est illégal en B2C. 20 % = taux standard français (cf. CONTEXT.md).
+ * Surchargeable via NEXT_PUBLIC_DEFAULT_TVA_RATE.
+ */
+const DEFAULT_TVA_RATE = Number(process.env.NEXT_PUBLIC_DEFAULT_TVA_RATE) || 20
+
 export const getStandardTaxRate = async (
   countryCode: string = "fr"
 ): Promise<number> => {
@@ -24,8 +33,15 @@ export const getStandardTaxRate = async (
       next,
       cache: "force-cache",
     })
-    return res?.rate ?? 0
+
+    // On n'accepte qu'un taux strictement positif. Un 0 / absence de taux
+    // (found: false) ne doit pas être pris pour un vrai taux : repli sûr.
+    const rate = Number(res?.rate)
+    if (res?.found && Number.isFinite(rate) && rate > 0) {
+      return rate
+    }
+    return DEFAULT_TVA_RATE
   } catch {
-    return 0
+    return DEFAULT_TVA_RATE
   }
 }

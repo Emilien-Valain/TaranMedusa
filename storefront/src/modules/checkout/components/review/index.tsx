@@ -1,6 +1,7 @@
 "use client"
 
-import { Text } from "@medusajs/ui"
+import { useState } from "react"
+import { Checkbox, Label, Text } from "@medusajs/ui"
 
 import { checkSpendingLimit } from "@/lib/util/check-spending-limit"
 import PaymentButton from "@/modules/checkout/components/payment-button"
@@ -20,28 +21,42 @@ const Review = ({
     ? checkSpendingLimit(cart, customer)
     : false
 
-  return (
-    <div className="flex flex-col gap-y-2">
-      <div className="flex items-start gap-x-1 w-full">
-        <Text className="txt-xsmall text-neutral-500 mb-1">
-          En Finalisant cette commande, j'accepte les conditions de Taran{" "}
+  // Acceptation explicite des CGV, obligatoire avant paiement (Code de la
+  // consommation, art. L221-5). Non pré-cochée conformément à la réglementation.
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
+  return (
+    <div className="flex flex-col gap-y-3">
+      <div className="flex items-start gap-x-2 w-full">
+        <Checkbox
+          id="accept-terms"
+          checked={termsAccepted}
+          onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+          className="mt-0.5"
+          data-testid="terms-checkbox"
+        />
+        <Label
+          htmlFor="accept-terms"
+          className="txt-xsmall text-neutral-600 !font-normal cursor-pointer"
+        >
+          J'ai lu et j'accepte les{" "}
           <LocalizedClientLink
-            href="/terms-of-sale"
-            className="hover:text-neutral-800"
+            href="/cgv"
+            className="text-neutral-900 underline hover:text-neutral-600"
             target="_blank"
           >
-            Conditions de Vente ↗
+            conditions générales de vente ↗
           </LocalizedClientLink>{" "}
-          et{" "}
+          et la{" "}
           <LocalizedClientLink
-            href="/privacy-policy"
-            className="hover:text-neutral-800"
+            href="/confidentialite"
+            className="text-neutral-900 underline hover:text-neutral-600"
             target="_blank"
           >
-            Politique de Confidentialité ↗
+            politique de confidentialité ↗
           </LocalizedClientLink>
-        </Text>
+          .
+        </Label>
       </div>
       {spendLimitExceeded ? (
         <>
@@ -54,9 +69,17 @@ const Review = ({
             </p>
           </div>
           <Button className="w-full h-10 rounded-full shadow-none" disabled>
-            Passer Commande
+            Commander et payer
           </Button>
         </>
+      ) : !termsAccepted ? (
+        <Button
+          className="w-full h-10 rounded-full shadow-none"
+          disabled
+          data-testid="submit-order-button"
+        >
+          Commander et payer
+        </Button>
       ) : (
         <PaymentButton cart={cart} data-testid="submit-order-button" />
       )}
