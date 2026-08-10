@@ -9,8 +9,14 @@ import {
   Textarea,
   toast,
 } from "@medusajs/ui";
-import { useState } from "react";
+import { CheckCircleSolid, ExclamationCircle } from "@medusajs/icons";
+import { Fragment, useState } from "react";
 import { QueryCompany } from "../../../../types";
+import {
+  compareAddress,
+  getInseeName,
+  isNameMatch,
+} from "../../../../lib/insee-sirene";
 import {
   useApproveCompanySiret,
   useRejectCompanySiret,
@@ -45,39 +51,96 @@ const statusBadge = (status: string | null | undefined) => {
   }
 };
 
+function MatchIndicator({ ok }: { ok: boolean }) {
+  return ok ? (
+    <Badge size="2xsmall" color="green" className="gap-1">
+      <CheckCircleSolid className="w-3 h-3" /> Correspond
+    </Badge>
+  ) : (
+    <Badge size="2xsmall" color="orange" className="gap-1">
+      <ExclamationCircle className="w-3 h-3" /> À vérifier
+    </Badge>
+  );
+}
+
+function ComparisonTable({ company }: { company: QueryCompany }) {
+  const etab = company.siret_insee_data as any;
+  const inseeName = getInseeName(etab);
+  const nameOk = isNameMatch(company.name, inseeName);
+  const addr = compareAddress(
+    { address: company.address, city: company.city, zip: company.zip },
+    etab
+  );
+
+  const rows: Array<{
+    label: string;
+    declared: string;
+    insee: string;
+    ok: boolean;
+  }> = [
+    {
+      label: "Nom",
+      declared: company.name || "—",
+      insee: inseeName || "—",
+      ok: nameOk,
+    },
+    {
+      label: "Adresse",
+      declared: addr.declaredStreet || "—",
+      insee: addr.inseeStreet || "—",
+      ok: addr.streetMatch,
+    },
+    {
+      label: "Code postal",
+      declared: addr.declaredZip || "—",
+      insee: addr.inseeZip || "—",
+      ok: addr.zipMatch,
+    },
+    {
+      label: "Ville",
+      declared: addr.declaredCity || "—",
+      insee: addr.inseeCity || "—",
+      ok: addr.cityMatch,
+    },
+  ];
+
+  return (
+    <div className="flex flex-col gap-2">
+      <Text className="txt-small font-medium">
+        Comparaison déclaratif / INSEE
+      </Text>
+      <div className="grid grid-cols-[minmax(0,auto)_1fr_1fr_auto] gap-x-4 gap-y-1.5 txt-small">
+        <span className="font-medium text-ui-fg-subtle" />
+        <span className="font-medium text-ui-fg-subtle">Déclaré</span>
+        <span className="font-medium text-ui-fg-subtle">INSEE</span>
+        <span />
+        {rows.map((row) => (
+          <Fragment key={row.label}>
+            <span className="font-medium">{row.label}</span>
+            <span className="text-ui-fg-subtle">{row.declared}</span>
+            <span className="text-ui-fg-subtle">{row.insee}</span>
+            <MatchIndicator ok={row.ok} />
+          </Fragment>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function InseeSummary({ data }: { data: Record<string, any> }) {
   const u = data?.uniteLegale || {};
-  const a = data?.adresseEtablissement || {};
   const periodes: Array<Record<string, any>> = data?.periodesEtablissement || [];
   const currentPeriode =
     periodes.find((p) => !p.dateFin) || periodes[0] || null;
   const etatEtab =
     data?.etatAdministratifEtablissement ??
     currentPeriode?.etatAdministratifEtablissement;
-  const denom =
-    u.denominationUniteLegale ||
-    [u.prenom1UniteLegale, u.nomUniteLegale].filter(Boolean).join(" ");
-  const adresse = [
-    a.numeroVoieEtablissement,
-    a.typeVoieEtablissement,
-    a.libelleVoieEtablissement,
-  ]
-    .filter(Boolean)
-    .join(" ");
-  const ville = [a.codePostalEtablissement, a.libelleCommuneEtablissement]
-    .filter(Boolean)
-    .join(" ");
   const annuaireUrl = data?.siret
     ? `https://annuaire-entreprises.data.gouv.fr/etablissement/${data.siret}`
     : null;
 
   return (
     <div className="flex flex-col gap-1 text-ui-fg-subtle txt-small">
-      {denom && (
-        <div>
-          <span className="font-medium">Dénomination :</span> {denom}
-        </div>
-      )}
       {data?.siren && (
         <div>
           <span className="font-medium">SIREN :</span>{" "}
@@ -88,12 +151,6 @@ function InseeSummary({ data }: { data: Record<string, any> }) {
         <span className="font-medium">Type :</span>{" "}
         {data?.etablissementSiege ? "Siège social" : "Établissement secondaire"}
       </div>
-      {adresse && (
-        <div>
-          <span className="font-medium">Adresse :</span> {adresse}
-        </div>
-      )}
-      {ville && <div className="pl-[5.5rem]">{ville}</div>}
       {u.activitePrincipaleUniteLegale && (
         <div>
           <span className="font-medium">Activité (NAF) :</span>{" "}
@@ -291,6 +348,16 @@ export function CompanySiretCard({ company }: { company: QueryCompany }) {
                 <Text className="text-ui-fg-error">
                   {company.siret_rejection_reason}
                 </Text>
+              </Table.Cell>
+            </Table.Row>
+          )}
+          {company.siret_insee_data && (
+            <Table.Row>
+              <Table.Cell className="font-medium font-sans txt-compact-small align-top">
+                Vérification
+              </Table.Cell>
+              <Table.Cell>
+                <ComparisonTable company={company} />
               </Table.Cell>
             </Table.Row>
           )}

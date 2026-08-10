@@ -87,6 +87,98 @@ export function isNameMatch(
   return overlap >= 0.6;
 }
 
+/** Normalise un texte libre pour comparaison : MAJ, sans accents, sans ponctuation. */
+export function normalizeText(value: string | null | undefined): string {
+  if (!value) return "";
+  return value
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+export type AddressMatch = {
+  zipMatch: boolean;
+  cityMatch: boolean;
+  streetMatch: boolean;
+  declaredStreet: string;
+  declaredCity: string;
+  declaredZip: string;
+  inseeStreet: string;
+  inseeCity: string;
+  inseeZip: string;
+};
+
+/**
+ * Compare l'adresse saisie par le client à celle renvoyée par l'INSEE.
+ * Chaque composant (code postal, ville, voie) est comparé séparément :
+ * à l'administrateur de juger de la correspondance globale.
+ */
+export function compareAddress(
+  declared: {
+    address?: string | null;
+    city?: string | null;
+    zip?: string | null;
+  },
+  etab: InseeEtablissement | undefined | null
+): AddressMatch {
+  const a = etab?.adresseEtablissement;
+  const inseeStreet = [
+    a?.numeroVoieEtablissement,
+    a?.typeVoieEtablissement,
+    a?.libelleVoieEtablissement,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const inseeCity = a?.libelleCommuneEtablissement || "";
+  const inseeZip = a?.codePostalEtablissement || "";
+
+  const declaredZip = (declared.zip || "").replace(/\s/g, "");
+  const declaredCity = declared.city || "";
+  const declaredStreet = declared.address || "";
+
+  const zipMatch = Boolean(
+    declaredZip && inseeZip && declaredZip === inseeZip.replace(/\s/g, "")
+  );
+
+  const nCity = normalizeText(declaredCity);
+  const nInseeCity = normalizeText(inseeCity);
+  const cityMatch = Boolean(
+    nCity && nInseeCity && (nCity === nInseeCity || nCity.includes(nInseeCity) || nInseeCity.includes(nCity))
+  );
+
+  const nStreet = normalizeText(declaredStreet);
+  const nInseeStreet = normalizeText(inseeStreet);
+  let streetMatch = false;
+  if (nStreet && nInseeStreet) {
+    if (nStreet === nInseeStreet || nStreet.includes(nInseeStreet) || nInseeStreet.includes(nStreet)) {
+      streetMatch = true;
+    } else {
+      const ts = new Set(nStreet.split(" ").filter(Boolean));
+      const ti = new Set(nInseeStreet.split(" ").filter(Boolean));
+      if (ts.size > 0 && ti.size > 0) {
+        let shared = 0;
+        for (const t of ts) if (ti.has(t)) shared++;
+        streetMatch = shared / Math.min(ts.size, ti.size) >= 0.5;
+      }
+    }
+  }
+
+  return {
+    zipMatch,
+    cityMatch,
+    streetMatch,
+    declaredStreet,
+    declaredCity,
+    declaredZip,
+    inseeStreet,
+    inseeCity,
+    inseeZip,
+  };
+}
+
 export function getEtablissementState(
   etab: InseeEtablissement | undefined | null
 ): string | undefined {
