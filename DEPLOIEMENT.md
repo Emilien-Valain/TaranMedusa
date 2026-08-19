@@ -14,7 +14,8 @@ La production tourne sur un **VPS OVH piloté par Coolify**, pas avec `docker co
 VPS OVH
 └── Coolify
     ├── Traefik (reverse proxy + SSL Let's Encrypt)
-    ├── backend    → https://api.taran-industrie.com   (admin sur /app)
+    ├── backend    → https://api.taran-industrie.com
+    │                 https://admin.taran-industrie.com  (même service, admin sur /app)
     ├── storefront → https://taran-industrie.com
     ├── PostgreSQL → réseau interne
     └── Redis      → réseau interne
@@ -33,9 +34,13 @@ Un `git push` sur `main` déclenche le redéploiement automatique.
 |---|---|
 | Storefront | `https://taran-industrie.com` |
 | API Medusa | `https://api.taran-industrie.com` |
-| Admin Medusa | `https://api.taran-industrie.com/app` |
+| Admin Medusa | `https://admin.taran-industrie.com/app` |
 
-Il n'y a **pas** de sous-domaine `admin`. Le domaine `taran-industrie.fr` n'appartient pas au projet.
+`api` et `admin` sont deux domaines du même service backend. La racine `/` de ces domaines
+renvoie 404 : Medusa n'expose pas de route racine. Pour tester que le backend répond,
+utiliser `/health`.
+
+Le domaine `taran-industrie.fr` n'appartient pas au projet.
 
 ---
 
@@ -53,10 +58,10 @@ JWT_SECRET=...
 COOKIE_SECRET=...
 MEDUSA_FILE_BACKEND_URL=https://api.taran-industrie.com/static
 STORE_CORS=https://taran-industrie.com
-ADMIN_CORS=https://api.taran-industrie.com
-AUTH_CORS=https://api.taran-industrie.com
+ADMIN_CORS=https://admin.taran-industrie.com
+AUTH_CORS=https://admin.taran-industrie.com
 STORE_URL=https://taran-industrie.com
-ADMIN_URL=https://api.taran-industrie.com/app
+ADMIN_URL=https://admin.taran-industrie.com/app
 ADMIN_NOTIFICATION_EMAIL=contact@taran-industrie.com
 STORE_DEFAULT_COUNTRY=fr
 REVALIDATE_SECRET=<identique au storefront>
