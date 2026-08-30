@@ -1,0 +1,6 @@
+{
+  "enabledPlugins": {
+    "ecommerce-storefront@medusa": true,
+    "medusa-dev@medusa": true
+  }
+}

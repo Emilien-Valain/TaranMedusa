@@ -28,12 +28,15 @@ export default async function ProductPreview({
   }, 0)
 
   return (
-    <LocalizedClientLink href={`/products/${product.handle}`} className="group">
+    <LocalizedClientLink
+      href={`/products/${product.handle}`}
+      className="group block h-full"
+    >
       <div
         data-testid="product-wrapper"
-        className="flex flex-col gap-4 relative aspect-[3/5] w-full overflow-hidden p-4 bg-white shadow-borders-base rounded-lg group-hover:shadow-[0_0_0_4px_rgba(0,0,0,0.1)] transition-shadow ease-in-out duration-150"
+        className="flex flex-col gap-2 relative w-full h-full overflow-hidden p-3 bg-white shadow-borders-base rounded-lg group-hover:shadow-[0_0_0_4px_rgba(0,0,0,0.1)] transition-shadow ease-in-out duration-150"
       >
-        <div className="w-full h-full p-10">
+        <div className="w-full h-full p-6">
           <Thumbnail
             thumbnail={product.thumbnail}
             images={product.images}
@@ -43,11 +46,14 @@ export default async function ProductPreview({
         </div>
         <div className="flex flex-col txt-compact-medium">
           <Text className="text-neutral-600 text-xs">Taran</Text>
-          <Text className="text-ui-fg-base" data-testid="product-title">
+          <Text
+            className="text-ui-fg-base text-sm line-clamp-2 min-h-10"
+            data-testid="product-title"
+          >
             {product.title}
           </Text>
         </div>
-        <div className="flex flex-col gap-0">
+        <div className="flex flex-col gap-0 mt-auto">
           {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
         </div>
         <div className="flex justify-between">
