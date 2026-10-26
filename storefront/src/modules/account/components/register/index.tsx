@@ -8,7 +8,7 @@ import { SubmitButton } from "@/modules/checkout/components/submit-button"
 import Input from "@/modules/common/components/input"
 import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Label, Select, Text } from "@medusajs/ui"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ChangeEvent, useActionState, useEffect, useRef, useState } from "react"
 
 type Props = {
@@ -64,7 +64,8 @@ const placeholder = ({
 const Register = ({ setCurrentView, regions }: Props) => {
   const [message, formAction, isPending] = useActionState(signup, null)
   const [termsAccepted, setTermsAccepted] = useState(false)
-  const [isCompany, setIsCompany] = useState(false)
+  const searchParams = useSearchParams()
+  const [isCompany, setIsCompany] = useState(searchParams.get("pro") === "1")
   const [formData, setFormData] = useState<FormData>(initialFormData)
   const router = useRouter()
   const params = useParams() as { countryCode?: string }
@@ -181,6 +182,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
             >
               <span className="text-sm font-medium text-ui-fg-base">Vous représentez une entreprise</span>
               <span className="text-xs text-ui-fg-muted">Cochez cette case pour créer un compte professionnel</span>
+              <span className="text-xs font-semibold text-[#0099d6]">Tarifs professionnels : -20% sur tout le catalogue</span>
             </Label>
           </div>
 

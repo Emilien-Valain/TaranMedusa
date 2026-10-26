@@ -76,7 +76,8 @@ const Hero = () => {
           industriels. Fabriqué en France.
         </p>
 
-        {/* CTA pill button */}
+        {/* CTA pill buttons */}
+        <div className="flex flex-col small:flex-row gap-4 items-center">
         <LocalizedClientLink href="/store">
           <button
             className="font-semibold text-white"
@@ -104,6 +105,16 @@ const Hero = () => {
             Voir nos produits
           </button>
         </LocalizedClientLink>
+        <LocalizedClientLink
+          href="/account?view=register&pro=1"
+          className="font-semibold text-white uppercase tracking-wide border-2 border-white rounded-full px-9 py-[14px] hover:bg-white hover:text-[#0d2b5e] transition-colors"
+        >
+          Tarifs professionnels
+        </LocalizedClientLink>
+        </div>
+        <p className="mt-4 text-sm font-medium" style={{ color: "#0099d6" }}>
+          -20% sur tout le catalogue avec un compte professionnel
+        </p>
       </div>
 
       {/* Wave SVG separator at the bottom */}
