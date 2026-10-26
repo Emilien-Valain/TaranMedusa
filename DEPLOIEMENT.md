@@ -73,7 +73,11 @@ SMTP_SECURE=true
 SMTP_USER=contact@taran-industrie.com
 SMTP_PASSWORD=...
 SMTP_FROM="Taran <contact@taran-industrie.com>"
+INSEE_API_KEY=...
 ```
+
+`INSEE_API_KEY` (clé sur portail-api.insee.fr) active la vérification automatique des SIRET.
+Sans elle, aucune erreur : chaque SIRET reste en « pending » et attend une validation manuelle.
 
 `ADMIN_URL` doit contenir `/app`. Les emails d'invitation et de devis construisent leurs
 liens à partir de cette variable (`${ADMIN_URL}/invite?token=…`).
