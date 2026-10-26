@@ -112,8 +112,8 @@ const Hero = () => {
           Tarifs professionnels
         </LocalizedClientLink>
         </div>
-        <p className="mt-4 text-sm font-medium" style={{ color: "#0099d6" }}>
-          -20% sur tout le catalogue avec un compte professionnel
+        <p className="mt-5 text-sm font-semibold text-white bg-[#0d2b5e]/90 border border-[#0099d6] rounded-full px-5 py-2 shadow-lg">
+          <span className="text-[#0099d6]">-20%</span> sur tout le catalogue avec un compte professionnel
         </p>
       </div>
 
