@@ -18,8 +18,12 @@ const CartTotals: React.FC = () => {
     tax_total,
     shipping_total,
     discount_total,
+    discount_tax_total,
     gift_card_total,
   } = cart
+
+  // Remise HT : le sous-total affiché est HT, la TVA est déjà calculée après remise
+  const discountHt = (discount_total ?? 0) - (discount_tax_total ?? 0)
 
   return (
     <div>
@@ -41,10 +45,10 @@ const CartTotals: React.FC = () => {
             <Text
               className="text-ui-fg-interactive"
               data-testid="cart-discount"
-              data-value={discount_total || 0}
+              data-value={discountHt}
             >
               -{" "}
-              {convertToLocale({ amount: discount_total ?? 0, currency_code })}
+              {convertToLocale({ amount: discountHt, currency_code })}
             </Text>
           </div>
         )}
