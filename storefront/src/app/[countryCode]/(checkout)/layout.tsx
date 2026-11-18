@@ -1,5 +1,5 @@
 import LocalizedClientLink from "@/modules/common/components/localized-client-link"
-import LogoIcon from "@/modules/common/icons/logo"
+import Image from "next/image"
 import MedusaCTA from "@/modules/layout/components/medusa-cta"
 
 export default function CheckoutLayout({
@@ -12,10 +12,13 @@ export default function CheckoutLayout({
       <div className="h-16 bg-white">
         <nav className="flex h-full items-center content-container justify-between">
           <LocalizedClientLink className="hover:text-ui-fg-base" href="/">
-            <h1 className="text-base font-medium flex items-center">
-              <LogoIcon className="inline mr-2" />
-              Taran
-            </h1>
+            <Image
+              src="/logo-transparent.png"
+              alt="Taran"
+              width={150}
+              height={40}
+              style={{ objectFit: "contain", height: "40px", width: "auto" }}
+            />
           </LocalizedClientLink>
         </nav>
       </div>

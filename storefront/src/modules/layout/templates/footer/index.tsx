@@ -30,7 +30,7 @@ export default async function Footer() {
               Définir les besoins, livrer les solutions !
             </p>
             <div className="text-sm text-blue-200 flex flex-col gap-1 mt-2">
-              <span>35, rue des Pierres Fortes</span>
+              <span>62, avenue de l'Arborescente</span>
               <span>85500 LES HERBIERS</span>
               <span className="mt-1">
                 <a href="tel:0251924941" className="hover:text-[#0099d6] transition-colors">

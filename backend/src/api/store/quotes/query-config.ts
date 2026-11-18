@@ -50,9 +50,13 @@ export const quoteFields = [
 export const retrieveQuoteTransformQueryConfig = {
   defaults: quoteFields,
   isList: false,
+  // draft_order.items.variant.product = 4 niveaux (limite Store par défaut : 3)
+  storeRelationsLimit: 4,
 };
 
 export const listQuotesTransformQueryConfig = {
   defaults: quoteFields,
   isList: true,
+  // draft_order.items.variant.product = 4 niveaux (limite Store par défaut : 3)
+  storeRelationsLimit: 4,
 };

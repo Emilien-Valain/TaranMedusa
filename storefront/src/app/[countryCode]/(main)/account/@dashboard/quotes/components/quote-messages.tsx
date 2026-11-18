@@ -12,7 +12,7 @@ import { QuoteTableItem } from "./quote-table"
 
 export const CreateQuoteMessageForm = z.object({
   text: z.string().min(1),
-  item_id: z.string().nullish(),
+  item_id: z.string().optional(),
 })
 
 const defaultValues = {
@@ -57,9 +57,7 @@ const QuoteMessages = ({
   }, [quote.draft_order])
 
   const previewItemsMap = useMemo(() => {
-    return new Map<string, AdminOrderLineItem>(
-      preview?.items?.map((item: AdminOrderLineItem) => [item.id, item])
-    )
+    return new Map(preview?.items?.map((item) => [item.id, item]))
   }, [preview])
 
   return (

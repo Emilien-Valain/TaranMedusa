@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -11,4 +11,4 @@ RUN find .medusa -name "index.html" 2>/dev/null || echo "WARNING: No index.html 
 
 EXPOSE 9000
 
-CMD ["sh", "-c", "npx medusa db:migrate && cd /app/.medusa/server && /app/node_modules/.bin/medusa start"]
+CMD ["sh", "-c", "npx medusa db:migrate --execute-safe-links && cd /app/.medusa/server && /app/node_modules/.bin/medusa start"]

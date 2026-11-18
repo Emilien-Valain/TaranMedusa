@@ -3,7 +3,7 @@
 import Image from "next/image"
 import LocalizedClientLink from "@/modules/common/components/localized-client-link"
 
-const Hero = () => {
+const Hero = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
     <div className="relative w-full overflow-hidden" style={{ minHeight: "85vh" }}>
       {/* Background image */}
@@ -26,8 +26,8 @@ const Hero = () => {
 
       {/* Content */}
       <div
-        className="absolute inset-0 flex flex-col justify-center items-center text-center text-white"
-        style={{ paddingTop: "80px", paddingLeft: "24px", paddingRight: "24px" }}
+        className="relative flex flex-col justify-center items-center text-center text-white"
+        style={{ minHeight: "85vh", paddingTop: "180px", paddingBottom: "90px", paddingLeft: "24px", paddingRight: "24px" }}
       >
         {/* Logo — white version */}
         <div className="mb-8">
@@ -105,15 +105,25 @@ const Hero = () => {
             Voir nos produits
           </button>
         </LocalizedClientLink>
-        <LocalizedClientLink
-          href="/account?view=register&pro=1"
-          className="font-semibold text-white uppercase tracking-wide border-2 border-white rounded-full px-9 py-[14px] hover:bg-white hover:text-[#0d2b5e] transition-colors"
-        >
-          Tarifs professionnels
-        </LocalizedClientLink>
+        {!isLoggedIn && (
+          <>
+            <LocalizedClientLink
+              href="/account?view=register&pro=1"
+              className="font-semibold text-white uppercase tracking-wide border-2 border-white rounded-full px-9 py-[14px] hover:bg-white hover:text-[#0d2b5e] transition-colors"
+            >
+              Professionnel
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/account?view=register"
+              className="font-semibold text-white uppercase tracking-wide border-2 border-white rounded-full px-9 py-[14px] hover:bg-white hover:text-[#0d2b5e] transition-colors"
+            >
+              Particuliers
+            </LocalizedClientLink>
+          </>
+        )}
         </div>
         <p className="mt-5 text-sm font-semibold text-white bg-[#0d2b5e]/90 border border-[#0099d6] rounded-full px-5 py-2 shadow-lg">
-          <span className="text-[#0099d6]">-20%</span> sur tout le catalogue avec un compte professionnel
+          <span className="text-[#0099d6]">Réduction</span> sur tout le catalogue pour les professionnels
         </p>
       </div>
 

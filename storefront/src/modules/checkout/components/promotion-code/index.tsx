@@ -40,31 +40,13 @@ const PromotionCode: React.FC<PromotionCodeProps> = ({ cart }) => {
     )
   }
 
-  const addPromotionCode = async (formData: FormData) => {
-    const code = formData.get("code")
-    if (!code) {
-      return
-    }
-    const input = document.getElementById("promotion-input") as HTMLInputElement
-    const codes = promotions
-      .filter((p) => p.code === undefined)
-      .map((p) => p.code!)
-    codes.push(code.toString())
-
-    await applyPromotions(codes)
-
-    if (input) {
-      input.value = ""
-    }
-  }
-
   const [message, formAction] = useActionState(submitPromotionForm, null)
 
   return (
     <div className="w-full bg-white flex flex-col">
       <div className="txt-medium">
         {!isCheckout && !isPendingApproval && (
-          <form action={(a) => addPromotionCode(a)} className="w-full mb-5">
+          <form action={formAction} className="w-full mb-5">
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"

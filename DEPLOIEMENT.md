@@ -166,7 +166,18 @@ printenv | grep -E "STORE_URL|REVALIDATE_SECRET|ADMIN_URL"
 ```
 
 Les migrations sont lancées automatiquement au démarrage du conteneur
-(`npx medusa db:migrate && yarn start` dans `backend/Dockerfile`).
+(`npx medusa db:migrate --execute-safe-links` dans `backend/Dockerfile`).
+
+`--execute-safe-links` évite que le démarrage reste bloqué sur une question
+interactive, mais saute les changements de liens jugés « non sûrs » par Medusa.
+Quand les logs signalent une table de lien à mettre à jour, la lancer à la main :
+
+```bash
+npx medusa db:sync-links --execute-all
+```
+
+Cas connu, mise à jour Medusa 2.8 → 2.22 : `product_variant_inventory_item.required_quantity`
+passe de `integer` à `numeric` (sans perte de données).
 
 ---
 

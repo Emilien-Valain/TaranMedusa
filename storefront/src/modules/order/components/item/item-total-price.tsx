@@ -10,8 +10,8 @@ type ItemTotalPriceProps = {
 }
 
 const ItemTotalPrice = ({ item, currencyCode }: ItemTotalPriceProps) => {
-  const originalPrice = item.original_total
-  const currentPrice = item.total
+  const originalPrice = item.original_total ?? 0
+  const currentPrice = item.total ?? 0
   const hasReducedPrice = currentPrice < originalPrice
 
   return (

@@ -122,7 +122,7 @@ export const generateInvoicePdfStep = createStep(
 
       // Company logo (left side of header)
       let logoLoaded = false;
-      const logoPath = path.join(process.cwd(), "static", "logo-transparent.png");
+      const logoPath = path.join(process.cwd(), "static", "logo-white.png");
       if (fs.existsSync(logoPath)) {
         try {
           doc.image(logoPath, margin, 10, { height: 65, fit: [180, 65] });
@@ -152,7 +152,7 @@ export const generateInvoicePdfStep = createStep(
 
       // Left: company info block
       const companyName = config.company_name || "Taran Industrie";
-      const companyAddress = config.company_address || "35, rue des Pierres Fortes\n85500 LES HERBIERS";
+      const companyAddress = config.company_address || "62, avenue de l'Arborescente\n85500 LES HERBIERS";
       const companyPhone = config.company_phone || "02 51 92 49 41";
       const companyEmail = config.company_email || "contact@taran-industrie.com";
 
@@ -300,7 +300,7 @@ export const generateInvoicePdfStep = createStep(
 
       doc.fontSize(8).font("Helvetica").fillColor(COLORS.white);
       doc.text(
-        "Taran Industrie — 35, rue des Pierres Fortes, 85500 LES HERBIERS — Tél : 02 51 92 49 41 — contact@taran-industrie.com",
+        "Taran Industrie — 62, avenue de l'Arborescente, 85500 LES HERBIERS — Tél : 02 51 92 49 41 — contact@taran-industrie.com",
         0,
         footerY + 12,
         { align: "center", width: pageWidth }

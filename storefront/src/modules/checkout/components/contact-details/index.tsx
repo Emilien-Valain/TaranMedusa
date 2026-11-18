@@ -18,23 +18,21 @@ const ContactDetails = ({
   cart: B2BCart | null
   customer: B2BCustomer | null
 }) => {
-  if (!cart) return null
-
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
 
   const isOpen = searchParams.get("step") === "contact-details"
   const isCompleted =
-    cart.shipping_address?.address_1 &&
+    cart?.shipping_address?.address_1 &&
     cart.shipping_methods &&
     cart.shipping_methods?.length > 0 &&
     cart.billing_address?.address_1 &&
     cart.email
 
   const requiresApproval =
-    cart.company?.approval_settings?.requires_admin_approval ||
-    cart.company?.approval_settings?.requires_sales_manager_approval
+    cart?.company?.approval_settings?.requires_admin_approval ||
+    cart?.company?.approval_settings?.requires_sales_manager_approval
 
   const cartApprovalStatus = cart?.approval_status?.status
 
@@ -71,6 +69,8 @@ const ContactDetails = ({
       scroll: false,
     })
   }
+
+  if (!cart) return null
 
   return (
     <Container>

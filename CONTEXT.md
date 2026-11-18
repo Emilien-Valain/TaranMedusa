@@ -29,9 +29,9 @@ Lifecycle of a company's SIRET check: `none` → `pending` → `validated` /
 automatic (INSEE Sirene lookup) or manual (admin approval/rejection).
 
 ### Entreprises / Particuliers (customer groups)
-Customer groups assigned at signup based on whether a `company_name` was given.
-Currently **not** wired to any pricing — distinct from the Pro/Particulier
-pricing distinction above, which is driven by SIRET status.
+Customer groups mirroring Pro/Particulier: a customer is in **Entreprises** only
+while their company's SIRET is `validated`, otherwise in **Particuliers**. The
+professional price list (-20 %) targets the Entreprises group.
 
 ### Shipping profile
 A named, currency-scoped set of weight-based shipping prices, optionally with a

@@ -21,6 +21,13 @@ const CATEGORY_EVENTS = new Set([
   "product-category.deleted",
 ])
 
+// Le statut SIRET décide de l'affichage HT/TTC, lu depuis le client en cache.
+const COMPANY_SIRET_EVENTS = new Set([
+  "company.siret_submitted",
+  "company.siret_approved",
+  "company.siret_rejected",
+])
+
 function tagsForEvent(eventName: string): string[] {
   const tags = new Set<string>()
   if (PRODUCT_EVENTS.has(eventName)) {
@@ -37,6 +44,10 @@ function tagsForEvent(eventName: string): string[] {
   if (CATEGORY_EVENTS.has(eventName)) {
     tags.add("categories")
     tags.add("products")
+  }
+  if (COMPANY_SIRET_EVENTS.has(eventName)) {
+    tags.add("customers")
+    tags.add("companies")
   }
   return Array.from(tags)
 }
@@ -104,5 +115,8 @@ export const config: SubscriberConfig = {
     "product-category.created",
     "product-category.updated",
     "product-category.deleted",
+    "company.siret_submitted",
+    "company.siret_approved",
+    "company.siret_rejected",
   ],
 }

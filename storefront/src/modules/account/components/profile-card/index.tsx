@@ -54,7 +54,7 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
             <Input
               label="Prénom"
               name="first_name"
-              value={customerData.first_name}
+              value={customerData.first_name ?? ""}
               onChange={(e) =>
                 setCustomerData({
                   ...customerData,
@@ -68,7 +68,7 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
             <Input
               label="Nom"
               name="last_name"
-              value={customerData.last_name}
+              value={customerData.last_name ?? ""}
               onChange={(e) =>
                 setCustomerData({
                   ...customerData,
@@ -86,7 +86,7 @@ const ProfileCard = ({ customer }: { customer: B2BCustomer }) => {
             <Input
               label="Téléphone"
               name="phone"
-              value={customerData.phone}
+              value={customerData.phone ?? ""}
               onChange={(e) =>
                 setCustomerData({ ...customerData, phone: e.target.value })
               }

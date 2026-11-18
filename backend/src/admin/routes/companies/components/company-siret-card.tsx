@@ -19,6 +19,7 @@ import {
 } from "../../../../lib/insee-sirene";
 import {
   useApproveCompanySiret,
+  useCompanySiretInsee,
   useRejectCompanySiret,
 } from "../../../hooks/api/companies";
 
@@ -63,8 +64,20 @@ function MatchIndicator({ ok }: { ok: boolean }) {
   );
 }
 
-function ComparisonTable({ company }: { company: QueryCompany }) {
-  const etab = company.siret_insee_data as any;
+const INSEE_REASONS: Record<string, string> = {
+  not_found: "SIRET introuvable dans la base INSEE",
+  ceased: "Établissement fermé selon l'INSEE",
+  unauthorized: "Clé API INSEE refusée",
+  api_error: "API INSEE indisponible",
+};
+
+function ComparisonTable({
+  company,
+  etab,
+}: {
+  company: QueryCompany;
+  etab: any;
+}) {
   const inseeName = getInseeName(etab);
   const nameOk = isNameMatch(company.name, inseeName);
   const addr = compareAddress(
@@ -266,6 +279,15 @@ export function CompanySiretCard({ company }: { company: QueryCompany }) {
   const [rejectOpen, setRejectOpen] = useState(false);
   const { mutateAsync: approve, isPending: isApproving } =
     useApproveCompanySiret(company.id);
+  const { data: inseeData, isLoading: inseeLoading } = useCompanySiretInsee(
+    company.id,
+    !!company.siret
+  );
+  const live = inseeData?.result;
+  // Données INSEE en direct ; à défaut, la copie enregistrée lors de la soumission.
+  const etab =
+    (live && "etablissement" in live && live.etablissement) ||
+    company.siret_insee_data;
 
   const handleApprove = async () => {
     await approve(undefined, {
@@ -351,23 +373,55 @@ export function CompanySiretCard({ company }: { company: QueryCompany }) {
               </Table.Cell>
             </Table.Row>
           )}
-          {company.siret_insee_data && (
+          {company.siret && (
+            <Table.Row>
+              <Table.Cell className="font-medium font-sans txt-compact-small align-top">
+                INSEE
+              </Table.Cell>
+              <Table.Cell>
+                {inseeLoading ? (
+                  <Text className="text-ui-fg-muted">Interrogation INSEE…</Text>
+                ) : live?.found ? (
+                  <Badge size="small" color="green">
+                    Établissement actif
+                  </Badge>
+                ) : (
+                  <div className="flex flex-col gap-1">
+                    <Text className="text-ui-fg-error">
+                      {live ? INSEE_REASONS[live.reason] : "Résultat INSEE indisponible"}
+                    </Text>
+                    {live && !live.found && live.message && (
+                      <Text className="txt-small text-ui-fg-muted">
+                        {live.message}
+                      </Text>
+                    )}
+                    {!("etablissement" in (live || {})) && etab && (
+                      <Text className="txt-small text-ui-fg-muted">
+                        Affichage des données enregistrées lors de la soumission.
+                      </Text>
+                    )}
+                  </div>
+                )}
+              </Table.Cell>
+            </Table.Row>
+          )}
+          {etab && (
             <Table.Row>
               <Table.Cell className="font-medium font-sans txt-compact-small align-top">
                 Vérification
               </Table.Cell>
               <Table.Cell>
-                <ComparisonTable company={company} />
+                <ComparisonTable company={company} etab={etab} />
               </Table.Cell>
             </Table.Row>
           )}
-          {company.siret_insee_data && (
+          {etab && (
             <Table.Row>
               <Table.Cell className="font-medium font-sans txt-compact-small align-top">
                 Données INSEE
               </Table.Cell>
               <Table.Cell>
-                <InseeSummary data={company.siret_insee_data as any} />
+                <InseeSummary data={etab as any} />
               </Table.Cell>
             </Table.Row>
           )}

@@ -15,6 +15,7 @@ import {
 } from "@tanstack/react-query";
 import { queryKeysFactory } from "../../lib/query-key-factory";
 import { sdk } from "../../lib/client";
+import type { InseeLookupResult } from "../../../lib/insee-sirene";
 
 export const companyQueryKey = queryKeysFactory("company");
 
@@ -265,3 +266,14 @@ export const useRemoveCompanyFromCustomerGroup = (
     ...options,
   });
 };
+
+export const useCompanySiretInsee = (companyId: string, enabled: boolean) =>
+  useQuery({
+    queryKey: [...companyQueryKey.detail(companyId), "insee"],
+    queryFn: () =>
+      sdk.client.fetch<{ result: InseeLookupResult | null }>(
+        `/admin/companies/${companyId}/siret/insee`,
+        { method: "GET" }
+      ),
+    enabled,
+  });

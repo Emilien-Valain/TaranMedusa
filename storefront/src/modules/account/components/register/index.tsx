@@ -182,7 +182,7 @@ const Register = ({ setCurrentView, regions }: Props) => {
             >
               <span className="text-sm font-medium text-ui-fg-base">Vous représentez une entreprise</span>
               <span className="text-xs text-ui-fg-muted">Cochez cette case pour créer un compte professionnel</span>
-              <span className="text-xs font-semibold text-[#0099d6]">Tarifs professionnels : -20% sur tout le catalogue</span>
+              <span className="text-xs font-semibold text-[#0099d6]">Tarifs professionnels : -20% sur tout le catalogue, après vérification du SIRET</span>
             </Label>
           </div>
 
@@ -258,9 +258,12 @@ const Register = ({ setCurrentView, regions }: Props) => {
                 value={formData.company_siret}
                 onChange={handleChange}
               />
-              <Text className="text-xs text-ui-fg-muted -mt-2">
-                Une fois votre SIRET validé par notre équipe, vous verrez les
-                prix HT sur le site.
+              <Text className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-md p-2 -mt-2">
+                Les tarifs professionnels et l&apos;affichage HT s&apos;appliquent
+                une fois votre SIRET vérifié : immédiatement si la vérification
+                automatique aboutit, sinon après validation par notre équipe. En
+                attendant, ce sont les tarifs particuliers (TTC) qui
+                s&apos;appliquent.
               </Text>
               <Input
                 label="Adresse de la société"

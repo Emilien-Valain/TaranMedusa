@@ -1,4 +1,5 @@
 import FeaturedProducts from "@/modules/home/components/featured-products"
+import { retrieveCustomer } from "@/lib/data/customer"
 import Hero from "@/modules/home/components/hero"
 import SkeletonFeaturedProducts from "@/modules/skeletons/templates/skeleton-featured-products"
 import { Metadata } from "next"
@@ -18,12 +19,13 @@ export default async function Home(props: {
   const params = await props.params
 
   const { countryCode } = params
+  const customer = await retrieveCustomer().catch(() => null)
 
   return (
     <div className="flex flex-col">
       {/* -mt-[92px] pulls the hero under the fixed transparent nav */}
       <div className="-mt-[92px]">
-        <Hero />
+        <Hero isLoggedIn={!!customer} />
       </div>
       <div className="py-8">
         <Suspense fallback={<SkeletonFeaturedProducts />}>

@@ -9,6 +9,8 @@ const KNOWN_TAGS = new Set([
   "fulfillment",
   "tax-rate",
   "payment",
+  "customers",
+  "companies",
 ])
 
 export async function POST(request: NextRequest) {

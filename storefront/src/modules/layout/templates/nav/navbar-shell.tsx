@@ -57,9 +57,10 @@ export function NavbarShell({ nav, actions }: Props) {
               alt="Taran Industrie"
               width={160}
               height={58}
+              // smaller on mobile so the logo doesn't run into the action buttons
+              className={isHome && !scrolled ? "h-8 small:h-12" : "h-7 small:h-[38px]"}
               style={{
                 objectFit: "contain",
-                height: isHome && !scrolled ? "48px" : "38px",
                 width: "auto",
                 transition: "height 0.3s ease",
                 filter: "brightness(0) invert(1)",

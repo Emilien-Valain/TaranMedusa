@@ -107,9 +107,9 @@ export function CartProvider({
               newItems[existingItemIndex] = {
                 ...item,
                 quantity: item.quantity + lineItem.quantity,
-                total: item.total + lineItem.quantity * item.unit_price,
+                total: (item.total ?? 0) + lineItem.quantity * item.unit_price,
                 original_total:
-                  item.total + lineItem.quantity * item.unit_price,
+                  (item.total ?? 0) + lineItem.quantity * item.unit_price,
               }
 
               continue

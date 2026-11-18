@@ -15,7 +15,7 @@ const COLORS = {
 
 const logoUrl = (() => {
   const base = process.env.MEDUSA_FILE_BACKEND_URL || process.env.BACKEND_URL || "http://localhost:9000"
-  return `${base}/static/logo-transparent.png`
+  return `${base}/static/logo-white.png`
 })()
 
 const baseLayout = (content: string) => `
@@ -35,7 +35,7 @@ const baseLayout = (content: string) => `
           <!-- Header -->
           <tr>
             <td style="background-color: ${COLORS.navy}; padding: 28px 32px; text-align: center;">
-              <img src="${logoUrl}" alt="Taran Industrie" width="160" height="58" style="display: block; margin: 0 auto; max-width: 160px; height: auto; filter: brightness(0) invert(1);" />
+              <img src="${logoUrl}" alt="Taran Industrie" width="180" height="48" style="display: block; margin: 0 auto; max-width: 180px; height: auto;" />
             </td>
           </tr>
 
@@ -58,7 +58,7 @@ const baseLayout = (content: string) => `
                 Définir les besoins, livrer les solutions !
               </p>
               <p style="margin: 0 0 4px; color: ${COLORS.textLight}; font-size: 12px; line-height: 1.5;">
-                35, rue des Pierres Fortes · 85500 LES HERBIERS
+                62, avenue de l'Arborescente · 85500 LES HERBIERS
               </p>
               <p style="margin: 0 0 12px; color: ${COLORS.textLight}; font-size: 12px; line-height: 1.5;">
                 Tél : 02 51 92 49 41 · <a href="mailto:contact@taran-industrie.com" style="color: ${COLORS.textLight}; text-decoration: none;">contact@taran-industrie.com</a>

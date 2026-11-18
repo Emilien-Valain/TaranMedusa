@@ -14,11 +14,12 @@ import {
   generatePublishableKey,
   generateStoreHeaders,
 } from "../../utils/store";
+import { syncPricingGroups } from "../../../src/lib/pricing-group";
+import { COMPANY_MODULE } from "../../../src/modules/company";
 
 jest.setTimeout(60 * 1000);
 
 medusaIntegrationTestRunner({
-  inApp: true,
   env: {
     JWT_SECRET: "supersecret",
   },
@@ -271,6 +272,109 @@ medusaIntegrationTestRunner({
           .catch((e) => e);
 
         expect(response.status).toEqual(204);
+      });
+    });
+
+    // Medusa >= 2.21 retire les champs non autorisés des routes Store (cf. src/api/middlewares.ts)
+    describe("Liens B2B exposés sur les routes Store", () => {
+      let company;
+
+      beforeEach(async () => {
+        company = (
+          await api.post(
+            "/store/companies",
+            {
+              name: "Test Company",
+              email: "test@company.com",
+              currency_code: "EUR",
+            },
+            storeHeaders
+          )
+        ).data.companies[0];
+
+        const { customer } = (
+          await api.get("/store/customers/me", storeHeaders)
+        ).data;
+
+        await api.post(
+          `/store/companies/${company.id}/employees`,
+          { customer_id: customer.id, is_admin: true },
+          storeHeaders
+        );
+      });
+
+      it("GET /store/customers/me renvoie employee.company", async () => {
+        const { customer } = (
+          await api.get(
+            "/store/customers/me?fields=*employee,*employee.company",
+            storeHeaders
+          )
+        ).data;
+
+        expect(customer.employee.company).toEqual(
+          expect.objectContaining({
+            id: company.id,
+            siret_validation_status: expect.any(String),
+          })
+        );
+      });
+
+      it("syncPricingGroups : groupe Entreprises seulement si SIRET validé", async () => {
+        const container = getContainer();
+        const query = container.resolve("query");
+        const { customer } = (
+          await api.get("/store/customers/me", storeHeaders)
+        ).data;
+        const groupNames = async () => {
+          const { data } = await query.graph({
+            entity: "customer",
+            fields: ["groups.name"],
+            filters: { id: customer.id },
+          });
+          return data[0].groups.map((g) => g.name).sort();
+        };
+
+        await syncPricingGroups(container, [customer.id]);
+        expect(await groupNames()).toEqual(["Particuliers"]);
+
+        await container.resolve(COMPANY_MODULE).updateCompanies({
+          id: company.id,
+          siret_validation_status: "validated",
+        });
+        await syncPricingGroups(container, [customer.id]);
+        expect(await groupNames()).toEqual(["Entreprises"]);
+
+        await container.resolve(COMPANY_MODULE).updateCompanies({
+          id: company.id,
+          siret_validation_status: "rejected",
+        });
+        await syncPricingGroups(container, [customer.id]);
+        expect(await groupNames()).toEqual(["Particuliers"]);
+      });
+
+      it("GET /store/carts/:id renvoie company et approvals", async () => {
+        const companyCart = await cartSeeder({
+          api,
+          storeHeaders,
+          data: {
+            region_id: region.id,
+            sales_channel_id: salesChannel.id,
+            metadata: { company_id: company.id },
+          },
+        });
+
+        const { cart: fetched } = (
+          await api.get(
+            `/store/carts/${companyCart.id}?fields=*company,*company.approval_settings,*approvals,*approval_status`,
+            storeHeaders
+          )
+        ).data;
+
+        expect(fetched.company).toEqual(
+          expect.objectContaining({ id: company.id })
+        );
+        expect(fetched).toHaveProperty("company.approval_settings");
+        expect(fetched).toHaveProperty("approvals");
       });
     });
   },

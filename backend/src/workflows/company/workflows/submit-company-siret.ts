@@ -1,3 +1,4 @@
+import { emitEventStep } from "@medusajs/medusa/core-flows";
 import { createWorkflow, WorkflowResponse } from "@medusajs/workflows-sdk";
 import { submitCompanySiretStep } from "../steps";
 
@@ -9,6 +10,14 @@ type Input = {
 export const submitCompanySiretWorkflow = createWorkflow(
   "submit-company-siret",
   function (input: Input) {
-    return new WorkflowResponse(submitCompanySiretStep(input));
+    const result = submitCompanySiretStep(input);
+
+    // La vérification INSEE peut valider (ou rejeter) immédiatement.
+    emitEventStep({
+      eventName: "company.siret_submitted",
+      data: { id: input.company_id },
+    });
+
+    return new WorkflowResponse(result);
   }
 );

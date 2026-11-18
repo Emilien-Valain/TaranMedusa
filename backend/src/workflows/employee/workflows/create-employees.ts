@@ -1,6 +1,6 @@
 import { Modules } from "@medusajs/framework/utils";
 import { when } from "@medusajs/framework/workflows-sdk";
-import { createRemoteLinkStep } from "@medusajs/medusa/core-flows";
+import { createRemoteLinkStep, emitEventStep } from "@medusajs/medusa/core-flows";
 import { createWorkflow, WorkflowResponse } from "@medusajs/workflows-sdk";
 import { COMPANY_MODULE } from "../../../modules/company";
 import { ModuleCreateEmployee, ModuleEmployee } from "../../../types";
@@ -37,6 +37,11 @@ export const createEmployeesWorkflow = createWorkflow(
 
     addEmployeeToCustomerGroupStep({
       employee_id: employee.id,
+    });
+
+    emitEventStep({
+      eventName: "employee.created",
+      data: { id: employee.id },
     });
 
     return new WorkflowResponse(employee);
