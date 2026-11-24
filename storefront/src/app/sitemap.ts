@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next"
 
-const SITE_URL = "https://taran-industrie.com"
+const SITE_URL = "https://taran.fr"
 const BACKEND_URL =
   process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
 const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || ""

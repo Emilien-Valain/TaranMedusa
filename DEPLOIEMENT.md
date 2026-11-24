@@ -16,7 +16,7 @@ VPS OVH
     ├── Traefik (reverse proxy + SSL Let's Encrypt)
     ├── backend    → https://api.taran-industrie.com
     │                 https://admin.taran-industrie.com  (même service, admin sur /app)
-    ├── storefront → https://taran-industrie.com
+    ├── storefront → https://taran.fr  (taran-industrie.com redirige en 301)
     ├── PostgreSQL → réseau interne
     └── Redis      → réseau interne
 ```
@@ -32,9 +32,15 @@ Un `git push` sur `main` déclenche le redéploiement automatique.
 
 | Rôle | URL |
 |---|---|
-| Storefront | `https://taran-industrie.com` |
+| Storefront | `https://taran.fr` |
 | API Medusa | `https://api.taran-industrie.com` |
 | Admin Medusa | `https://admin.taran-industrie.com/app` |
+| Redirection 301 | `www.taran.fr`, `taran-industrie.com`, `www.taran-industrie.com` → `https://taran.fr` |
+
+`taran.fr` (DNS chez Gandi) est le domaine principal, celui des communications.
+Tous les domaines ci-dessus figurent dans les domaines du storefront sur Coolify ;
+la redirection est faite par `storefront/src/middleware.ts`.
+`api` et `admin` restent sur `taran-industrie.com` (invisibles pour les clients).
 
 `api` et `admin` sont deux domaines du même service backend. La racine `/` de ces domaines
 renvoie 404 : Medusa n'expose pas de route racine. Pour tester que le backend répond,
@@ -57,10 +63,10 @@ CACHE_REDIS_URL=redis://redis-xxxxx:6379
 JWT_SECRET=...
 COOKIE_SECRET=...
 MEDUSA_FILE_BACKEND_URL=https://api.taran-industrie.com/static
-STORE_CORS=https://taran-industrie.com
+STORE_CORS=https://taran.fr,https://taran-industrie.com
 ADMIN_CORS=https://admin.taran-industrie.com
 AUTH_CORS=https://admin.taran-industrie.com
-STORE_URL=https://taran-industrie.com
+STORE_URL=https://taran.fr
 ADMIN_URL=https://admin.taran-industrie.com/app
 ADMIN_NOTIFICATION_EMAIL=contact@taran-industrie.com
 STORE_DEFAULT_COUNTRY=fr
@@ -91,7 +97,7 @@ Placées dans « Environment Variables », elles n'ont aucun effet.
 NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://api.taran-industrie.com
 NEXT_PUBLIC_MEDUSA_FILE_BACKEND_URL=https://api.taran-industrie.com/static
 NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_...
-NEXT_PUBLIC_BASE_URL=https://taran-industrie.com
+NEXT_PUBLIC_BASE_URL=https://taran.fr
 NEXT_PUBLIC_DEFAULT_REGION=fr
 ```
 
@@ -132,7 +138,7 @@ Vérification, après une modification de produit dans l'admin — logs Coolify 
 Forcer la revalidation à la main, depuis n'importe quel terminal :
 
 ```bash
-curl -sS -i -X POST https://taran-industrie.com/api/revalidate \
+curl -sS -i -X POST https://taran.fr/api/revalidate \
   -H "Content-Type: application/json" \
   -H "x-revalidate-secret: <REVALIDATE_SECRET>" \
   -d '{"tags":["products","categories","collections"]}'

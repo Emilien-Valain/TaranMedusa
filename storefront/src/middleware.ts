@@ -109,6 +109,27 @@ async function setCacheId(request: NextRequest, response: NextResponse) {
  * Middleware to handle region selection and cache id.
  */
 export async function middleware(request: NextRequest) {
+  // Les domaines secondaires redirigent vers le domaine principal taran.fr.
+  const host = (
+    request.headers.get("x-forwarded-host") ??
+    request.headers.get("host") ??
+    ""
+  )
+    .split(":")[0]
+    .toLowerCase()
+
+  if (
+    host === "www.taran.fr" ||
+    host === "taran-industrie.com" ||
+    host === "www.taran-industrie.com"
+  ) {
+    const { pathname, search } = request.nextUrl
+    return NextResponse.redirect(
+      `https://taran.fr${pathname}${search}`,
+      301
+    )
+  }
+
   const searchParams = request.nextUrl.searchParams
   const cartId = searchParams.get("cart_id")
   const checkoutStep = searchParams.get("step")

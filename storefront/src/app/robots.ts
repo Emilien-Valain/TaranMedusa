@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/checkout", "/account/", "/cart", "/order/"],
       },
     ],
-    sitemap: "https://taran-industrie.com/sitemap.xml",
+    sitemap: "https://taran.fr/sitemap.xml",
   }
 }
