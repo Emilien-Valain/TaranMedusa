@@ -79,8 +79,13 @@ SMTP_SECURE=true
 SMTP_USER=contact@taran-industrie.com
 SMTP_PASSWORD=...
 SMTP_FROM="Taran <contact@taran-industrie.com>"
+SMTP_REPLY_TO=contact@taran.fr   # optionnel, valeur par défaut
 INSEE_API_KEY=...
 ```
+
+`contact@taran-industrie.com` sert uniquement à l'envoi (no-reply). L'adresse publique
+est `contact@taran.fr` : elle figure sur le site, les mails et les factures, et reçoit
+les réponses des clients (en-tête `Reply-To`).
 
 `INSEE_API_KEY` (clé sur portail-api.insee.fr) active la vérification automatique des SIRET.
 Sans elle, aucune erreur : chaque SIRET reste en « pending » et attend une validation manuelle.

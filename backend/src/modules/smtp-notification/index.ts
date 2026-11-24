@@ -10,6 +10,7 @@ type SmtpOptions = {
   user: string
   password: string
   from: string
+  replyTo?: string
 }
 
 type ProviderSendNotificationDTO = {
@@ -30,10 +31,12 @@ class SmtpNotificationService extends AbstractNotificationProviderService {
 
   private transporter: nodemailer.Transporter
   private from: string
+  private replyTo?: string
 
   constructor(_container: Record<string, any>, options: SmtpOptions) {
     super()
     this.from = options.from
+    this.replyTo = options.replyTo
     this.transporter = nodemailer.createTransport({
       host: options.host,
       port: Number(options.port),
@@ -54,6 +57,7 @@ class SmtpNotificationService extends AbstractNotificationProviderService {
 
     const result = await this.transporter.sendMail({
       from: this.from,
+      replyTo: this.replyTo,
       to,
       subject,
       html,

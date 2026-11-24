@@ -24,7 +24,7 @@ export const COMPANY_INFO = {
 
   // Contact
   phone: '02 51 92 49 41',
-  email: 'contact@taran-industrie.com',
+  email: 'contact@taran.fr',
 
   // Publication
   publicationDirector: 'DAGDA INVEST 5',
@@ -44,7 +44,7 @@ export const COMPANY_INFO = {
   },
 
   // Délégué à la protection des données (DPO), le cas échéant
-  dpoContact: 'contact@taran-industrie.com',
+  dpoContact: 'contact@taran.fr',
 } as const
 
 export const fullAddress = `${COMPANY_INFO.address}, ${COMPANY_INFO.postalCode} ${COMPANY_INFO.city}, ${COMPANY_INFO.country}`

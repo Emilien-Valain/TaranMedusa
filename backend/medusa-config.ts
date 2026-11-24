@@ -103,6 +103,8 @@ module.exports = defineConfig({
               user: process.env.SMTP_USER,
               password: process.env.SMTP_PASSWORD,
               from: process.env.SMTP_FROM,
+              // Adresse no-reply en envoi : les réponses des clients vont sur taran.fr.
+              replyTo: process.env.SMTP_REPLY_TO || 'contact@taran.fr',
             },
           },
         ],

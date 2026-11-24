@@ -154,7 +154,7 @@ export const generateInvoicePdfStep = createStep(
       const companyName = config.company_name || "Taran Industrie";
       const companyAddress = config.company_address || "62, avenue de l'Arborescente\n85500 LES HERBIERS";
       const companyPhone = config.company_phone || "02 51 92 49 41";
-      const companyEmail = config.company_email || "contact@taran-industrie.com";
+      const companyEmail = config.company_email || "contact@taran.fr";
 
       doc.fontSize(11).font("Helvetica-Bold").fillColor(COLORS.navyBlue);
       doc.text(companyName, margin, infoY);
@@ -300,7 +300,7 @@ export const generateInvoicePdfStep = createStep(
 
       doc.fontSize(8).font("Helvetica").fillColor(COLORS.white);
       doc.text(
-        "Taran Industrie — 62, avenue de l'Arborescente, 85500 LES HERBIERS — Tél : 02 51 92 49 41 — contact@taran-industrie.com",
+        "Taran Industrie — 62, avenue de l'Arborescente, 85500 LES HERBIERS — Tél : 02 51 92 49 41 — contact@taran.fr",
         0,
         footerY + 12,
         { align: "center", width: pageWidth }

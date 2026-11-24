@@ -61,7 +61,7 @@ const baseLayout = (content: string) => `
                 62, avenue de l'Arborescente · 85500 LES HERBIERS
               </p>
               <p style="margin: 0 0 12px; color: ${COLORS.textLight}; font-size: 12px; line-height: 1.5;">
-                Tél : 02 51 92 49 41 · <a href="mailto:contact@taran-industrie.com" style="color: ${COLORS.textLight}; text-decoration: none;">contact@taran-industrie.com</a>
+                Tél : 02 51 92 49 41 · <a href="mailto:contact@taran.fr" style="color: ${COLORS.textLight}; text-decoration: none;">contact@taran.fr</a>
               </p>
               <p style="margin: 0; color: ${COLORS.blue}; font-size: 11px;">
                 &copy; ${new Date().getFullYear()} Taran Industrie. Tous droits réservés.

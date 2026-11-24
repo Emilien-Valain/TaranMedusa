@@ -38,8 +38,8 @@ export default async function Footer() {
                 </a>
               </span>
               <span>
-                <a href="mailto:contact@taran-industrie.com" className="hover:text-[#0099d6] transition-colors">
-                  contact@taran-industrie.com
+                <a href="mailto:contact@taran.fr" className="hover:text-[#0099d6] transition-colors">
+                  contact@taran.fr
                 </a>
               </span>
             </div>
